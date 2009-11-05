@@ -1,2 +1,0 @@
-class ConfController < ApplicationController
-end
