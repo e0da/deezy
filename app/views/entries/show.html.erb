@@ -1,0 +1,28 @@
+<table class="dhcp_table alt_rows">
+  <tbody>
+    <tr><th>Scope</th><td class="mono"><%=h @entry.scope %></td></tr>
+    <tr><th>MAC</th><td class="mono"><%=h @entry.mac %></td></tr>
+    <tr><th>IP</th><td class="mono"><%=h @entry.ip %></td></tr>
+    <tr><th>ITG ID</th><td class="mono"><%=h @entry.itgid %></td></tr>
+    <tr><th>hostname</th><td class="mono"><%=h @entry.hostname %></td></tr>
+    <tr><th>UID</th><td class="mono"><%=h @entry.uid %></td></tr>
+    <tr><th>enabled</th><td>
+        <% if @entry.enabled %>
+          <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On
+        <% else %>
+          <%= image_tag 'off.png', :style => 'vertical-align:middle' %> Off
+        <% end %>
+      </td>
+    </tr>
+    <tr><th>Notes</th><td class="note_expanded"><%=h @entry.notes %></td></tr>
+    <tr><th>Created</th><td><%=h @entry.created_at %></td></tr>
+    <tr><th>Updated</th><td><%=h @entry.updated_at %></td></tr>
+  </tbody>
+</table>
+<% form_tag entry_path(@entry), :method => :delete do -%>    
+  <div id="show_buttons">
+  <button onclick="location.href='<%= edit_entry_path(@entry) %>'; return false;" class="edit"><p><%= image_tag 'button_edit.png' %> Edit</p></button>
+  <button onclick="return confirm('Really delete? Be sure! This cannot be undone!')" type="submit" class="delete"><p><%= image_tag 'button_delete.png' %> Delete</p></button>
+</div>
+<% end -%>
+

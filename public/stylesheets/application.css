@@ -1,0 +1,373 @@
+/* CSS Tools: Reset CSS                              */
+/* Source: http://meyerweb.com/eric/tools/css/reset/ */
+/* v1.0 | 20080212                                   */
+
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, font, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  outline: 0;
+  font-size: 100%;
+  vertical-align: baseline;
+  background: transparent;
+}
+body {
+  line-height: 1;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+  content: '';
+  content: none;
+}
+
+/* remember to define focus styles! */
+:focus {
+  outline: 0;
+}
+
+/* remember to highlight inserts somehow! */
+ins {
+  text-decoration: none;
+}
+del {
+  text-decoration: line-through;
+}
+
+/* tables still need 'cellspacing="0"' in the markup */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/* end CSS Tools: Reset CSS */
+
+body {
+  font-family:sans-serif;
+  font-size:12px;
+  background:#666;
+}
+
+a {
+  text-decoration:none;
+  color: #009;
+}
+
+a:visited {
+  color: #900;
+}
+
+a:hover {
+  color: #55f;
+}
+
+#content {
+  background:#fff;
+  padding:10px;
+  margin:10px;
+}
+
+h1, h2, h3 {
+  border-bottom:1px solid #000;
+  margin-bottom:5px;
+}
+
+h3 {
+  font-size:14px;
+}
+
+h2 {
+  font-size:16px;
+}
+
+h1 {
+  font-size:18px;
+}
+
+#header h1 {
+  border:none;
+  margin:0;
+}
+
+#header, #content, #footer {
+  margin:10px;
+  padding:10px;
+  background: #fff;
+  border:1px solid #333;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  overflow:auto;
+}
+
+#header {
+  padding-bottom:5px;
+}
+
+dl {
+  clear:both;
+}
+dt {
+  font-weight:bold;
+  float:left;
+}
+dd {
+  float:left;
+}
+
+#footer {
+  font-size:10px;
+}
+
+#footer a {
+  color:#555;
+}
+
+#footer a:hover {
+  text-decoration:underline;
+  color:#050;
+}
+
+#header ul {
+  float:left;
+  margin-left:20px;
+}
+#header li {
+  float:left;
+  padding-right:15px;
+  line-height:28px;
+}
+
+#header li a {
+  font-weight:bold;
+  color:#009;
+  padding:2px 4px;
+}
+
+#header li a:hover {
+  color:#55f;
+  background:#e0efe0;
+}
+
+#header li a:visited {
+  color:#009;
+}
+
+#header h1 {
+  float:left;
+}
+
+input[type=text], textarea {
+  border:1px solid #999;
+}
+
+.bad_field {
+  background:#fdd;
+  border:1px solid #c00 !important;
+}
+
+.dhcp_table {
+  margin:10px;
+  margin:auto;
+}
+
+.dhcp_table th {
+  text-align:right;
+  padding-right:5px;
+}
+
+.dhcp_table tr {
+  line-height:14px;
+}
+
+.odd {
+  background: #e0efe0;
+}
+
+.mono {
+  font-family:monospace;
+}
+
+.dhcp_table th, .dhcp_table td {
+  padding:1px 5px;
+}
+
+small {
+  font-size:85%;
+}
+
+#entry_fields {
+  margin:10px;
+  background-color:#fff;
+}
+
+#entry_fields p {
+  margin-bottom: 10px;
+}
+
+.invalid_field {
+  border:1px solid #c00 !important;
+  background:#fee;
+}
+
+.invalid_tip {
+  margin-top:-5px;
+  margin-left:10px;
+  font-weight:bold;
+  padding:5px;
+  border:1px solid #999;
+  position:absolute;
+  z-index:50;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  background:#ff9;
+}
+
+.sortable th {
+  text-align:center;
+  cursor:pointer;
+}
+
+.invisible {
+  display:none;
+}
+
+#errorExplanation {
+  border:5px solid #c00;
+  background:#fee;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
+  margin:10px;
+  padding:10px;
+}
+
+#errorExplanation li {
+  list-style:circle;
+  margin:5px;
+  margin-left:20px;
+
+}
+
+input[disabled=disabled] {
+  border:1px inset #555;
+}
+
+.toggle_button_inner {
+  padding-left:16px;
+}
+
+input[type=checkbox] {
+  line-height:1;
+}
+
+label {
+  cursor: pointer;
+}
+
+.field_disabled {
+  background: #eee !important;
+  border:#999;
+  color:#999;
+}
+
+.notes_col {
+}
+
+.note_expanded {
+  white-space:pre-wrap;
+}
+
+.aside {
+  font-size:60%;
+}
+
+button {
+  background:transparent url(/images/button.png);
+  border:1px solid;
+  border-color:#ccc #777 #777 #ccc;
+  color:#505050;
+  font-weight:bold;
+  height:30px;
+  vertical-align:middle;
+  text-align:center;
+  cursor:pointer;
+}
+
+button:active {
+  background:transparent url(/images/button-active.png);
+  border-color:#777 #ccc #ccc #777;
+}
+
+button[disabled] {
+  color:#aaa;
+  cursor:auto;
+}
+
+button[disabled]:active {
+  background:transparent url(/images/button.png);
+  border-style: outset;
+}
+
+button p img {
+  margin-top:-4px;
+  margin-right:5px;
+  vertical-align:middle;
+}
+
+button p {
+  margin:0;
+  padding:0;
+  font-family:sans-serif;
+  font-size:14px;
+  line-height:28px;
+}
+
+select {
+  font-family:sans-serif;
+  font-size:14px;
+  font-weight:bold;
+  color:#505050;
+}
+
+label {
+  font-size:14px;
+  color: #505050;
+  font-weight:bold;
+  vertical-align:bottom;
+}
+
+#dynamic_toggle {
+  float:left;
+  clear:right;
+  margin-bottom:10px;
+}
+
+#dynamic_toggle button {
+}
+
+#show_buttons {
+  text-align:center;
+}
+
+#show_buttons button {
+  margin:10px;
+}
+
+#entry_scope {
+  vertical-align:middle;
+}
+
+.show_edit {
+  min-width:48px;
+}

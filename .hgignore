@@ -1,0 +1,6 @@
+^tmp/[^.].*
+^log/[^.].*
+^db/[^.].*
+^config/database.yml
+^app/controllers/entries_controller.rb
+
