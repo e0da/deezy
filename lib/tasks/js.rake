@@ -4,7 +4,6 @@ namespace :js do
     # list of files to minify
     libs = ['public/javascripts/prototype.js', 
             'public/javascripts/effects.js', 
-            'public/javascripts/sorttable.js', 
             'public/javascripts/application.js']
 
     # paths to jsmin script and final minified file

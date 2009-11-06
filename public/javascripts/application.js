@@ -376,7 +376,7 @@ var deezy_form_layout = function() {
 var deezy_layout = function() {
 
   /* private methods */ 
-  var float_and_center_page,set_page_max_width,set_up_note_previews,add_collapse_expand_all_notes_links,add_colorize_odd_rows,colorize_odd_rows;
+  var float_and_center_page,set_page_max_width,set_up_note_previews,add_collapse_expand_all_notes_links,colorize_odd_rows;
 
   /* Float the page so it uses automatic width and center it */
   float_and_center_page = function() {
@@ -465,16 +465,6 @@ var deezy_layout = function() {
 
   };
 
-  /* When you click the th for a column on a sortable table, re-colorize the
-   * rows. */
-  add_colorize_odd_rows = function() {
-    colorize_odd_rows();
-    var ths = $$('.sortable th'); 
-    ths.each(function(th) {
-      th.observe('click',colorize_odd_rows);
-    });
-  };
-
   /* Colorize the odd rows */
   colorize_odd_rows = function() {
     $$('.alt_rows tbody tr:nth-child(odd)').each(function(tr) { tr.addClassName('odd'); });
@@ -486,7 +476,7 @@ var deezy_layout = function() {
     init:function() {
       float_and_center_page();
       deezy_layout.notes = $$('.notes_col');
-      add_colorize_odd_rows();
+      colorize_odd_rows();
 
       /* If there's an 'entries' table, set up expandable note previews. */
       if ($('entries')) { set_up_note_previews(); }
