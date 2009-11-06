@@ -1,215 +1,12 @@
-/* Change layout, style, and UI for savvy browsers. */
-var deezy_layout = function() {
-  return {
-    notes:null,
-    init:function() {
-      float_and_center_page();
-      deezy_layout.notes = $$('.notes_col');
-      add_colorize_odd_rows();
-
-      /* If there's an 'entries' table, set up expandable note previews. */
-      if ($('entries')) set_up_note_previews();
-
-      deezy_form_layout.init(); // Do the form layout
-    },
-
-    rgb2hex:function(rgb) {
-      var m = /rgb\(([0-9]{1,3}),\s*([0-9]{1,3}),\s*([0-9]{1,3})/.exec(rgb);
-      var hex = '#' + (m[1]*1).toString(16) + (m[2]*1).toString(16) + (m[3]*1).toString(16);
-      return hex;
-    } 
-  };
-
-  /* private methods */
-
-  /* Float the page so it uses automatic width and center it */
-  function float_and_center_page() {
-    var inner = new Element('div').update($('header'));
-    inner.appendChild($('content'));
-    inner.appendChild($('footer'));
-    inner.setStyle({position:'relative',left:'-50%'});
-    var outer = new Element('div',{id:'pagewrapper'}).update(inner).setStyle({'float':'left',position:'relative',left:'50%'});
-    $$('body')[0].update(outer).setStyle({overflowX:'hidden'});
-    Event.observe(window,'resize',set_page_max_width);
-    set_page_max_width();
-  }
-
-  /* Set maximum width of the page so it doesn't overflow the viewport */
-  function set_page_max_width() {
-    $('pagewrapper').firstDescendant().setStyle({maxWidth:document.viewport.getWidth()+'px'});
-  }
-
-  /* Set up note previews that can expand to show the whole note content. */
-  function set_up_note_previews() {
-    var notes = deezy_layout.notes;
-    notes.expand = function() {
-      notes.each(function(note) { if (note.expand) note.expand(); });
-    };
-    notes.collapse = function() {
-      notes.each(function(note) { if (note.collapse) note.collapse(); });
-    };
-
-    notes.each(function(note) {
-      var inner = note.innerHTML;
-      var len = 24;
-      if (inner.length > len) {
-        var first = new Element('span').update(inner.substring(0,len));
-        var last = new Element('span').update(inner.substring(len));
-        var link = new Element('a',{href:'#'}).update('&raquo;');
-        link.setStyle({fontSize:'14px',paddingLeft:'5px'});
-        link.observe('click',function(evt) {
-          evt.stop(); // Don't follow link
-          note.toggle();
-        });
-        note.update(first);
-        note.appendChild(last);
-        note.appendChild(link);
-        note.toggle = function() {
-          last.toggle();
-          note.toggleClassName('note_expanded');
-          note.toggleClassName('note_collapsed');
-          link.update(last.visible() ? '&laquo;' : '&raquo;');
-        }
-        note.expand = function() {
-          last.show();
-          note.addClassName('note_expanded');
-          note.removeClassName('note_collapsed');
-          link.update('&laquo;');
-        }
-        note.collapse = function() {
-          last.hide();
-          note.removeClassName('note_expanded');
-          note.addClassName('note_collapsed');
-          link.update('&raquo;');
-        }
-        note.collapse();
-      }
-    });
-    add_collapse_expand_all_notes_links();
-  }
-
-  function add_collapse_expand_all_notes_links() {
-      var th = $('notes_th');
-      var links = new Element('span');
-      links.setStyle({fontSize:'16px',padding:'0 5px'});
-      var expand_link = new Element('a',{href:'#',title:'Expand all notes'}).update('&raquo;');
-      var collapse_link = new Element('a',{href:'#',title:'Collapse all notes'}).update('&laquo;');
-      expand_link.observe('click',function(evt) {
-        evt.stop(); // Don't follow link
-        deezy_layout.notes.expand();
-      });
-      collapse_link.observe('click',function(evt) {
-        evt.stop(); // Don't follow link
-        deezy_layout.notes.collapse();
-      });
-      links.appendChild(expand_link);
-      links.appendChild(new Element('span').update('|').setStyle({fontSize:'14px',padding:'0 3px'}));
-      links.appendChild(collapse_link);
-      th.appendChild(links);
-
-  }
-
-  /* When you click the th for a column on a sortable table, re-colorize the
-   * rows. */
-  function add_colorize_odd_rows() {
-    colorize_odd_rows();
-    var ths = $$('.sortable th'); 
-    ths.each(function(th) {
-      th.observe('click',colorize_odd_rows);
-    });
-  }
-
-  /* Colorize the odd rows */
-  function colorize_odd_rows() {
-    $$('.alt_rows tbody tr:nth-child(odd)').each(function(tr) { tr.addClassName('odd'); });
-    $$('.alt_rows tbody tr:nth-child(even)').each(function(tr) { tr.removeClassName('odd'); });
-  }
-}();
-
 /* Update the form layout and set up the UI */
 var deezy_form_layout = function() {
-
-  var form,scope,mac,ip,itgid,hostname,uid,enabled,notes,submit,dynamic_toggle_button;
-
-  return {
-    init:function() {
-
-      $$('form').each(function(f) { if (/(_entry|entry_)/.match(f.id)) form = f; });
-
-      if (!form) return;
-
-      form.setStyle({'float':'left'});
-
-      scope    = $('entry_scope');
-      mac      = $('entry_mac');
-      ip       = $('entry_ip');
-      itgid    = $('entry_itgid');
-      hostname = $('entry_hostname');
-      uid      = $('entry_uid');
-      enabled  = $('entry_enabled');
-      notes    = $('entry_notes');
-      submit   = $('entry_submit');
-
-      /* Set all the fields to valid by default. */
-      [scope,mac,ip,itgid,hostname,uid,enabled,notes].each(function(field) {
-        field.valid = true;
-      });
-
-      /* Disable submit if necessary whenever we change fields. */
-      [scope,mac,ip,itgid,hostname,uid,enabled,notes].each(function(field) {
-        field.observe('blur',function() {
-          field.value = field.value.strip();
-          submit_toggler();
-        });
-      });
-
-      form.valid = function() {
-        var ret = true;
-        [mac,ip,itgid,hostname,uid].each(function(field) {
-          if (!field.validate()) ret = false;
-        });
-        return ret;
-      }
-
-      form.observe('submit',function(evt) { if (!form.valid()) evt.stop(); });
-
-      /* Add validation to all the fields that need it. */
-      [
-        [mac,is_mac,'Must be a valid MAC address, i.e. 00:11:23:8f:ef:ab'],
-        [ip,is_ip,'Must be a valid ITG IP address, i.e. 128.111.207.200 (<em>Leave <strong>blank</strong> if dynamic.</em>)'],
-        [itgid,is_itgid,'Must be a valid ITG ID, i.e. 064001445'],
-        [hostname,is_hostname,'Must be a valid hostname, i.e. itg061445'],
-        [uid,is_hostname,'Must be a valid uid.']
-        ].each(function(set) {
-        add_validation(set[0],set[1],set[2]);
-      });
-
-      /* Force these fields to lowercase, then re-validate. */
-      [mac,hostname,uid].each(function(field) {
-        field.observe('blur',function() {
-          field.value = field.value.toLowerCase();
-          field.validate();
-        });
-      });
-
-      /* Do various things. See related methods for details */
-      [itgid,hostname].each(function(field) { field.observe('blur',suggest_hostname); });
-      [scope,ip].each(function(field) { field.observe('change',match_ip_to_scope); });
-      normalize_mac();
-      show_ip_picker(form);
-      add_dynamic_ip_checkbox();
-      form.observe('keyup',submit_toggler);
-      ip.observe('change',ip_unavailable_warning);
-      //      add_other_to_scope(); //This will probably never be used.
-      set_up_toggle_buttons();
-      add_dynamic_ip_click_listener();
-    }
-  };
 
   /* private methods */
 
   function add_dynamic_ip_click_listener() {
     var button = $('dynamic_toggle').firstDescendant();
+    console.log(this);
+    console.log(this.toggle_ip);
     button.observe('click',toggle_ip);
     dynamic_toggle_button = $$('#dynamic_toggle button')[0];
   }
@@ -221,8 +18,8 @@ var deezy_form_layout = function() {
       var cbox = null;
       var hbox = null;
       $A(tbutton.getElementsByTagName('input')).each(function(cb) {
-        if (cb.type == 'hidden') hbox = cb;
-        if (cb.type == 'checkbox') cbox = cb;
+        if (cb.type == 'hidden') { hbox = cb; }
+        if (cb.type == 'checkbox') { cbox = cb; }
       });
       var label = tbutton.getElementsByTagName('label')[0];
       var button = new Element('button');
@@ -234,7 +31,7 @@ var deezy_form_layout = function() {
       p.appendChild(on);
       p.appendChild(off);
       p.appendChild(label);
-      if (hbox) p.appendChild(hbox);
+      if (hbox) { p.appendChild(hbox); }
       p.appendChild(cbox);
       tbutton.update(button);
       on.hide();
@@ -246,17 +43,17 @@ var deezy_form_layout = function() {
         on.show();
         off.hide();
         cbox.checked = true;
-      }
+      };
       button.off = function() {
         off.show();
         on.hide();
         cbox.checked = false;
-      }
+      };
       button.toggle = function() {
         off.toggle();
         on.toggle();
         cbox.checked = !cbox.checked;
-      }
+      };
 
       button.observe('click',function(evt) {
         evt.stop();
@@ -269,7 +66,7 @@ var deezy_form_layout = function() {
    * prevent it. */
   function ip_unavailable_warning() {
     var lis = $$('#ip_picker li');
-    var ips = new Array();
+    var ips = [];
     lis.each(function(li) {
       ips.push(li.innerHTML);
     });
@@ -298,9 +95,9 @@ var deezy_form_layout = function() {
 
   /* Disable the IP field and make sure the Dynamic IP checkbox is checked. */
   function toggle_ip(evt) {
-    if (evt) evt.stop();
-    if (ip.disabled) enable_ip();
-    else disable_ip();
+    if (evt) { evt.stop(); }
+    if (ip.disabled) { enable_ip(); }
+    else { disable_ip(); }
   }
 
   function disable_ip() {
@@ -313,7 +110,7 @@ var deezy_form_layout = function() {
 
   function enable_ip() {
     var invis_ip = $('invis_ip');
-    if (invis_ip) Element.remove(invis_ip);
+    if (invis_ip) { Element.remove(invis_ip); }
     ip.removeClassName('field_disabled');
     ip.disabled = false;
   }
@@ -348,26 +145,26 @@ var deezy_form_layout = function() {
     ul.update('Loading...'); //clear the current contents
     picker.show();
     var free_ips;
-    new Ajax.Request('/freeips.json', {
+    var req = new Ajax.Request('/freeips.json', {
       method:'get',
       onSuccess:function(transport) {
         ul.update();
         var free_ips = transport.responseText.evalJSON().free_ips;
         var list;
         free_ips.scopes.each(function(s) {
-          if (s.id == scope.value) list = s; //find the appropriate list by scope
+          if (s.id == scope.value) { list = s; } //find the appropriate list by scope
         });
         list.ips.each(function(i) {
           var li = new Element('li').update(i.ip);
           li.setStyle({cursor:'pointer'});
           li.observe('click',function() {
-            if (dynamic_toggle_button) dynamic_toggle_button.off();
+            if (dynamic_toggle_button) { dynamic_toggle_button.off(); }
             enable_ip();
             ip.value = i.ip; //set the IP field to match the clicked IP
             ip.validate();
-            var endcolor = deezy_layout.rgb2hex(picker.getStyle('background-color'));
-            new Effect.Highlight(li,{endcolor:endcolor});
-            new Effect.Highlight(ip);
+            var endcolor = rgb2hex(picker.getStyle('background-color'));
+            var hili = new Effect.Highlight(li,{endcolor:endcolor});
+            var hiip = new Effect.Highlight(ip);
           });
           ul.appendChild(li);
         });
@@ -388,8 +185,8 @@ var deezy_form_layout = function() {
   /* Update the ip field so that it matches whichever scope is selected */
   function match_ip_to_scope() {
     var real_scope;
-    $$('select').each(function(i) { if (i.name == scope.name) real_scope = i; });
-    $$('input').each(function(i) { if (i.name == scope.name) real_scope = i; });
+    $$('select').each(function(i) { if (i.name == scope.name) { real_scope = i; } });
+    $$('input').each(function(i) { if (i.name == scope.name) { real_scope = i; } });
     ip.value = ip.value.replace(/^128\.111\.(20[67]|186)\.([0-9]{0,3})$/,'128.111.'+real_scope.value+'.$2');
   }
 
@@ -397,7 +194,7 @@ var deezy_form_layout = function() {
   function suggest_hostname() {
     if (hostname.value.blank() && itgid.valid) {
       var v = itgid.value;
-      hostname.value = 'itg'+v.substring(0,2)+v.substring(5)
+      hostname.value = 'itg'+v.substring(0,2)+v.substring(5);
       hostname.validate();
     }
   }
@@ -460,20 +257,20 @@ var deezy_form_layout = function() {
 
   /* Is it a valid ITG ID? Like 988000132 or 064001223 */
   function is_itgid(i) {
-    var i = typeof(i) == 'object' ? i.value : i;
-    return /^[0-9]{2}[48]00[0-9]{4}$/.match(i);
+    var j = typeof(i) == 'object' ? i.value : i;
+    return (/^[0-9]{2}[48]00[0-9]{4}$/).match(j);
   }
 
   /* Valid ITG IP address? In 128.111.206.0/23 or 128.111.186.0/24. MAY BE BLANK! */
   function is_ip(i) {
-    var i = typeof(i) == 'object' ? i.value : i;
-    return /^128.111.(20[67]|186).([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/.match(i) || i.blank();
+    var j = typeof(i) == 'object' ? i.value : i;
+    return (/^128.111.(20[67]|186).([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/).match(j) || j.blank();
   }
 
   /* Valid MAC address? i.e. 00:12:34:ab:cd:9f */
   function is_mac(m) {
-    var m = typeof(m) == 'object' ? m.value : m;
-    return /^[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}$/.match(m); 
+    var n = typeof(m) == 'object' ? m.value : m;
+    return (/^[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}$/).match(n); 
   }
 
   /* Valid hostname? Between 1-63 characters, only lowercase letters, numbers,
@@ -481,11 +278,221 @@ var deezy_form_layout = function() {
    * not ok. harold-maude ok. haroldmaude- not ok.
    * (This validation also works for usernames (aka uid).)*/
   function is_hostname(h) {
-    var h = typeof(h) == 'object' ? h.value : h;
-    return /^[0-9a-z]([0-9a-z-]{0,61}[0-9a-z]|[0-9a-z])$/.match(h);
+    var i = typeof(h) == 'object' ? h.value : h;
+    return (/^[0-9a-z]([0-9a-z\-]{0,61}[0-9a-z]|[0-9a-z])$/).match(i);
   }
 
+  function rgb2hex(rgb) {
+    var m = /rgb\(([0-9]{1,3}),\s*([0-9]{1,3}),\s*([0-9]{1,3})/.exec(rgb);
+    var hex = '#' + (m[1]*1).toString(16) + (m[2]*1).toString(16) + (m[3]*1).toString(16);
+    return hex;
+  } 
+
+  var form,scope,mac,ip,itgid,hostname,uid,enabled,notes,submit,dynamic_toggle_button;
+
+  return {
+    init:function() {
+
+      $$('form').each(function(f) { if (/(_entry|entry_)/.match(f.id)) { form = f; } });
+
+      if (!form) { return; }
+
+      form.setStyle({'float':'left'});
+
+      scope    = $('entry_scope');
+      mac      = $('entry_mac');
+      ip       = $('entry_ip');
+      itgid    = $('entry_itgid');
+      hostname = $('entry_hostname');
+      uid      = $('entry_uid');
+      enabled  = $('entry_enabled');
+      notes    = $('entry_notes');
+      submit   = $('entry_submit');
+
+      /* Set all the fields to valid by default. */
+      [scope,mac,ip,itgid,hostname,uid,enabled,notes].each(function(field) {
+        field.valid = true;
+      });
+
+      /* Disable submit if necessary whenever we change fields. */
+      [scope,mac,ip,itgid,hostname,uid,enabled,notes].each(function(field) {
+        field.observe('blur',function() {
+          field.value = field.value.strip();
+          submit_toggler();
+        });
+      });
+
+      form.valid = function() {
+        var ret = true;
+        [mac,ip,itgid,hostname,uid].each(function(field) {
+          if (!field.validate()) { ret = false; }
+        });
+        return ret;
+      };
+
+      form.observe('submit',function(evt) { if (!form.valid()) { evt.stop(); } });
+
+      /* Add validation to all the fields that need it. */
+      [
+        [mac,is_mac,'Must be a valid MAC address, i.e. 00:11:23:8f:ef:ab'],
+        [ip,is_ip,'Must be a valid ITG IP address, i.e. 128.111.207.200 (<em>Leave <strong>blank</strong> if dynamic.</em>)'],
+        [itgid,is_itgid,'Must be a valid ITG ID, i.e. 064001445'],
+        [hostname,is_hostname,'Must be a valid hostname, i.e. itg061445'],
+        [uid,is_hostname,'Must be a valid uid.']
+        ].each(function(set) {
+        add_validation(set[0],set[1],set[2]);
+      });
+
+      /* Force these fields to lowercase, then re-validate. */
+      [mac,hostname,uid].each(function(field) {
+        field.observe('blur',function() {
+          field.value = field.value.toLowerCase();
+          field.validate();
+        });
+      });
+
+      /* Do various things. See related methods for details */
+      [itgid,hostname].each(function(field) { field.observe('blur',suggest_hostname); });
+      [scope,ip].each(function(field) { field.observe('change',match_ip_to_scope); });
+      normalize_mac();
+      show_ip_picker(form);
+      add_dynamic_ip_checkbox();
+      form.observe('keyup',submit_toggler);
+      ip.observe('change',ip_unavailable_warning);
+      //      add_other_to_scope(); //This will probably never be used.
+      set_up_toggle_buttons();
+      add_dynamic_ip_click_listener();
+    }
+  };
+
 }();
+
+/* Change layout, style, and UI for savvy browsers. */
+var deezy_layout = function() {
+
+  /* private methods */
+
+  /* Float the page so it uses automatic width and center it */
+  function float_and_center_page() {
+    var inner = new Element('div').update($('header'));
+    inner.appendChild($('content'));
+    inner.appendChild($('footer'));
+    inner.setStyle({position:'relative',left:'-50%'});
+    var outer = new Element('div',{id:'pagewrapper'}).update(inner).setStyle({'float':'left',position:'relative',left:'50%'});
+    $$('body')[0].update(outer).setStyle({overflowX:'hidden'});
+    Event.observe(window,'resize',set_page_max_width);
+    set_page_max_width();
+  }
+
+  /* Set maximum width of the page so it doesn't overflow the viewport */
+  function set_page_max_width() {
+    $('pagewrapper').firstDescendant().setStyle({maxWidth:document.viewport.getWidth()+'px'});
+  }
+
+  /* Set up note previews that can expand to show the whole note content. */
+  function set_up_note_previews() {
+    var notes = deezy_layout.notes;
+    notes.expand = function() {
+      notes.each(function(note) { if (note.expand) { note.expand(); } });
+    };
+    notes.collapse = function() {
+      notes.each(function(note) { if (note.collapse) { note.collapse(); } });
+    };
+
+    notes.each(function(note) {
+      var inner = note.innerHTML;
+      var len = 24;
+      if (inner.length > len) {
+        var first = new Element('span').update(inner.substring(0,len));
+        var last = new Element('span').update(inner.substring(len));
+        var link = new Element('a',{href:'#'}).update('&raquo;');
+        link.setStyle({fontSize:'14px',paddingLeft:'5px'});
+        link.observe('click',function(evt) {
+          evt.stop(); // Don't follow link
+          note.toggle();
+        });
+        note.update(first);
+        note.appendChild(last);
+        note.appendChild(link);
+        note.toggle = function() {
+          last.toggle();
+          note.toggleClassName('note_expanded');
+          note.toggleClassName('note_collapsed');
+          link.update(last.visible() ? '&laquo;' : '&raquo;');
+        };
+        note.expand = function() {
+          last.show();
+          note.addClassName('note_expanded');
+          note.removeClassName('note_collapsed');
+          link.update('&laquo;');
+        };
+        note.collapse = function() {
+          last.hide();
+          note.removeClassName('note_expanded');
+          note.addClassName('note_collapsed');
+          link.update('&raquo;');
+        };
+        note.collapse();
+      }
+    });
+    add_collapse_expand_all_notes_links();
+  }
+
+  function add_collapse_expand_all_notes_links() {
+      var th = $('notes_th');
+      var links = new Element('span');
+      links.setStyle({fontSize:'16px',padding:'0 5px'});
+      var expand_link = new Element('a',{href:'#',title:'Expand all notes'}).update('&raquo;');
+      var collapse_link = new Element('a',{href:'#',title:'Collapse all notes'}).update('&laquo;');
+      expand_link.observe('click',function(evt) {
+        evt.stop(); // Don't follow link
+        deezy_layout.notes.expand();
+      });
+      collapse_link.observe('click',function(evt) {
+        evt.stop(); // Don't follow link
+        deezy_layout.notes.collapse();
+      });
+      links.appendChild(expand_link);
+      links.appendChild(new Element('span').update('|').setStyle({fontSize:'14px',padding:'0 3px'}));
+      links.appendChild(collapse_link);
+      th.appendChild(links);
+
+  }
+
+  /* When you click the th for a column on a sortable table, re-colorize the
+   * rows. */
+  function add_colorize_odd_rows() {
+    colorize_odd_rows();
+    var ths = $$('.sortable th'); 
+    ths.each(function(th) {
+      th.observe('click',colorize_odd_rows);
+    });
+  }
+
+  /* Colorize the odd rows */
+  function colorize_odd_rows() {
+    $$('.alt_rows tbody tr:nth-child(odd)').each(function(tr) { tr.addClassName('odd'); });
+    $$('.alt_rows tbody tr:nth-child(even)').each(function(tr) { tr.removeClassName('odd'); });
+  }
+  
+  return {
+    notes:null,
+    init:function() {
+      float_and_center_page();
+      deezy_layout.notes = $$('.notes_col');
+      add_colorize_odd_rows();
+
+      /* If there's an 'entries' table, set up expandable note previews. */
+      if ($('entries')) { set_up_note_previews(); }
+
+      deezy_form_layout.init(); // Do the form layout
+    }
+  };
+
+
+  
+}();
+
 
 Event.observe(window,'load',function() {
   deezy_layout.init();
