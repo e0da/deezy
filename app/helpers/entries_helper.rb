@@ -140,14 +140,12 @@ module EntriesHelper
 
     out << "group {\n"
     out << "    filename \"wired\";\n"
-    ['206','207','186'].each do |scope|
-      Entry.find_all_by_scope(scope).each do |entry|
-        if entry.enabled # Only print the entry if it's enabled
-          out << "        host  #{entry.hostname}  { hardware ethernet #{entry.mac}; "
-          out << "fixed-address #{entry.ip}; " unless entry.ip.blank? # Only print the fixed address if an IP is specified.
-          out << "}\n"
-        end
-      end
+    debugger
+    Entry.find_all_by_enabled(true).each do |entry|
+      debugger
+      out << "        host  #{entry.hostname}  { hardware ethernet #{entry.mac}; "
+      out << "fixed-address #{entry.ip}; " unless entry.ip.blank? # Only print the fixed address if an IP is specified.
+      out << "}\n"
     end
     out << "}\n\n"
 
