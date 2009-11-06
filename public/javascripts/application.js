@@ -1,3 +1,6 @@
+/* JSLint note: The following variables are pre-defined by Prototype, DOM, or JavaScript itself */
+/* $,$$,$A,Element,Event,alert,Ajax,Effect,window,document */
+
 /* Update the form layout and set up the UI */
 var deezy_form_layout = function() {
 
