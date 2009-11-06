@@ -3,6 +3,11 @@
   <head>
     <title>Deezy</title>
     <%= stylesheet_link_tag 'application' %>
+    <% if RAILS_ENV == 'production' %>
+      <%= javascript_include_tag 'all_min' %>
+    <% else %>
+      <%= javascript_include_tag 'prototype','effects','sorttable','application' %>
+    <% end %>
   </head>
   <body>
     <div id="header">
@@ -18,15 +23,10 @@
     </div>
     <div id="footer">
       <p>
-        Copyright &copy; <span id="copyrightyear">2009</span> by the <a href="http://www.universityofcalifornia.edu/regents">Regents of the University of California</a><br />
-        <a href="http://education.ucsb.edu">The Gevirtz Graduate School of Education</a>, 
-        <a href="http://www.ucsb.edu">University of California, Santa Barbara</a>
+      Copyright &copy; <span id="copyrightyear">2009</span> by the <a href="http://www.universityofcalifornia.edu/regents">Regents of the University of California</a><br />
+      <a href="http://education.ucsb.edu">The Gevirtz Graduate School of Education</a>, 
+      <a href="http://www.ucsb.edu">University of California, Santa Barbara</a>
       </p>
     </div>
-    <% if RAILS_ENV == 'production' %>
-      <%= javascript_include_tag 'all_min' %>
-    <% else %>
-      <%= javascript_include_tag 'prototype','effects','sorttable','application' %>
-    <% end %>
   </body>
 </html>
