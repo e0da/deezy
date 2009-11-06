@@ -23,9 +23,10 @@
         <a href="http://www.ucsb.edu">University of California, Santa Barbara</a>
       </p>
     </div>
-    <%= javascript_include_tag 'prototype' %>
-    <%= javascript_include_tag 'effects' %>
-    <%= javascript_include_tag 'sorttable' %>
-    <%= javascript_include_tag 'application' %>
+    <% if RAILS_ENV == 'production' %>
+      <%= javascript_include_tag 'all_min' %>
+    <% else %>
+      <%= javascript_include_tag 'prototype','effects','sorttable','application' %>
+    <% end %>
   </body>
 </html>
