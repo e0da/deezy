@@ -140,9 +140,7 @@ module EntriesHelper
 
     out << "group {\n"
     out << "    filename \"wired\";\n"
-    debugger
     Entry.find_all_by_enabled(true).each do |entry|
-      debugger
       out << "        host  #{entry.hostname}  { hardware ethernet #{entry.mac}; "
       out << "fixed-address #{entry.ip}; " unless entry.ip.blank? # Only print the fixed address if an IP is specified.
       out << "}\n"
