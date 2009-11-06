@@ -1,5 +1,5 @@
 class EntriesController < ApplicationController
-  before_filter :authenticate, :except => [:index, :show, :dhcpd]
+
   # GET /entries
   # GET /entries.xml
   def index
@@ -97,12 +97,4 @@ class EntriesController < ApplicationController
     render :layout => false
   end
 
-  private
-
-  def authenticate
-    authenticate_or_request_with_http_basic do |name, password|
-      itghelppasswd = File.open(File.join(RAILS_ROOT,'config','itghelppasswd')).gets.chomp
-      name == 'itghelp' && password == itghelppasswd
-    end
-  end
 end
