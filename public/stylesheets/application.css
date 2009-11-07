@@ -236,7 +236,7 @@ small {
 
 .sortable th {
   text-align:center;
-  cursor:pointer;
+/*  cursor:pointer; */
 }
 
 .invisible {
