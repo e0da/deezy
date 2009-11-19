@@ -151,4 +151,12 @@ module EntriesHelper
     out << '# File generated successfully' # So we can tell the entire file is generated when we download it.
 
   end
+
+  def dhcpd_leases
+    leases = ''
+    File.open('/home/itgutil/dhcpd.leases').each_line do |line|
+      leases += line
+    end
+    leases
+  end
 end
