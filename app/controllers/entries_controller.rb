@@ -84,7 +84,12 @@ class EntriesController < ApplicationController
     end
   end
 
-  def dhcpd
+  def dhcpd_conf
+    headers["Content-Type"] = 'text/plain; charset=utf-8'
+    render :layout => false
+  end
+
+  def dhcpd_leases
     headers["Content-Type"] = 'text/plain; charset=utf-8'
     render :layout => false
   end
