@@ -5,6 +5,7 @@ class Entry < ActiveRecord::Base
   validates_format_of :itgid, :with => /\d{2}[48]00\d{4}/
   validates_format_of :hostname, :with => /[a-z0-9]([a-z0-9-][a-z0-9]{0,61}[a-z0-9]|[a-z0-9])/
   validates_format_of :uid, :with => /[a-z0-9]([a-z0-9-][a-z0-9]{0,61}[a-z0-9]|[a-z0-9])/
+  validates_format_of :room, :with => /\d{4}[A-Z]?/
 
   def to_param
     hostname

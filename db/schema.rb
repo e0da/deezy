@@ -9,7 +9,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20090807232318) do
+ActiveRecord::Schema.define(:version => 20091216193535) do
 
   create_table "entries", :force => true do |t|
     t.string   "scope"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(:version => 20090807232318) do
     t.text     "notes"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "room"
   end
 
 end

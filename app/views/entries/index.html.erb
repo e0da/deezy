@@ -5,6 +5,7 @@
     <th>MAC</th>
     <th>IP</th>
     <th>ITG ID</th>
+    <th>Room</th>
     <th>hostname</th>
     <th>UID</th>
     <th id="notes_th">Notes</th>
@@ -25,14 +26,12 @@
       <td class="mono"><%=h entry.mac %></td>
       <td class="mono"><%=h entry.ip %></td>
       <td class="mono"><%=h entry.itgid %></td>
+      <td class="mono"><%=h entry.room %></td>
       <td class="mono"><%=h entry.hostname %></td>
       <td class="mono"><%=h entry.uid %></td>
       <td class="notes_col"><%=h entry.notes %></td>
       <td class="show_edit">
         <%= link_to image_tag('show.png', :style => 'margin-top:2px;'), entry, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px;'), edit_entry_path(entry), :title => 'Edit' %>
-
-        <%# link_to image_tag('magnifyingglass.png'), entry %>
-        <%# link_to image_tag('pencil.png'), edit_entry_path(entry) %>
       </td>
     </tr>
   <% end %>
