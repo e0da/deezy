@@ -5,10 +5,10 @@
 var deezy_form_layout = function() {
 
   /* member variables */
-  var form,scope,mac,ip,itgid,hostname,uid,enabled,notes,submit,dynamic_toggle_button;
+  var form,scope,mac,ip,itgid,room,hostname,uid,enabled,notes,submit,dynamic_toggle_button;
 
   /* private methods */ 
-  var add_dynamic_ip_click_listener,set_up_toggle_buttons,ip_unavailable_warning,add_dynamic_ip_checkbox,toggle_ip,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_ip,is_mac,is_hostname,rgb2hex;
+  var add_dynamic_ip_click_listener,set_up_toggle_buttons,ip_unavailable_warning,add_dynamic_ip_checkbox,toggle_ip,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname,rgb2hex;
 
   add_dynamic_ip_click_listener = function() {
     var button = $('dynamic_toggle').firstDescendant();
@@ -189,6 +189,14 @@ var deezy_form_layout = function() {
     });
   };
 
+  /* Normalize the room number */
+  normalize_room = function() {
+    room.observe('blur',function() {
+      room.value = room.value.match(/[0-9]{4}[a-zA-Z]?/)[0].toUpperCase();
+      room.validate();
+    });
+  };
+
   /* Update the ip field so that it matches whichever scope is selected */
   match_ip_to_scope = function() {
     var real_scope;
@@ -208,7 +216,7 @@ var deezy_form_layout = function() {
 
   /* Toggle the submit.disabled if necessary */
   submit_toggler = function() {
-    var disabled = !(mac.valid && ip.valid && itgid.valid && hostname.valid && uid.valid);
+    var disabled = !(mac.valid && ip.valid && itgid.valid && room.valid && hostname.valid && uid.valid);
     submit.disabled = disabled;
   };
 
@@ -268,6 +276,12 @@ var deezy_form_layout = function() {
     return (/^[0-9]{2}[48]00[0-9]{4}$/).match(j);
   };
 
+  /* Is it a valid room? Like 4203G or 1142 */
+  is_room = function(i) {
+    var j = typeof(i) == 'object' ? i.value : i;
+    return (/^[0-9]{4}[A-Z]?$/).match(j);
+  };
+
   /* Valid ITG IP address? In 128.111.206.0/23 or 128.111.186.0/24. MAY BE BLANK! */
   is_ip = function(i) {
     var j = typeof(i) == 'object' ? i.value : i;
@@ -308,6 +322,7 @@ var deezy_form_layout = function() {
       mac      = $('entry_mac');
       ip       = $('entry_ip');
       itgid    = $('entry_itgid');
+      room     = $('entry_room');
       hostname = $('entry_hostname');
       uid      = $('entry_uid');
       enabled  = $('entry_enabled');
@@ -315,12 +330,12 @@ var deezy_form_layout = function() {
       submit   = $('entry_submit');
 
       /* Set all the fields to valid by default. */
-      [scope,mac,ip,itgid,hostname,uid,enabled,notes].each(function(field) {
+      [scope,mac,ip,itgid,room,hostname,uid,enabled,notes].each(function(field) {
         field.valid = true;
       });
 
       /* Disable submit if necessary whenever we change fields. */
-      [scope,mac,ip,itgid,hostname,uid,enabled,notes].each(function(field) {
+      [scope,mac,ip,itgid,room,hostname,uid,enabled,notes].each(function(field) {
         field.observe('blur',function() {
           field.value = field.value.strip();
           submit_toggler();
@@ -329,7 +344,7 @@ var deezy_form_layout = function() {
 
       form.valid = function() {
         var ret = true;
-        [mac,ip,itgid,hostname,uid].each(function(field) {
+        [mac,ip,itgid,room,hostname,uid].each(function(field) {
           if (!field.validate()) { ret = false; }
         });
         return ret;
@@ -342,6 +357,7 @@ var deezy_form_layout = function() {
         [mac,is_mac,'Must be a valid MAC address, i.e. 00:11:23:8f:ef:ab'],
         [ip,is_ip,'Must be a valid ITG IP address, i.e. 128.111.207.200 (<em>Leave <strong>blank</strong> if dynamic.</em>)'],
         [itgid,is_itgid,'Must be a valid ITG ID, i.e. 064001445'],
+        [room,is_room,'Must be a valid room number, i.e. 4203G or 1142'],
         [hostname,is_hostname,'Must be a valid hostname, i.e. itg061445'],
         [uid,is_hostname,'Must be a valid uid.']
         ].each(function(set) {
@@ -360,6 +376,7 @@ var deezy_form_layout = function() {
       [itgid,hostname].each(function(field) { field.observe('blur',suggest_hostname); });
       [scope,ip].each(function(field) { field.observe('change',match_ip_to_scope); });
       normalize_mac();
+      normalize_room();
       show_ip_picker(form);
       add_dynamic_ip_checkbox();
       form.observe('keyup',submit_toggler);
