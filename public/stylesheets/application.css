@@ -2,15 +2,7 @@
 /* Source: http://meyerweb.com/eric/tools/css/reset/ */
 /* v1.0 | 20080212                                   */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, font, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td {
   margin: 0;
   padding: 0;
   border: 0;
@@ -135,10 +127,12 @@ h1 {
 dl {
   clear:both;
 }
+
 dt {
   font-weight:bold;
   float:left;
 }
+
 dd {
   float:left;
 }
@@ -208,8 +202,20 @@ input[type=text], textarea {
   line-height:14px;
 }
 
-.odd {
+tr {
+  border-bottom:1px solid #999;
+}
+
+tbody tr.odd {
   background: #e0efe0;
+}
+
+th a, th a:visited, .pagination a:visited {
+  color:#009;
+}
+
+th a:hover {
+  color:#55f;
 }
 
 .mono {
@@ -249,11 +255,6 @@ small {
   -moz-border-radius:5px;
   -webkit-border-radius:5px;
   background:#ff9;
-}
-
-.sortable th {
-  text-align:center;
-/*  cursor:pointer; */
 }
 
 .invisible {
@@ -296,9 +297,6 @@ label {
   background: #eee !important;
   border:#999;
   color:#999;
-}
-
-.notes_col {
 }
 
 .note_expanded {
@@ -387,4 +385,14 @@ label {
 
 .show_edit {
   min-width:48px;
+}
+
+.pagination {
+  text-align:right;
+  padding-top:10px;
+}
+
+#entries td {
+  line-height:1em;
+  vertical-align:middle;
 }

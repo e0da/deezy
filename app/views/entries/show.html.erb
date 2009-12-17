@@ -1,12 +1,12 @@
 <table class="dhcp_table alt_rows">
   <tbody>
-    <tr><th>Scope</th><td class="mono"><%=h @entry.scope %></td></tr>
-    <tr><th>MAC</th><td class="mono"><%=h @entry.mac %></td></tr>
-    <tr><th>IP</th><td class="mono"><%=h @entry.ip %></td></tr>
-    <tr><th>ITG ID</th><td class="mono"><%=h @entry.itgid %></td></tr>
-    <tr><th>Room</th><td class="mono"><%=h @entry.room %></td></tr>
-    <tr><th>hostname</th><td class="mono"><%=h @entry.hostname %></td></tr>
-    <tr><th>UID</th><td class="mono"><%=h @entry.uid %></td></tr>
+    <tr><th>Scope</th><td><%=h @entry.scope %></td></tr>
+    <tr><th>MAC</th><td><%=h @entry.mac %></td></tr>
+    <tr><th>IP</th><td><%=h @entry.ip %></td></tr>
+    <tr><th>ITG ID</th><td><%=h @entry.itgid %></td></tr>
+    <tr><th>Room</th><td><%=h @entry.room %></td></tr>
+    <tr><th>hostname</th><td><%=h @entry.hostname %></td></tr>
+    <tr><th>UID</th><td><%=h @entry.uid %></td></tr>
     <tr><th>enabled</th><td>
         <% if @entry.enabled %>
           <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On

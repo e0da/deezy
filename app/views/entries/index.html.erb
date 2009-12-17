@@ -1,38 +1,42 @@
 <table id="entries" class="dhcp_table alt_rows sortable" cellspacing="0">
-  <tr>
-    <th>On</th>
-    <th>Scope</th>
-    <th>MAC</th>
-    <th>IP</th>
-    <th>ITG ID</th>
-    <th>Room</th>
-    <th>hostname</th>
-    <th>UID</th>
-    <th id="notes_th">Notes</th>
-    <th style="min-width:35px"> &nbsp; </th>
-  </tr>
-  <% @entries.each do |entry| %>
+  <thead>
     <tr>
-      <td>
-        <% if entry.enabled %>
-          <span class="invisible">on</span>
-          <%= image_tag 'on.png' %>
-        <% else %>
-          <span class="invisible">off</span>
-          <%= image_tag 'off.png' %>
-        <% end %>
-      </td>
-      <td class="mono"><%=h entry.scope %></td>
-      <td class="mono"><%=h entry.mac %></td>
-      <td class="mono"><%=h entry.ip %></td>
-      <td class="mono"><%=h entry.itgid %></td>
-      <td class="mono"><%=h entry.room %></td>
-      <td class="mono"><%=h entry.hostname %></td>
-      <td class="mono"><%=h entry.uid %></td>
-      <td class="notes_col"><%=h entry.notes %></td>
-      <td class="show_edit">
-        <%= link_to image_tag('show.png', :style => 'margin-top:2px;'), entry, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px;'), edit_entry_path(entry), :title => 'Edit' %>
-      </td>
+      <th><%= order @search, :by => :enabled, :as => 'On' %></th>
+      <th><%= order @search, :by => :mac, :as => 'MAC' %></th>
+      <th><%= order @search, :by => :ip, :as => 'IP' %></th>
+      <th><%= order @search, :by => :itgid, :as => 'ITG ID' %></th>
+      <th><%= order @search, :by => :room %></th>
+      <th><%= order @search, :by => :hostname, :as => 'hostname' %></th>
+      <th><%= order @search, :by => :uid, :as => 'UID' %></th>
+      <th id="notes_th"><%= order @search, :by => :notes %></th>
+      <th style="min-width:35px"> &nbsp; </th>
     </tr>
-  <% end %>
+  </thead>
+  <tbody>
+    <% @entries.each do |entry| %>
+      <tr>
+        <td>
+          <% if entry.enabled %>
+            <span class="invisible">on</span>
+            <%= image_tag 'on.png' %>
+          <% else %>
+            <span class="invisible">off</span>
+            <%= image_tag 'off.png' %>
+          <% end %>
+        </td>
+        <td><%=h entry.mac %></td>
+        <td><%=h entry.ip %></td>
+        <td><%=h entry.itgid %></td>
+        <td><%=h entry.room %></td>
+        <td><%=h entry.hostname %></td>
+        <td><%=h entry.uid %></td>
+        <td class="notes_col"><%=h entry.notes %></td>
+        <td class="show_edit">
+          <%= link_to image_tag('show.png', :style => 'margin-top:2px;'), entry, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px;'), edit_entry_path(entry), :title => 'Edit' %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
 </table>
+
+<%= will_paginate @entries %>
