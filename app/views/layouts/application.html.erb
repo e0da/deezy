@@ -10,24 +10,30 @@
     <% end %>
   </head>
   <body>
-    <div id="header">
-      <h1><a href="/"><%= image_tag 'deezy.png' %></a></h1>
-      <ul>
-        <li><%= link_to 'Show All', '/' %></li>
-        <li><%= link_to 'New Entry', new_entry_path %></li>
-        <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %></li>
-        <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %></li>
-      </ul>
-    </div>
-    <div id="content">
-      <%= yield %>
-    </div>
-    <div id="footer">
-      <p>
-      Copyright &copy; <span id="copyrightyear">2009</span> by the <a href="http://www.universityofcalifornia.edu/regents">Regents of the University of California</a><br />
-      <a href="http://education.ucsb.edu">The Gevirtz Graduate School of Education</a>, 
-      <a href="http://www.ucsb.edu">University of California, Santa Barbara</a>
-      </p>
+    <div id="faco">
+      <div id="facr">
+        <div id="facc">
+          <div id="header">
+            <h1><a href="/"><%= image_tag 'deezy.png' %></a></h1>
+            <ul>
+              <li><%= link_to 'Show All', '/' %></li>
+              <li><%= link_to 'New Entry', new_entry_path %></li>
+              <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %></li>
+              <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %></li>
+            </ul>
+          </div>
+          <div id="content" style="display:block">
+            <%= yield %>
+          </div>
+          <div id="footer">
+            <p>
+            Copyright &copy; <span id="copyrightyear">2009</span> by the <a href="http://www.universityofcalifornia.edu/regents">Regents of the University of California</a><br />
+            <a href="http://education.ucsb.edu">The Gevirtz Graduate School of Education</a>, 
+            <a href="http://www.ucsb.edu">University of California, Santa Barbara</a>
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   </body>
 </html>

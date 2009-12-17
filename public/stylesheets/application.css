@@ -60,6 +60,23 @@ body {
   background:#666;
 }
 
+#faco {
+  position:relative;
+  overflow:hidden;
+}
+
+#facr {
+  float:left;
+  position:relative;
+  left:50%;
+}
+
+#facc {
+  float:left;
+  position:relative;
+  left:-50%;
+}
+
 a {
   text-decoration:none;
   color: #009;

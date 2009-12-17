@@ -393,24 +393,7 @@ var deezy_form_layout = function() {
 var deezy_layout = function() {
 
   /* private methods */ 
-  var float_and_center_page,set_page_max_width,set_up_note_previews,add_collapse_expand_all_notes_links,colorize_odd_rows;
-
-  /* Float the page so it uses automatic width and center it */
-  float_and_center_page = function() {
-    var inner = new Element('div').update($('header'));
-    inner.appendChild($('content'));
-    inner.appendChild($('footer'));
-    inner.setStyle({position:'relative',left:'-50%'});
-    var outer = new Element('div',{id:'pagewrapper'}).update(inner).setStyle({'float':'left',position:'relative',left:'50%'});
-    $$('body')[0].update(outer).setStyle({overflowX:'hidden'});
-    Event.observe(window,'resize',set_page_max_width);
-    set_page_max_width();
-  };
-
-  /* Set maximum width of the page so it doesn't overflow the viewport */
-  set_page_max_width = function() {
-    $('pagewrapper').firstDescendant().setStyle({maxWidth:document.viewport.getWidth()+'px'});
-  };
+  var set_up_note_previews,add_collapse_expand_all_notes_links,colorize_odd_rows;
 
   /* Set up note previews that can expand to show the whole note content. */
   set_up_note_previews = function() {
@@ -491,7 +474,6 @@ var deezy_layout = function() {
   return {
     notes:null,
     init:function() {
-      float_and_center_page();
       deezy_layout.notes = $$('.notes_col');
       colorize_odd_rows();
 
