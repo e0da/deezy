@@ -396,3 +396,7 @@ label {
   line-height:1em;
   vertical-align:middle;
 }
+
+#notes_th {
+  max-width:100%;
+}

@@ -21,7 +21,15 @@
               <li><%= link_to 'New Entry', new_entry_path %></li>
               <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %></li>
               <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %></li>
+              <li>
+
+              <% form_for @search do |f| %>
+                <%= f.text_field :any_like %>
+              <% end %>
+
+              </li>
             </ul>
+
           </div>
           <div id="content" style="display:block">
             <%= yield %>

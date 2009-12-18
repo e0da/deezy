@@ -7,6 +7,10 @@ class Entry < ActiveRecord::Base
   validates_format_of :uid, :with => /[a-z0-9]([a-z0-9-][a-z0-9]{0,61}[a-z0-9]|[a-z0-9])/
   validates_format_of :room, :with => /\d{4}[A-Z]?/
 
+  named_scope :any_like, lambda { |*args|
+    { :conditions => ['mac like ? or ip like ? or itgid like ? or room like ? or hostname like ? or uid like ? or notes like ?', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%'] }
+  }
+
   def to_param
     hostname
   end
