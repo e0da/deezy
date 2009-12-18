@@ -441,7 +441,7 @@ var deezy_layout = function() {
         note.collapse();
       }
     });
-    add_collapse_expand_all_notes_links();
+//    add_collapse_expand_all_notes_links();
   };
 
   add_collapse_expand_all_notes_links = function() {
@@ -478,7 +478,7 @@ var deezy_layout = function() {
       colorize_odd_rows();
 
       /* If there's an 'entries' table, set up expandable note previews. */
-      if ($('entries')) { set_up_note_previews(); }
+//      if ($('entries')) { set_up_note_previews(); }
 
       deezy_form_layout.init(); // Do the form layout
     }

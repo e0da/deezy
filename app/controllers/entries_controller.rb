@@ -15,6 +15,7 @@ class EntriesController < ApplicationController
   # GET /entries/1
   # GET /entries/1.xml
   def show
+    @search = Entry.search params[:search]
     @entry = Entry.find_by_hostname(params[:id])
 
     respond_to do |format|
@@ -26,6 +27,7 @@ class EntriesController < ApplicationController
   # GET /entries/new
   # GET /entries/new.xml
   def new
+    @search = Entry.search params[:search]
     @entry = Entry.new
 
     respond_to do |format|
@@ -36,12 +38,14 @@ class EntriesController < ApplicationController
 
   # GET /entries/1/edit
   def edit
+    @search = Entry.search params[:search]
     @entry = Entry.find_by_hostname(params[:id])
   end
 
   # POST /entries
   # POST /entries.xml
   def create
+    @search = Entry.search params[:search]
     @entry = Entry.new(params[:entry])
 
     respond_to do |format|

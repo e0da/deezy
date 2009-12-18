@@ -193,7 +193,7 @@ input[type=text], textarea {
   margin:auto;
 }
 
-.dhcp_table th {
+#show th {
   text-align:right;
   padding-right:5px;
 }
