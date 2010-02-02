@@ -1,5 +1,13 @@
 module EntriesHelper
 
+  First206 = 6
+  Last206 = 200
+  First207 = 9
+  Last207 = 200
+  First186 = 1
+  Last186 = 100
+  
+
   # Return all free IP addresses as a JSON object
   def free_ips_json
 
@@ -24,15 +32,15 @@ module EntriesHelper
     possible[207] = []
     possible[186] = []
 
-    [*6..200].each do |i|
+    [*First206..Last206].each do |i|
       possible[206] << '128.111.206.'+i.to_s
     end
 
-    [*6..200].each do |i|
+    [*First207..Last207].each do |i|
       possible[207] << '128.111.207.'+i.to_s
     end
 
-    [*1..100].each do |i|
+    [*First186..Last186].each do |i|
       possible[186] << '128.111.186.'+i.to_s
     end
 
@@ -72,7 +80,7 @@ module EntriesHelper
     out << "option domain-name-servers 128.111.207.95,128.111.1.1;\n\n"
 
     # Build the ranges for each scope
-    scopes = [[186,1,100],[206,6,200],[207,9,200]]
+    scopes = [[186,First186,Last186],[206,First206,Last206],[207,First207,Last207]]
     ranges = []
     scopes.each do |scope|
       sub = scope[0]
