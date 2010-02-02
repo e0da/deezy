@@ -72,7 +72,7 @@ module EntriesHelper
     out << "option domain-name-servers 128.111.207.95,128.111.1.1;\n\n"
 
     # Build the ranges for each scope
-    scopes = [[186,1,100],[206,6,200],[207,6,200]]
+    scopes = [[186,1,100],[206,6,200],[207,9,200]]
     ranges = []
     scopes.each do |scope|
       sub = scope[0]
