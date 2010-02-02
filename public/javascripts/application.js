@@ -463,6 +463,12 @@ var deezy_layout = function() {
       links.appendChild(collapse_link);
       th.appendChild(links);
 
+      /* Add a listener to expand when user presses a "find" shortcut */
+      Event.observe(document,'keydown',function(e) {
+        if ( (e.metaKey || e.ctrlKey) && e.keyCode == 70 || e.keyCode == 191) {
+          deezy_layout.notes.expand(); 
+        }
+      });
   };
 
   /* Colorize the odd rows */
