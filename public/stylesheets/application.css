@@ -105,12 +105,13 @@ h1 {
   font-size:18px;
 }
 
-#header h1 {
+header h1 {
   border:none;
   margin:0;
 }
 
-#header, #content, #footer {
+header, #content, footer {
+  display:block;
   margin:10px;
   padding:10px;
   background: #fff;
@@ -120,7 +121,8 @@ h1 {
   overflow:auto;
 }
 
-#header {
+header {
+  display:block;
   padding-bottom:5px;
 }
 
@@ -137,45 +139,46 @@ dd {
   float:left;
 }
 
-#footer {
+footer {
+  display:block;
   font-size:10px;
 }
 
-#footer a {
+footer a {
   color:#555;
 }
 
-#footer a:hover {
+footer a:hover {
   text-decoration:underline;
   color:#050;
 }
 
-#header ul {
+header ul {
   float:left;
   margin-left:20px;
 }
-#header li {
+header li {
   float:left;
   padding-right:15px;
   line-height:28px;
 }
 
-#header li a {
+header li a {
   font-weight:bold;
   color:#009;
   padding:2px 4px;
 }
 
-#header li a:hover {
+header li a:hover {
   color:#55f;
   background:#e0efe0;
 }
 
-#header li a:visited {
+header li a:visited {
   color:#009;
 }
 
-#header h1 {
+header h1 {
   float:left;
 }
 
