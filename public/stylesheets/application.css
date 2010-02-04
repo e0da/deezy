@@ -233,12 +233,13 @@ small {
   font-size:85%;
 }
 
-#entry_fields {
+form.edit_entry {
+  display:block;
   margin:10px;
   background-color:#fff;
 }
 
-#entry_fields p {
+form.edit_entry p {
   margin-bottom: 10px;
 }
 

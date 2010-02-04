@@ -6,33 +6,32 @@
   <meta charset=utf-8>
   <%= stylesheet_link_tag 'application' %>
   <% if RAILS_ENV == 'production' %>
-    <%= javascript_include_tag 'all_min' %>
+  <%= javascript_include_tag 'all_min' %>
   <% else %>
-    <%= javascript_include_tag 'prototype','effects','application' %>
+  <%= javascript_include_tag 'prototype','effects','application' %>
   <% end %>
   <div id=faco>
     <div id=facr>
       <div id=facc>
         <header>
-          <h1><a href=/><%= image_tag 'deezy.png' %></a></h1>
-          <ul>
-            <li><%= link_to 'Show All', '/' %>
-            <li><%= link_to 'New Entry', new_entry_path %>
-            <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %>
-            <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %>
-            <li>
+        <h1><a href=/><%= image_tag 'deezy.png' %></a></h1>
+        <ul>
+          <li><%= link_to 'Show All', '/' %>
+          <li><%= link_to 'New Entry', new_entry_path %>
+          <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %>
+          <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %>
+          <li>
 
-            <% form_for @search do |f| %>
-              <%= f.text_field :any_like %>
-            <% end %>
-          </ul>
+          <% form_for @search do |f| %>
+          <%= f.text_field :any_like %>
+          <% end %>
+        </ul>
 
-          </header>
+        </header>
         <section id=content style=display:block>
-          <%= yield %>
+        <%= yield %>
         </section>
         <footer>
-          <p>
-          Copyright © <span id=copyrightyear>2009</span> by the <a href=http://www.universityofcalifornia.edu/regents>Regents of the University of California</a><br>
-          <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
-          <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
+        <p>Copyright © <span id=copyrightyear>2009</span> by the <a href=http://www.universityofcalifornia.edu/regents>Regents of the University of California</a><br>
+        <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
+        <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
