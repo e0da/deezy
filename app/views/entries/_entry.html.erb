@@ -7,7 +7,7 @@
 <p><%= f.label :room, 'Room' %><br><%= f.text_field :room %>
 <p><%= f.label :hostname, 'hostname' %><br><%= f.text_field :hostname %>
 <p><%= f.label :uid, 'UID' %><br><%= f.text_field :uid %>
-<p><span class="toggle_button"><%= f.label :enabled %><%= f.check_box :enabled, :checked => entry.new_record? ? true : entry.enabled %></span>
+<p><span class=toggle_button><%= f.label :enabled %><%= f.check_box :enabled, :checked => entry.new_record? ? true : entry.enabled %></span>
 <p><%= f.label :notes %><br><%= f.text_area :notes, :rows => 4 %>
-<p><button type="submit" class="save" id="entry_submit"><p><%= image_tag 'button_save.png' %>Save</button>
+<p><button type=submit class=save id=entry_submit><p><%= image_tag 'button_save.png' %>Save</button>
 <% end %>
