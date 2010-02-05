@@ -1,37 +1,35 @@
-<!doctype html>
-<html>
-  <title>Deezy</title>
-  <meta name=description content='DHCP configuration application for The Gevirtz School'>
-  <meta name=author content='Justin Force <justin.force@gmail.com>'>
-  <meta charset=utf-8>
-  <%= stylesheet_link_tag 'application' %>
-  <% if RAILS_ENV == 'production' %>
+<title>Deezy</title>
+<meta name=description content='DHCP configuration application for The Gevirtz School'>
+<meta name=author content='Justin Force <justin.force@gmail.com>'>
+<meta charset=utf-8>
+<%= stylesheet_link_tag 'application' %>
+<% if RAILS_ENV == 'production' %>
   <%= javascript_include_tag 'all_min' %>
-  <% else %>
+<% else %>
   <%= javascript_include_tag 'prototype','effects','application' %>
-  <% end %>
-  <div id=faco>
-    <div id=facr>
-      <div id=facc>
-        <header>
-        <h1><a href=/><%= image_tag 'deezy.png' %></a></h1>
-        <ul>
-          <li><%= link_to 'Show All', '/' %>
-          <li><%= link_to 'New Entry', new_entry_path %>
-          <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %>
-          <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %>
-          <li>
+<% end %>
+<div id=faco>
+  <div id=facr>
+    <div id=facc>
+      <header>
+      <h1><a href=/><%= image_tag 'deezy.png' %></a></h1>
+      <ul>
+        <li><%= link_to 'Show All', '/' %>
+        <li><%= link_to 'New Entry', new_entry_path %>
+        <li><%= link_to 'dhcpd.conf', '/dhcpd.conf' %>
+        <li><%= link_to 'dhcpd.leases', '/dhcpd.leases' %>
+        <li>
 
-          <% form_for @search do |f| %>
+        <% form_for @search do |f| %>
           <%= f.text_field :any_like %>
-          <% end %>
-        </ul>
+        <% end %>
+      </ul>
 
-        </header>
-        <section id=content style=display:block>
-        <%= yield %>
-        </section>
-        <footer>
-        <p>Copyright © <span id=copyrightyear>2009</span> by the <a href=http://www.universityofcalifornia.edu/regents>Regents of the University of California</a><br>
-        <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
-        <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
+      </header>
+      <section id=content style=display:block>
+      <%= yield %>
+      </section>
+      <footer>
+      <p><a rel=SCM title='Deezy on Trac' href=http://fez.education.ucsb.edu/trac/deezy><img src=/images/trac.png style=display:block;float:right></a>Copyright © <span id=copyrightyear>2009</span> by the <a href=http://www.universityofcalifornia.edu/regents>Regents of the University of California</a><br>
+      <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
+      <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
