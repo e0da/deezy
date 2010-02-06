@@ -47,11 +47,9 @@ table {
 /* end CSS Tools: Reset CSS */
 
 body {
-  font-family:Arial,Helvetica,sans-serif;
+  font-family:sans-serif;
   font-size:12px;
-  background-image:url(/images/green-paper.jpg);
-  background-color:#89916c;
-  color:#2b3146;
+  background:#666;
 }
 
 #faco {
@@ -73,15 +71,16 @@ body {
 
 a {
   text-decoration:none;
-  color:#0b4d82;
+  color:#ddd;
+  text-shadow:#000 0 1px 5px;
 }
 
 a:visited {
-  color:#0b4d82;
+  color: #fff;
 }
 
 a:hover {
-  text-decoration:underline;
+  text-shadow:#000 0 1px 5px, #000 0 -1px 5px;
 }
 
 #content {
@@ -91,9 +90,8 @@ a:hover {
 }
 
 h1, h2, h3 {
-  border-bottom:1px solid #2b3146;
+  border-bottom:1px solid #000;
   margin-bottom:5px;
-  color:#0b4d82;
 }
 
 h3 {
@@ -118,12 +116,10 @@ header, #content, footer {
   margin:10px;
   padding:10px;
   background: #fff;
-  border:1px solid #0b4d82;
+  border:1px solid #333;
   -moz-border-radius:5px;
-  -webkit-border-radius:6px;
+  -webkit-border-radius:5px;
   overflow:auto;
-  background:transparent;
-  background-image:url(/images/white-paper.jpg);
 }
 
 header {
@@ -149,9 +145,13 @@ footer {
   font-size:10px;
 }
 
+footer a:hover {
+  text-decoration:underline;
+}
+
 header ul {
   float:left;
-  margin-left:120px;
+  margin-left:20px;
 }
 header li {
   float:left;
@@ -191,10 +191,12 @@ input[type=text], textarea {
   line-height:14px;
 }
 
-tbody tr.odd {
-  background:#d6dbc3;
+tr {
   border-bottom:1px solid #999;
-  border-top:1px solid #999;
+}
+
+tbody tr.odd {
+  background: #e0efe0;
 }
 
 .mono {
@@ -232,6 +234,8 @@ form.edit_entry p {
   border:1px solid #999;
   position:absolute;
   z-index:50;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
   background:#ff9;
 }
 
@@ -242,6 +246,8 @@ form.edit_entry p {
 #errorExplanation {
   border:5px solid #c00;
   background:#fee;
+  -moz-border-radius:5px;
+  -webkit-border-radius:5px;
   margin:10px;
   padding:10px;
 }
@@ -375,33 +381,4 @@ label {
 
 #notes_th {
   max-width:100%;
-}
-
-#ip_picker {
-  min-width:110px;
-  background:#d6dbc3;
-  color:#0b4d82;
-  border:1px solid #0b4d82;
-  padding:5px;
-  float:left;
-  overflow-y:scroll;
-  margin-left:10px;
-}
-
-#deezy_logo {
-  display:block;
-  float:left;
-  position:absolute;
-  left:-10px;
-  top:-24px;
-}
-
-#search_any_like {
-  background:transparent;
-  background-image:url(/images/blue-glass.png);
-  float:right;
-  color:#0b4d82;
-  font-weight:bold;
-  padding:3px;
-  padding-left:25px;
 }

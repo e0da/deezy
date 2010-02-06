@@ -125,16 +125,7 @@ var deezy_form_layout = function() {
     var picker = $('ip_picker');
     if (!picker) {
       picker = new Element('div',{ id:'ip_picker' });
-      picker.setStyle({
-        minWidth:'110px',
-        background:'#e0efe0',
-        border:'1px solid #999',
-        height:form.getHeight()-10+'px',
-        padding:'5px',
-        'float':'left',
-        overflowY:'scroll',
-        marginLeft:'10px'
-      });
+      picker.setStyle({ height:form.getHeight()-10+'px' });
       picker.update(new Element('ul'));
       $('content').appendChild(picker);
       picker.hide();
