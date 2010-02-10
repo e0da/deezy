@@ -191,10 +191,20 @@ input[type=text], textarea {
   line-height:14px;
 }
 
+
+/* Can't just say tbody tr.odd { background:#...; } because there are rendering
+ * glitches when the notes expand/collapse in Gecko and Webkit. */
+
+tbody {
+  border-top:1px solid #999;
+}
+
+tbody tr {
+  border-bottom:1px solid #999;
+}
+
 tbody tr.odd {
   background:#d6dbc3;
-  border-bottom:1px solid #999;
-  border-top:1px solid #999;
 }
 
 .mono {
