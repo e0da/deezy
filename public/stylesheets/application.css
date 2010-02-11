@@ -1,3 +1,4 @@
+/* FIXME: Need to style the labels for and around radio buttons */
 /* CSS Tools: Reset CSS                              */
 /* Source: http://meyerweb.com/eric/tools/css/reset/ */
 /* v1.0 | 20080212                                   */
@@ -275,10 +276,6 @@ input[type=checkbox] {
   line-height:1;
 }
 
-label {
-  cursor: pointer;
-}
-
 .field_disabled {
   background: #eee !important;
   border:#999;
@@ -342,10 +339,15 @@ select {
 }
 
 label {
+  cursor:pointer;
   font-size:14px;
   color: #505050;
   font-weight:bold;
-  vertical-align:bottom;
+  vertical-align:middle;
+}
+
+input[type=radio] {
+  vertical-align:middle;
 }
 
 #dynamic_toggle {

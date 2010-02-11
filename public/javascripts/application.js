@@ -1,3 +1,6 @@
+/* FIXME: Need to refactor a lot of form checks.
+ * FIXME: Need to support new IP address radio button + hidden text field design */
+ *
 /* JSLint note: The following variables are pre-defined by Prototype, DOM, or JavaScript itself */
 /* $,$$,$A,Element,Event,alert,Ajax,Effect,window,document */
 
@@ -5,67 +8,10 @@
 var deezy_form_layout = function() {
 
   /* member variables */
-  var form,scope,mac,ip,itgid,room,hostname,uid,enabled,notes,submit,dynamic_toggle_button;
+  var form,scope,mac,ip,itgid,room,hostname,uid,notes,submit;
 
   /* private methods */ 
-  var add_dynamic_ip_click_listener,set_up_toggle_buttons,ip_unavailable_warning,add_dynamic_ip_checkbox,toggle_ip,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname,rgb2hex;
-
-  add_dynamic_ip_click_listener = function() {
-    var button = $('dynamic_toggle').firstDescendant();
-    button.observe('click',toggle_ip);
-    dynamic_toggle_button = $$('#dynamic_toggle button')[0];
-  };
-
-  set_up_toggle_buttons = function() { 
-    var buttons = $$('.toggle_button');
-    buttons.each(function(tbutton) {
-      tbutton.removeClassName('toggle_button');
-      var cbox = null;
-      var hbox = null;
-      $A(tbutton.getElementsByTagName('input')).each(function(cb) {
-        if (cb.type == 'hidden') { hbox = cb; }
-        if (cb.type == 'checkbox') { cbox = cb; }
-      });
-      var label = tbutton.getElementsByTagName('label')[0];
-      var button = new Element('button');
-      var p = new Element('p');
-      p.setStyle({whiteSpace:'pre'});
-      button.update(p);
-      var on = new Element('img', { src : '/images/on.png' });
-      var off = new Element('img', { src : '/images/off.png' });
-      p.appendChild(on);
-      p.appendChild(off);
-      p.appendChild(label);
-      if (hbox) { p.appendChild(hbox); }
-      p.appendChild(cbox);
-      tbutton.update(button);
-      on.hide();
-      off.hide();
-      cbox.hide();
-      var state = cbox.checked ? on : off;
-      state.toggle();
-      button.on = function() {
-        on.show();
-        off.hide();
-        cbox.checked = true;
-      };
-      button.off = function() {
-        off.show();
-        on.hide();
-        cbox.checked = false;
-      };
-      button.toggle = function() {
-        off.toggle();
-        on.toggle();
-        cbox.checked = !cbox.checked;
-      };
-
-      button.observe('click',function(evt) {
-        evt.stop();
-        button.toggle();
-      });
-    });
-  };
+  var set_up_toggle_buttons,ip_unavailable_warning,toggle_ip,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname,rgb2hex;
 
   /* Warn if the IP set doesn't appear in the list of available IPs, but don't
    * prevent it. */
@@ -78,31 +24,6 @@ var deezy_form_layout = function() {
     if (is_ip(ip) && ips.indexOf(ip.value) == -1 && !ip.value.blank()) {
       alert("WARNING:\n\nThis IP address doesn't seem to be available or is not in the usual range.\n\nOnly use it if you REALLY know what you're doing.");
     }
-  };
-
-  /* Add checkbox for Dynamic IP address. If this is a new entry, use dynamic
-   * by default. */
-  add_dynamic_ip_checkbox = function() {
-    var span = new Element('span',{id:'dynamic_toggle'}).addClassName('toggle_button');
-    var checkbox = new Element('input',{type:'checkbox',id:'dyn_check',name:'dynamic_ip'});
-    var label = new Element('label',{'for':'dyn_check'}).update('Dynamic');
-    var p = ip.parentNode;
-    p.setStyle({'float':'left',marginRight:'5px'});
-    span.update(label);
-    span.appendChild(checkbox);
-    Element.insert(p,{after:span});
-    Element.insert(span,{after:new Element('br',{style:'clear:both'})});
-    if (ip.value.blank()) {
-      $('dyn_check').checked = 'checked';
-      toggle_ip();
-    }
-  };
-
-  /* Disable the IP field and make sure the Dynamic IP checkbox is checked. */
-  toggle_ip = function(evt) {
-    if (evt) { evt.stop(); }
-    if (ip.disabled) { enable_ip(); }
-    else { disable_ip(); }
   };
 
   disable_ip = function() {
@@ -154,7 +75,9 @@ var deezy_form_layout = function() {
           var li = new Element('li').update(i.ip);
           li.setStyle({cursor:'pointer'});
           li.observe('click',function() {
-            if (dynamic_toggle_button) { dynamic_toggle_button.off(); }
+            /* FIXME: Need to set radio button to proper value when an IP is clicked 
+             $('entry_ip_dynamic_false').checked = true;
+             */
             enable_ip();
             ip.value = i.ip; //set the IP field to match the clicked IP
             ip.validate();
@@ -316,17 +239,16 @@ var deezy_form_layout = function() {
       room     = $('entry_room');
       hostname = $('entry_hostname');
       uid      = $('entry_uid');
-      enabled  = $('entry_enabled');
       notes    = $('entry_notes');
       submit   = $('entry_submit');
 
       /* Set all the fields to valid by default. */
-      [scope,mac,ip,itgid,room,hostname,uid,enabled,notes].each(function(field) {
+      [scope,mac,ip,itgid,room,hostname,uid,notes].each(function(field) {
         field.valid = true;
       });
 
       /* Disable submit if necessary whenever we change fields. */
-      [scope,mac,ip,itgid,room,hostname,uid,enabled,notes].each(function(field) {
+      [scope,mac,ip,itgid,room,hostname,uid,notes].each(function(field) {
         field.observe('blur',function() {
           field.value = field.value.strip();
           submit_toggler();
