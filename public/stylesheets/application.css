@@ -112,7 +112,7 @@ header h1 {
   margin:0;
 }
 
-table#entries {
+#entries {
   width:100%;
 }
 
@@ -169,10 +169,6 @@ header h1 {
   float:left;
 }
 
-input[type=text], textarea {
-  border:1px solid #999;
-}
-
 .bad_field {
   background:#fdd;
   border:1px solid #c00 !important;
@@ -192,7 +188,7 @@ tbody {
   border-top:1px solid #999;
 }
 
-tbody tr {
+tr {
   border-bottom:1px solid #999;
 }
 
@@ -310,7 +306,7 @@ button[disabled]:active {
   border-style: outset;
 }
 
-button p img {
+button img {
   margin-top:-4px;
   margin-right:5px;
   vertical-align:middle;
@@ -331,12 +327,16 @@ select {
   color:#505050;
 }
 
-label {
+.new_entry p, .edit_entry p {
   cursor:pointer;
   font-size:14px;
   color: #505050;
   font-weight:bold;
   vertical-align:middle;
+}
+
+input[type=radio] + label {
+  font-size:12px;
 }
 
 input[type=radio] {
