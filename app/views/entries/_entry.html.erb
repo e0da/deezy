@@ -1,4 +1,3 @@
-<%# FIXME: Need to set up radio buttons for IP address %>
 <% form_for(entry) do |f| %>
   <%= f.error_messages %>
   <p><%= f.label :scope %><br><%= select_scope %>
@@ -9,10 +8,10 @@
   <p><%= f.label :hostname, 'hostname' %><br><%= f.text_field :hostname %>
   <p><%= f.label :uid, 'UID' %><br><%= f.text_field :uid %>
   <p>Enabled?<br>
-    <%= f.radio_button :enabled, 'true', :checked => true %>
-    <%= f.label 'enabled_true', 'Enabled' %><br>
-    <%= f.radio_button :enabled, 'false' %>
-    <%= f.label 'enabled_false', 'Disabled' %> 
+  <%= f.radio_button :enabled, 'true', :checked => true %>
+  <%= f.label 'enabled_true', 'Enabled' %><br>
+  <%= f.radio_button :enabled, 'false' %>
+  <%= f.label 'enabled_false', 'Disabled' %> 
   <p><%= f.label :notes %><br><%= f.text_area :notes, :rows => 4 %>
   <p><button type=submit class=save id=entry_submit><p><%= image_tag 'button_save.png' %>Save</button></p>
 <% end %>

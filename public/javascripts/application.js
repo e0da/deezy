@@ -1,17 +1,16 @@
-/* FIXME: Need to refactor a lot of form checks.
+/* FIXME: Need to refactor a lot of form checks
  * FIXME: Need to support new IP address radio button + hidden text field design */
- *
-/* JSLint note: The following variables are pre-defined by Prototype, DOM, or JavaScript itself */
-/* $,$$,$A,Element,Event,alert,Ajax,Effect,window,document */
+
+/*global $,$$,$A,Element,Event,alert,Ajax,Effect,window,document */
 
 /* Update the form layout and set up the UI */
 var deezy_form_layout = function() {
 
-  /* member variables */
+  // member variables
   var form,scope,mac,ip,itgid,room,hostname,uid,notes,submit;
 
-  /* private methods */ 
-  var set_up_toggle_buttons,ip_unavailable_warning,toggle_ip,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname,rgb2hex;
+  // private methods 
+  var ip_unavailable_warning,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname;
 
   /* Warn if the IP set doesn't appear in the list of available IPs, but don't
    * prevent it. */
@@ -41,14 +40,14 @@ var deezy_form_layout = function() {
     ip.disabled = false;
   };
 
-  /* Create and insert the IP picker */
+  // Create and insert the IP picker
   show_ip_picker = function(form) {
     var picker = $('ip_picker');
     if (!picker) {
       picker = new Element('div',{ id:'ip_picker' });
       picker.setStyle({ height:form.getHeight()-10+'px' });
       picker.update(new Element('ul'));
-      $('content').appendChild(picker);
+      Element.insert($$('.new_entry, .edit_entry')[0],{'top':picker});
       picker.hide();
       update_ip_picker(form,picker);
     }
@@ -61,36 +60,33 @@ var deezy_form_layout = function() {
     var ul = $$('#ip_picker ul')[0];
     ul.update('Loading...'); //clear the current contents
     picker.show();
-    var free_ips;
     var req = new Ajax.Request('/freeips.json', {
       method:'get',
       onSuccess:function(transport) {
         ul.update();
-        free_ips = transport.responseText.evalJSON().free_ips;
         var list;
-        free_ips.scopes.each(function(s) {
+        transport.responseText.evalJSON().free_ips.scopes.each(function(s) {
           if (s.id == scope.value) { list = s; } //find the appropriate list by scope
         });
         list.ips.each(function(i) {
           var li = new Element('li').update(i.ip);
-          li.setStyle({cursor:'pointer'});
           li.observe('click',function() {
-            /* FIXME: Need to set radio button to proper value when an IP is clicked 
+            /* FIXME: Need to set radio button to proper value when an IP is
+             * clicked 
              $('entry_ip_dynamic_false').checked = true;
              */
             enable_ip();
             ip.value = i.ip; //set the IP field to match the clicked IP
             ip.validate();
-            var endcolor = rgb2hex(picker.getStyle('background-color'));
-            var hili = new Effect.Highlight(li,{endcolor:endcolor});
+            var hili = new Effect.Highlight(li,{endcolor:'#d9dbd0'});
             var hiip = new Effect.Highlight(ip);
-            hili = hiip = null;
+            hili = hiip = null; //jslint
           });
           ul.appendChild(li);
         });
       }
     });
-    free_ips = req = null;
+    req = null; //jslint
   };
 
   /* Normalize the MAC address in case it was entered with incorrect
@@ -103,7 +99,7 @@ var deezy_form_layout = function() {
     });
   };
 
-  /* Normalize the room number */
+  // Normalize the room number
   normalize_room = function() {
     room.observe('blur',function() {
       room.value = room.value.match(/[0-9]{4}[a-zA-Z]?/)[0].toUpperCase();
@@ -111,7 +107,7 @@ var deezy_form_layout = function() {
     });
   };
 
-  /* Update the ip field so that it matches whichever scope is selected */
+  // Update the ip field so that it matches whichever scope is selected
   match_ip_to_scope = function() {
     var real_scope;
     $$('select').each(function(i) { if (i.name == scope.name) { real_scope = i; } });
@@ -119,7 +115,7 @@ var deezy_form_layout = function() {
     ip.value = ip.value.replace(/^128\.111\.(20[67]|186)\.([0-9]{0,3})$/,'128.111.'+real_scope.value+'.$2');
   };
 
-  /* Suggest a hostname based on the itgid */
+  // Suggest a hostname based on the itgid
   suggest_hostname = function() {
     if (hostname.value.blank() && itgid.valid) {
       var v = itgid.value;
@@ -128,7 +124,7 @@ var deezy_form_layout = function() {
     }
   };
 
-  /* Toggle the submit.disabled if necessary */
+  // Toggle the submit.disabled if necessary
   submit_toggler = function() {
     var disabled = !(mac.valid && ip.valid && itgid.valid && room.valid && hostname.valid && uid.valid);
     submit.disabled = disabled;
@@ -137,7 +133,7 @@ var deezy_form_layout = function() {
   /* Attach validation events to a node. Takes the node, its validation
    * function, and the error message to display when the field is invalid. */
   add_validation = function(node,func,msg) {
-    /* Add a function so we can just call node.validate() whenever we want. */
+    // Add a function so we can just call node.validate() whenever we want
     node.validate = function() {
       return validate_field(node,func,msg);
     };
@@ -165,7 +161,7 @@ var deezy_form_layout = function() {
       node.valid = false;
       var span = $(node.id+'_invalid');
       if (!span) {
-        span = new Element('span',{id:node.id+'_invalid'}).update('&larr; '+msg).addClassName('invalid_tip');
+        span = new Element('span',{id:node.id+'_invalid'}).update('← '+msg).addClassName('invalid_tip');
         Element.insert(node,{after:span});
       }
     }
@@ -184,25 +180,25 @@ var deezy_form_layout = function() {
    * The following methods accept a value (string) or DOM node with value
    * attribute and return true if the datum is valid. */
 
-  /* Is it a valid ITG ID? Like 988000132 or 064001223 */
+  // Is it a valid ITG ID? Like 988000132 or 064001223
   is_itgid = function(i) {
     var j = typeof(i) == 'object' ? i.value : i;
     return (/^[0-9]{2}[48]00[0-9]{4}$/).match(j);
   };
 
-  /* Is it a valid room? Like 4203G or 1142 */
+  // Is it a valid room? Like 4203G or 1142
   is_room = function(i) {
     var j = typeof(i) == 'object' ? i.value : i;
     return (/^[0-9]{4}[A-Z]?$/).match(j);
   };
 
-  /* Valid ITG IP address? In 128.111.206.0/23 or 128.111.186.0/24. MAY BE BLANK! */
+  // Valid ITG IP address? In 128.111.206.0/23 or 128.111.186.0/24. MAY BE BLANK!
   is_ip = function(i) {
     var j = typeof(i) == 'object' ? i.value : i;
     return (/^128.111.(20[67]|186).([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/).match(j) || j.blank();
   };
 
-  /* Valid MAC address? i.e. 00:12:34:ab:cd:9f */
+  // Valid MAC address? i.e. 00:12:34:ab:cd:9f
   is_mac = function(m) {
     var n = typeof(m) == 'object' ? m.value : m;
     return (/^[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}$/).match(n); 
@@ -217,20 +213,12 @@ var deezy_form_layout = function() {
     return (/^[0-9a-z]([0-9a-z\-]{0,61}[0-9a-z]|[0-9a-z])$/).match(i);
   };
 
-  rgb2hex = function(rgb) {
-    var m = /rgb\(([0-9]{1,3}),\s*([0-9]{1,3}),\s*([0-9]{1,3})/.exec(rgb);
-    var hex = '#' + (m[1]*1).toString(16) + (m[2]*1).toString(16) + (m[3]*1).toString(16);
-    return hex;
-  };
-
   return {
     init:function() {
 
       $$('form').each(function(f) { if (/(_entry|entry_)/.match(f.id)) { form = f; } });
 
       if (!form) { return; }
-
-      form.setStyle({'float':'left'});
 
       scope    = $('entry_scope');
       mac      = $('entry_mac');
@@ -242,12 +230,12 @@ var deezy_form_layout = function() {
       notes    = $('entry_notes');
       submit   = $('entry_submit');
 
-      /* Set all the fields to valid by default. */
+      // Set all the fields to valid by default
       [scope,mac,ip,itgid,room,hostname,uid,notes].each(function(field) {
         field.valid = true;
       });
 
-      /* Disable submit if necessary whenever we change fields. */
+      // Disable submit if necessary whenever we change fields
       [scope,mac,ip,itgid,room,hostname,uid,notes].each(function(field) {
         field.observe('blur',function() {
           field.value = field.value.strip();
@@ -265,7 +253,7 @@ var deezy_form_layout = function() {
 
       form.observe('submit',function(evt) { if (!form.valid()) { evt.stop(); } });
 
-      /* Add validation to all the fields that need it. */
+      // Add validation to all the fields that need it
       [
         [mac,is_mac,'Must be a valid MAC address, i.e. 00:11:23:8f:ef:ab'],
         [ip,is_ip,'Must be a valid ITG IP address, i.e. 128.111.207.200 (<em>Leave <strong>blank</strong> if dynamic.</em>)'],
@@ -277,7 +265,7 @@ var deezy_form_layout = function() {
         add_validation(set[0],set[1],set[2]);
       });
 
-      /* Force these fields to lowercase, then re-validate. */
+      // Force these fields to lowercase, then re-validate
       [mac,hostname,uid].each(function(field) {
         field.observe('blur',function() {
           field.value = field.value.toLowerCase();
@@ -285,30 +273,26 @@ var deezy_form_layout = function() {
         });
       });
 
-      /* Do various things. See related methods for details */
+      // Do various things. See related methods for details
       [itgid,hostname].each(function(field) { field.observe('blur',suggest_hostname); });
       [scope,ip].each(function(field) { field.observe('change',match_ip_to_scope); });
       normalize_mac();
       normalize_room();
       show_ip_picker(form);
-      add_dynamic_ip_checkbox();
       form.observe('keyup',submit_toggler);
       ip.observe('change',ip_unavailable_warning);
-      //      add_other_to_scope(); //This will probably never be used.
-      set_up_toggle_buttons();
-      add_dynamic_ip_click_listener();
     }
   };
 
 }();
 
-/* Change layout, style, and UI for savvy browsers. */
+// Change layout and UI for savvy browsers
 var deezy_layout = function() {
 
-  /* private methods */ 
-  var set_up_note_previews,add_collapse_expand_all_notes_links,colorize_odd_rows;
+  // private methods
+  var set_up_note_previews,add_collapse_expand_all_notes_links;
 
-  /* Set up note previews that can expand to show the whole note content. */
+  // Set up note previews that can expand to show the whole note content
   set_up_note_previews = function() {
     var notes = deezy_layout.notes;
     notes.expand = function() {
@@ -324,8 +308,7 @@ var deezy_layout = function() {
       if (inner.length > len) {
         var first = new Element('span').update(inner.substring(0,len));
         var last = new Element('span').update(inner.substring(len));
-        var link = new Element('a',{href:'#'}).update('&raquo;');
-        link.setStyle({fontSize:'14px',paddingLeft:'5px'});
+        var link = new Element('a',{href:'#'}).update('»');
         link.observe('click',function(evt) {
           evt.stop(); // Don't follow link
           note.toggle();
@@ -337,19 +320,19 @@ var deezy_layout = function() {
           last.toggle();
           note.toggleClassName('note_expanded');
           note.toggleClassName('note_collapsed');
-          link.update(last.visible() ? '&laquo;' : '&raquo;');
+          link.update(last.visible() ? '«' : '»');
         };
         note.expand = function() {
           last.show();
           note.addClassName('note_expanded');
           note.removeClassName('note_collapsed');
-          link.update('&laquo;');
+          link.update('«');
         };
         note.collapse = function() {
           last.hide();
           note.removeClassName('note_expanded');
           note.addClassName('note_collapsed');
-          link.update('&raquo;');
+          link.update('»');
         };
         note.collapse();
       }
@@ -358,45 +341,37 @@ var deezy_layout = function() {
   };
 
   add_collapse_expand_all_notes_links = function() {
-      var th = $('notes_th');
-      var links = new Element('span');
-      links.setStyle({fontSize:'16px',padding:'0 5px'});
-      var expand_link = new Element('a',{href:'#',title:'Expand all notes'}).update('&raquo;');
-      var collapse_link = new Element('a',{href:'#',title:'Collapse all notes'}).update('&laquo;');
-      expand_link.observe('click',function(evt) {
-        evt.stop(); // Don't follow link
-        deezy_layout.notes.expand();
-      });
-      collapse_link.observe('click',function(evt) {
-        evt.stop(); // Don't follow link
-        deezy_layout.notes.collapse();
-      });
-      links.appendChild(expand_link);
-      links.appendChild(new Element('span').update('|').setStyle({fontSize:'14px',padding:'0 3px'}));
-      links.appendChild(collapse_link);
-      th.appendChild(links);
+    var th = $('notes_th');
+    var links = new Element('span');
+    var expand_link = new Element('a',{href:'#',title:'Expand all notes'}).update('»');
+    var collapse_link = new Element('a',{href:'#',title:'Collapse all notes'}).update('«');
+    expand_link.observe('click',function(evt) {
+      evt.stop(); // Don't follow link
+      deezy_layout.notes.expand();
+    });
+    collapse_link.observe('click',function(evt) {
+      evt.stop(); // Don't follow link
+      deezy_layout.notes.collapse();
+    });
+    links.appendChild(expand_link);
+    links.appendChild(new Element('span').update('|'));
+    links.appendChild(collapse_link);
+    th.appendChild(links);
 
-      /* Add a listener to expand when user presses a "find" shortcut */
-      Event.observe(document,'keydown',function(e) {
-        if ( (e.metaKey || e.ctrlKey) && e.keyCode == 70 || e.keyCode == 191) {
-          deezy_layout.notes.expand(); 
-        }
-      });
+    // Add a listener to expand when user presses a "find" shortcut
+    Event.observe(document,'keydown',function(e) {
+      if ( (e.metaKey || e.ctrlKey) && e.keyCode == 70 || e.keyCode == 191) {
+        deezy_layout.notes.expand(); 
+      }
+    });
   };
 
-  /* Colorize the odd rows */
-  colorize_odd_rows = function() {
-    $$('.alt_rows tbody tr:nth-child(odd)').each(function(tr) { tr.addClassName('odd'); });
-    $$('.alt_rows tbody tr:nth-child(even)').each(function(tr) { tr.removeClassName('odd'); });
-  };
-  
   return {
     notes:null,
     init:function() {
       deezy_layout.notes = $$('.notes_col');
-      colorize_odd_rows();
 
-      /* If there's an 'entries' table, set up expandable note previews. */
+      // If there's an 'entries' table, set up expandable note previews
       if ($('entries')) { set_up_note_previews(); }
 
       deezy_form_layout.init(); // Do the form layout

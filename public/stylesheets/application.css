@@ -55,6 +55,10 @@ body {
   color:#2b3146;
 }
 
+header, footer, aside, nav, article, section {
+  display:block;
+}
+
 #faco {
   position:relative;
   overflow:hidden;
@@ -85,12 +89,6 @@ a:hover {
   text-decoration:underline;
 }
 
-#content {
-  background:#fff;
-  padding:10px;
-  margin:10px;
-}
-
 h1, h2, h3 {
   border-bottom:1px solid #2b3146;
   margin-bottom:5px;
@@ -114,8 +112,12 @@ header h1 {
   margin:0;
 }
 
+table#entries {
+  width:100%;
+}
+
 header, #content, footer {
-  display:block;
+  min-width:750px;
   margin:10px;
   padding:10px;
   background: #fff;
@@ -128,7 +130,6 @@ header, #content, footer {
 }
 
 header {
-  display:block;
   padding-bottom:5px;
 }
 
@@ -146,7 +147,6 @@ dd {
 }
 
 footer {
-  display:block;
   font-size:10px;
 }
 
@@ -178,23 +178,15 @@ input[type=text], textarea {
   border:1px solid #c00 !important;
 }
 
-.dhcp_table {
+table {
   margin:10px;
   margin:auto;
 }
 
-#show th {
-  text-align:right;
-  padding-right:5px;
-}
-
-.dhcp_table tr {
+th, td {
+  padding:1px 5px;
   line-height:14px;
 }
-
-
-/* Can't just say tbody tr.odd { background:#...; } because there are rendering
- * glitches when the notes expand/collapse in Gecko and Webkit. */
 
 tbody {
   border-top:1px solid #999;
@@ -204,29 +196,29 @@ tbody tr {
   border-bottom:1px solid #999;
 }
 
-tbody tr.odd {
-  background:#d6dbc3;
+.alt_rows tbody tr:nth-child(odd) {
+  background-image:url(/images/green-transparent.png);
+}
+
+#show th {
+  text-align:right;
+  padding-right:5px;
 }
 
 .mono {
   font-family:monospace;
 }
 
-.dhcp_table th, .dhcp_table td {
-  padding:1px 5px;
-}
-
 small {
   font-size:85%;
 }
 
-form.edit_entry {
-  display:block;
-  margin:10px;
-  background-color:#fff;
+.new_entry, .edit_entry {
+  margin:auto;
+  width:460px;
 }
 
-form.edit_entry p {
+.new_entry p, .edit_entry p {
   margin-bottom: 10px;
 }
 
@@ -274,6 +266,7 @@ input[disabled=disabled] {
 
 input[type=checkbox] {
   line-height:1;
+  vertical-align:middle;
 }
 
 .field_disabled {
@@ -347,6 +340,7 @@ label {
 }
 
 input[type=radio] {
+  line-height:1;
   vertical-align:middle;
 }
 
@@ -389,15 +383,37 @@ input[type=radio] {
   max-width:100%;
 }
 
+.notes_col a {
+  font-size:14px;
+  padding-left:5px;
+}
+
+#notes_th > span {
+  font-size:16px;
+  padding:0pt 5px;
+}
+
+#notes_th > span > span {
+  font-size:14px;
+  padding:0pt 3px;
+}
+
 #ip_picker {
-  min-width:110px;
-  background:#d6dbc3;
+  background-image:url(/images/green-transparent.png);
   color:#0b4d82;
   border:1px solid #0b4d82;
   padding:5px;
-  float:left;
+  float:right;
   overflow-y:scroll;
   margin-left:10px;
+}
+
+#ip_picker ul {
+  min-width:95px;
+}
+
+#ip_picker li {
+  cursor:pointer;
 }
 
 #deezy_logo {
@@ -412,8 +428,24 @@ input[type=radio] {
   background:transparent;
   background-image:url(/images/blue-glass.png);
   float:right;
-  color:#0b4d82;
   font-weight:bold;
   padding:3px;
   padding-left:25px;
+}
+
+input[type=text], textarea {
+  font-family:Arial,Helvetica,sans-serif;
+  font-size:12px;
+  padding:1px 2px;
+  color:#0b4d82;
+  border:1px solid #0b4d82;
+  background:transparent;
+}
+
+input[type=text] {
+  width:150px;
+}
+
+textarea {
+  width:300px;
 }
