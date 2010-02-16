@@ -11,8 +11,4 @@ class Entry < ActiveRecord::Base
     { :conditions => ['mac like ? or ip like ? or itgid like ? or room like ? or hostname like ? or uid like ? or notes like ?', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%', '%'+args.first+'%'] }
   }
 
-  def to_param
-    hostname
-  end
-
 end

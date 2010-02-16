@@ -16,7 +16,7 @@ class EntriesController < ApplicationController
   # GET /entries/1.xml
   def show
     @search = Entry.search params[:search]
-    @entry = Entry.find_by_hostname(params[:id])
+    @entry = Entry.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
@@ -39,7 +39,7 @@ class EntriesController < ApplicationController
   # GET /entries/1/edit
   def edit
     @search = Entry.search params[:search]
-    @entry = Entry.find_by_hostname(params[:id])
+    @entry = Entry.find(params[:id])
   end
 
   # POST /entries
@@ -63,7 +63,7 @@ class EntriesController < ApplicationController
   # PUT /entries/1
   # PUT /entries/1.xml
   def update
-    @entry = Entry.find_by_hostname(params[:id])
+    @entry = Entry.find(params[:id])
 
     respond_to do |format|
       if @entry.update_attributes(params[:entry])
@@ -80,7 +80,7 @@ class EntriesController < ApplicationController
   # DELETE /entries/1
   # DELETE /entries/1.xml
   def destroy
-    @entry = Entry.find_by_hostname(params[:id])
+    @entry = Entry.find(params[:id])
     @entry.destroy
 
     respond_to do |format|
