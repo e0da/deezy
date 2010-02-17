@@ -1,6 +1,3 @@
-/* FIXME: Need to refactor a lot of form checks
- * FIXME: Need to support new IP address radio button + hidden text field design */
-
 /*global $,$$,$A,Element,Event,alert,Ajax,Effect,window,document */
 
 /* Update the form layout and set up the UI */
