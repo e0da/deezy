@@ -96,7 +96,7 @@ class EntriesController < ApplicationController
 
   def dhcpd_leases
     headers["Content-Type"] = 'text/plain; charset=utf-8'
-    render :layout => false
+    send_file '/home/itgutil/dhcpd.leases', :type => 'text/plain', :disposition => 'inline'
   end
 
   def free_ips
