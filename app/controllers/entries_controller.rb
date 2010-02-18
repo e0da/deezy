@@ -3,8 +3,19 @@ class EntriesController < ApplicationController
   # GET /entries
   # GET /entries.xml
   def index
+    if params[:per_page]
+      p = params[:per_page]
+      if p.downcase == 'all'
+        p = 9999999
+      end 
+      @per_page = cookies[:per_page] = p
+    elsif cookies[:per_page]
+      @per_page = cookies[:per_page]
+    else
+      @per_page = cookies[:per_page] = 15
+    end
     @search = Entry.search params[:search]
-    @entries = @search.all.paginate :page => params[:page], :per_page => 21
+    @entries = @search.all.paginate :page => params[:page], :per_page => @per_page
 
     respond_to do |format|
       format.html # index.html.erb

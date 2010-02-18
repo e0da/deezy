@@ -373,6 +373,11 @@ input[type=radio] {
   padding-top:10px;
 }
 
+#per_page {
+  text-align:right;
+  padding-top:2px;
+}
+
 #entries td {
   line-height:1em;
   vertical-align:middle;
