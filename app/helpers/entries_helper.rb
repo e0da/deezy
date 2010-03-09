@@ -136,8 +136,8 @@ module EntriesHelper
     out << "    pool {\n"
     out << "        allow members of \"wireless\";\n"
     out << "        range 128.111.186.101 128.111.186.199;\n"
-    out << "        default-lease-time 14400;\n"
-    out << "        max-lease-time 14400;\n"
+    out << "        default-lease-time 3600;\n"
+    out << "        max-lease-time 3600;\n"
     out << "    }\n\n" 
     out << "    pool {\n"
     ranges[186].each { |range| out << "        range #{range[0]} #{range[1]};\n" }
