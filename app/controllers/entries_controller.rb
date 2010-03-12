@@ -3,11 +3,18 @@ class EntriesController < ApplicationController
   # GET /entries
   # GET /entries.xml
   def index
-    ppdef = 15
+
+    #
+    # Handle per_page values. Use the parameter if specified. Fall back to a
+    # cookie value, then to the default.
+    # 
+
+    ppdef = 15 # default value
+
     if params[:per_page]
       p = params[:per_page]
       if p.downcase == 'all'
-        p = 9999999
+        p = 9999999999999
       elsif p.to_i < 1
         p = ppdef
       end 
@@ -17,6 +24,7 @@ class EntriesController < ApplicationController
     else
       @per_page = cookies[:per_page] = ppdef
     end
+
     @search = Entry.search params[:search]
     @entries = @search.all.paginate :page => params[:page], :per_page => @per_page
 
