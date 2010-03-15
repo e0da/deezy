@@ -1,12 +1,10 @@
 class AddIpAsInt < ActiveRecord::Migration
   def self.up
-    add_column :entries, :ip_int, :integer
+    add_column :entries, :ip_int, 'integer unsigned'
     Entry.reset_column_information
-    say_with_time 'Calculating IPs as integers' do
-      entries = Entry.find_all
-      entries.each do |e|
-        ip = e.ip.split('.').inject(0) {|t,v| (t << 8) + v.to_i}
-        e.update_attribute(:ip_int, ip)
+    Entry.all.each do |e|
+      unless e.ip.blank? 
+        e.update_attribute :ip_int, Entry::ip_as_int(e.ip)
       end
     end
   end

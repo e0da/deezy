@@ -67,6 +67,10 @@ class EntriesController < ApplicationController
   # POST /entries
   # POST /entries.xml
   def create
+    
+    # Create integer copy of IP address
+    params[:entry][:ip_int] = Entry.ip_as_int params[:entry][:ip]
+
     @search = Entry.search params[:search]
     @entry = Entry.new(params[:entry])
 
@@ -85,6 +89,10 @@ class EntriesController < ApplicationController
   # PUT /entries/1
   # PUT /entries/1.xml
   def update
+    
+    # Create integer copy of IP address
+    params[:entry][:ip_int] = Entry.ip_as_int params[:entry][:ip]
+
     @entry = Entry.find(params[:id])
 
     respond_to do |format|
