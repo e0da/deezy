@@ -54,7 +54,7 @@ body {
   color:#2b3146;
 }
 
-header, footer, aside, nav, article, section {
+header, footer, section {
   display:block;
 }
 
@@ -106,11 +106,6 @@ h1 {
   font-size:18px;
 }
 
-header h1 {
-  border:none;
-  margin:0;
-}
-
 #entries {
   width:100%;
 }
@@ -132,19 +127,6 @@ header {
   padding-bottom:5px;
 }
 
-dl {
-  clear:both;
-}
-
-dt {
-  font-weight:bold;
-  float:left;
-}
-
-dd {
-  float:left;
-}
-
 footer {
   font-size:10px;
 }
@@ -162,10 +144,6 @@ header li {
 header li a {
   font-weight:bold;
   padding:2px 4px;
-}
-
-header h1 {
-  float:left;
 }
 
 .bad_field {
@@ -198,10 +176,6 @@ tr {
 #show th {
   text-align:right;
   padding-right:5px;
-}
-
-.mono {
-  font-family:monospace;
 }
 
 small {
@@ -237,46 +211,12 @@ small {
   display:none;
 }
 
-#errorExplanation {
-  border:5px solid #c00;
-  background:#fee;
-  margin:10px;
-  padding:10px;
-}
-
-#errorExplanation li {
-  list-style:circle;
-  margin:5px;
-  margin-left:20px;
-
-}
-
-input[disabled=disabled] {
-  border:1px inset #555;
-  background:#555;
-}
-
-.toggle_button_inner {
-  padding-left:16px;
-}
-
-input[type=checkbox] {
-  line-height:1;
-  vertical-align:middle;
-}
-
-.field_disabled {
-  background: #eee !important;
-  border:#999;
-  color:#999;
-}
-
 .note_content {
   margin:6px -1px 6px 0;
   overflow:hidden;
   height:12px;
   float:left;
-  width:95%;
+  width:99.5%;
   border-right:1px solid #999;
 }
 
@@ -288,18 +228,13 @@ input[type=checkbox] {
 
 .note_button {
   margin:6px -3px;
-  width:1%;
-  float:left;
+  width:0.5%;
+  float:right;
   cursor:pointer;
   font-size:14px;
   padding-left:5px;
   font-weight:bold;
   color:#0b4d82;
-}
-
-
-.aside {
-  font-size:60%;
 }
 
 button {
@@ -319,7 +254,7 @@ button:active {
   border-color:#777 #ccc #ccc #777;
 }
 
-button[disabled] {
+button[disabled] p {
   color:#aaa;
   cursor:auto;
 }
@@ -366,15 +301,6 @@ input[type=radio] {
   vertical-align:middle;
 }
 
-#dynamic_toggle {
-  float:left;
-  clear:right;
-  margin-bottom:10px;
-}
-
-#dynamic_toggle button {
-}
-
 #show_buttons {
   text-align:center;
 }
@@ -408,11 +334,6 @@ input[type=radio] {
 
 #notes_th {
   max-width:100%;
-}
-
-.notes_col a {
-  font-size:14px;
-  padding-left:5px;
 }
 
 #notes_th > span {

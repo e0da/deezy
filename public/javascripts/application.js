@@ -7,7 +7,7 @@ var deezy_form_layout = function() {
   var form,scope,mac,ip,itgid,room,hostname,uid,notes,submit;
 
   // private methods 
-  var ip_unavailable_warning,disable_ip,enable_ip,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname;
+  var ip_unavailable_warning,show_ip_picker,update_ip_picker,normalize_mac,normalize_room,match_ip_to_scope,suggest_hostname,submit_toggler,add_validation,validate_field,is_itgid,is_room,is_ip,is_mac,is_hostname;
 
   /* Warn if the IP set doesn't appear in the list of available IPs, but don't
    * prevent it. */
@@ -22,22 +22,7 @@ var deezy_form_layout = function() {
     }
   };
 
-  disable_ip = function() {
-    ip.disabled = true;
-    ip.addClassName('field_disabled');
-    var invisible_ip = new Element('input',{type:'hidden',value:'',name:ip.name,id:'invis_ip'});
-    if (!is_ip(ip)) { ip.value = ''; ip.validate(); }
-    Element.insert(ip,{after:invisible_ip});
-  };
-
-  enable_ip = function() {
-    var invis_ip = $('invis_ip');
-    if (invis_ip) { Element.remove(invis_ip); }
-    ip.removeClassName('field_disabled');
-    ip.disabled = false;
-  };
-
-  // Create and insert the IP picker
+ // Create and insert the IP picker
   show_ip_picker = function(form) {
     var picker = $('ip_picker');
     if (!picker) {
@@ -68,11 +53,6 @@ var deezy_form_layout = function() {
         list.ips.each(function(i) {
           var li = new Element('li').update(i.ip);
           li.observe('click',function() {
-            /* FIXME: Need to set radio button to proper value when an IP is
-             * clicked 
-             $('entry_ip_dynamic_false').checked = true;
-             */
-            enable_ip();
             ip.value = i.ip; //set the IP field to match the clicked IP
             ip.validate();
             var hili = new Effect.Highlight(li,{endcolor:'#d9dbd0'});
