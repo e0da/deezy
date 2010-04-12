@@ -111,7 +111,6 @@ h1 {
 }
 
 header, #content, footer {
-  min-width:640px;
   margin:10px;
   padding:10px;
   background: #fff;
@@ -212,11 +211,11 @@ small {
 }
 
 .note_content {
-  margin:6px -1px 6px 0;
+  margin:6px 0;
   overflow:hidden;
   height:12px;
   float:left;
-  width:99.5%;
+  width:99%;
   border-right:1px solid #999;
 }
 
@@ -227,8 +226,9 @@ small {
 }
 
 .note_button {
-  margin:6px -3px;
-  width:0.5%;
+  margin:6px 0;
+  margin-left:-10px;
+  width:0.25%;
   float:right;
   cursor:pointer;
   font-size:14px;
