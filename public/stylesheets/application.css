@@ -116,7 +116,7 @@ header h1 {
 }
 
 header, #content, footer {
-  min-width:750px;
+  min-width:640px;
   margin:10px;
   padding:10px;
   background: #fff;
@@ -271,9 +271,32 @@ input[type=checkbox] {
   color:#999;
 }
 
+.note_content {
+  margin:6px -1px 6px 0;
+  overflow:hidden;
+  height:12px;
+  float:left;
+  width:95%;
+  border-right:1px solid #999;
+}
+
 .note_expanded {
   white-space:pre-wrap;
+  overflow:visible ! important;
+  height:auto ! important;
 }
+
+.note_button {
+  margin:6px -3px;
+  width:1%;
+  float:left;
+  cursor:pointer;
+  font-size:14px;
+  padding-left:5px;
+  font-weight:bold;
+  color:#0b4d82;
+}
+
 
 .aside {
   font-size:60%;

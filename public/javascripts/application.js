@@ -301,38 +301,23 @@ var deezy_layout = function() {
 
     notes.each(function(note) {
       var inner = note.innerHTML;
-      var len = 24;
-      if (inner.length > len) {
-        var first = new Element('span').update(inner.substring(0,len));
-        var last = new Element('span').update(inner.substring(len));
-        var link = new Element('a',{href:'#'}).update('»');
-        link.observe('click',function(evt) {
-          evt.stop(); // Don't follow link
-          note.toggle();
-        });
-        note.update(first);
-        note.appendChild(last);
-        note.appendChild(link);
-        note.toggle = function() {
-          last.toggle();
-          note.toggleClassName('note_expanded');
-          note.toggleClassName('note_collapsed');
-          link.update(last.visible() ? '«' : '»');
-        };
-        note.expand = function() {
-          last.show();
-          note.addClassName('note_expanded');
-          note.removeClassName('note_collapsed');
-          link.update('«');
-        };
-        note.collapse = function() {
-          last.hide();
-          note.removeClassName('note_expanded');
-          note.addClassName('note_collapsed');
-          link.update('»');
-        };
-        note.collapse();
-      }
+      var left = new Element('div',{'class':'note_content'}).update(inner);
+      var right = new Element('div',{'class':'note_button note_button_collapsed'}).update('»');
+      note.update(left);
+      note.appendChild(right);
+      note.expand = function() {
+        right.update('«');
+        left.addClassName('note_expanded');
+        right.stopObserving('click');
+        right.observe('click',note.collapse);
+      };
+      note.collapse = function() {
+        right.update('»');
+        left.removeClassName('note_expanded');
+        right.stopObserving('click');
+        right.observe('click',note.expand);
+      };
+      right.observe('click',note.expand);
     });
     add_collapse_expand_all_notes_links();
   };
