@@ -22,12 +22,12 @@
             <%= image_tag 'off.png' %>
           <% end %>
         
-        <td><%=h entry.mac %>
-        <td><%=h entry.ip %>
-        <td><%=h entry.itgid %>
-        <td><%=h entry.room %>
-        <td><%=h entry.hostname %>
-        <td><%=h entry.uid %>
+        <td><%= entry.mac %>
+        <td><%= entry.ip %>
+        <td><%= entry.itgid %>
+        <td><%= entry.room %>
+        <td><%= entry.hostname %>
+        <td><%= entry.uid %>
         <%#
         
           !!IMPORTANT!!
@@ -35,7 +35,7 @@
           The next line has to be on one line since the contents of notes_col are whitespace:pre-wrap.
 
         %> 
-        <td class=notes_col><%=h entry.notes %><td class=show_edit>
+        <td class=notes_col><%= entry.notes %><td class=show_edit>
           <%= link_to image_tag('show.png', :style => 'margin-top:2px'), entry, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px'), edit_entry_path(entry), :title => 'Edit' %>
       
     <% end %>

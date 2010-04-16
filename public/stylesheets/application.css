@@ -373,7 +373,7 @@ input[type=radio] {
   top:-24px;
 }
 
-#search_any_like {
+#search_mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains {
   background:url(/images/blue-glass.png) transparent 0 -2px;
   float:right;
   font-weight:bold;

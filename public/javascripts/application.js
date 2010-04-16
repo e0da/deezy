@@ -267,23 +267,7 @@ var deezy_form_layout = function() {
 var deezy_layout = function() {
 
   // private methods
-  var set_up_note_previews,add_collapse_expand_all_notes_links,linkify_notes;
-
-  // Linkify appropriate terms in the notes field
-  linkify_notes = function() {
-    var notes = deezy_layout.notes;
-    notes = notes.concat($$('.note_expanded'));
-    var filters = [];
-    filters.push({re:/(https?:\/\/\S+)/gi,repl:'<a href="$1">$1</a>'});
-    filters.push({re:/#(\S+)/gi,repl:'<a href="/entries?search[any_like]=%23$1">#$1</a>'});
-    filters.push({re:/wiki:(\S+)/gi,repl:'<a href="http://wiki.education.ucsb.edu/$1">wiki:$1</a>'});
-    filters.push({re:/rt:(\d+)/gi,repl:'<a href="https://rt.education.ucsb.edu/Ticket/Display.html?id=$1">rt:$1</a>'});
-    filters.each(function(filter) {
-      notes.each(function(note) {
-        note.innerHTML = note.innerHTML.replace(filter.re,filter.repl);
-      });
-    });
-  };
+  var set_up_note_previews,add_collapse_expand_all_notes_links;
 
   // Set up note previews that can expand to show the whole note content
   set_up_note_previews = function() {
@@ -348,7 +332,6 @@ var deezy_layout = function() {
     notes:null,
     init:function() {
       deezy_layout.notes = $$('.notes_col');
-      linkify_notes();
 
       // If there's an 'entries' table, set up expandable note previews
       if ($('entries')) { set_up_note_previews(); }

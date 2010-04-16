@@ -1,5 +1,7 @@
 class EntriesController < ApplicationController
 
+  after_filter :filter_notes, :only => [:index, :show]
+
   # GET /entries
   # GET /entries.xml
   def index
@@ -28,6 +30,8 @@ class EntriesController < ApplicationController
     @search = Entry.search params[:search]
     @entries = @search.all.paginate :page => params[:page], :per_page => @per_page
 
+    filter_notes
+
     respond_to do |format|
       format.html # index.html.erb
       format.xml  { render :xml => @entries }
@@ -39,6 +43,8 @@ class EntriesController < ApplicationController
   def show
     @search = Entry.search params[:search]
     @entry = Entry.find(params[:id])
+    
+    filter_notes
 
     respond_to do |format|
       format.html # show.html.erb
@@ -73,6 +79,8 @@ class EntriesController < ApplicationController
 
     @search = Entry.search params[:search]
     @entry = Entry.new(params[:entry])
+
+    sanitize_notes
 
     respond_to do |format|
       if @entry.save
@@ -134,6 +142,24 @@ class EntriesController < ApplicationController
     response.headers["Pragma"] = "no-cache"
     response.headers["Expires"] = "Fri, 01 Jan 1990 00:00:00 GMT"
     render :layout => false
+  end
+
+  private
+
+  #
+  # Pass the notes fields through some filters. Useful for adding links.
+  #
+  def filter_notes
+    filters = []
+    filters << {:re => /\brt:(\d+)\b/i, :sub => '<a href=https://rt.education.ucsb.edu/Ticket/Display.html?id=\1>rt:\1</a>'}
+    filters << {:re => /\bwiki:([\S\(\)_]+)/i, :sub => '<a href=http://wiki.education.ucsb.edu/\1>wiki:\1</a>'}
+    filters << {:re => /#(\S+)\b/i, :sub => '<a href=/entries?search[order]=&search[mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains]=%23\1>#\1</a>'}
+    filters << {:re => /(https?:\/\/\S+)/i, :sub => '<a href=\1>\1</a>'}
+
+    @entries = [@entry] if @entries == nil
+    @entries.each do |e|
+      filters.collect { |f| e.notes.gsub! f[:re], f[:sub] }
+    end
   end
 
 end

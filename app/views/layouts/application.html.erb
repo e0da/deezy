@@ -23,7 +23,7 @@
       </ul>
 
       <% form_for @search, :url => { :action => 'index' } do |f| %>
-        <%= f.text_field :any_like %>
+        <%= f.text_field :mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains %> 
       <% end %>
 
       </header>

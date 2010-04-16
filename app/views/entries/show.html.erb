@@ -1,20 +1,20 @@
 <table class=alt_rows id=show>
-    <tr><th>Scope<td><%=h @entry.scope %>
-    <tr><th>MAC<td><%=h @entry.mac %>
-    <tr><th>IP<td><%=h @entry.ip %>
-    <tr><th>ITG ID<td><%=h @entry.itgid %>
-    <tr><th>Room<td><%=h @entry.room %>
-    <tr><th>hostname<td><%=h @entry.hostname %>
-    <tr><th>UID<td><%=h @entry.uid %>
+    <tr><th>Scope<td><%= @entry.scope %>
+    <tr><th>MAC<td><%= @entry.mac %>
+    <tr><th>IP<td><%= @entry.ip %>
+    <tr><th>ITG ID<td><%= @entry.itgid %>
+    <tr><th>Room<td><%= @entry.room %>
+    <tr><th>hostname<td><%= @entry.hostname %>
+    <tr><th>UID<td><%= @entry.uid %>
     <tr><th>enabled<td>
         <% if @entry.enabled %>
           <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On
         <% else %>
           <%= image_tag 'off.png', :style => 'vertical-align:middle' %> Off
         <% end %>
-    <tr><th>Notes<td class=note_expanded><%=h @entry.notes %>
-    <tr><th>Created<td><%=h @entry.created_at %>
-    <tr><th>Updated<td><%=h @entry.updated_at %>
+    <tr><th>Notes<td class=note_expanded><%= @entry.notes %>
+    <tr><th>Created<td><%= @entry.created_at %>
+    <tr><th>Updated<td><%= @entry.updated_at %>
 </table>
 
 <% form_tag entry_path(@entry), :method => :delete do -%>    
