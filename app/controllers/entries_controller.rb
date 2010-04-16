@@ -27,6 +27,9 @@ class EntriesController < ApplicationController
       @per_page = cookies[:per_page] = ppdef
     end
 
+    # Sort by created_at_date if no search is being performed
+    params[:search] = {:order => 'descend_by_created_at'} if params[:search].blank?
+
     @search = Entry.search params[:search]
     @entries = @search.all.paginate :page => params[:page], :per_page => @per_page
 

@@ -277,6 +277,7 @@ button p {
   font-family:sans-serif;
   font-size:14px;
   line-height:28px;
+  text-shadow: #fff 1px 1px 0;
 }
 
 select {
