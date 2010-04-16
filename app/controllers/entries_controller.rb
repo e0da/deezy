@@ -151,10 +151,10 @@ class EntriesController < ApplicationController
   #
   def filter_notes
     filters = []
+    filters << {:re => /(https?:\/\/\S+)/i, :sub => '<a href=\1>\1</a>'}
     filters << {:re => /\brt:(\d+)\b/i, :sub => '<a href=https://rt.education.ucsb.edu/Ticket/Display.html?id=\1>rt:\1</a>'}
     filters << {:re => /\bwiki:([\S\(\)_]+)/i, :sub => '<a href=http://wiki.education.ucsb.edu/\1>wiki:\1</a>'}
     filters << {:re => /#(\S+)\b/i, :sub => '<a href=/entries?search[order]=&search[mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains]=%23\1>#\1</a>'}
-    filters << {:re => /(https?:\/\/\S+)/i, :sub => '<a href=\1>\1</a>'}
 
     @entries = [@entry] if @entries == nil
     @entries.each do |e|
