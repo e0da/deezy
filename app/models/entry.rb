@@ -29,9 +29,9 @@ class Entry < ActiveRecord::Base
   #
   def clean_html
     [mac, ip, itgid, room, hostname, uid, notes].each do |e|
+      e.gsub! /&/, '&amp;'
       e.gsub! /</, '&lt;'
       e.gsub! />/, '&gt;'
-      e.gsub! /&/, '&amp;'
     end
   end
 
