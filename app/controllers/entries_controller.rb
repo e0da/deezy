@@ -80,8 +80,6 @@ class EntriesController < ApplicationController
     @search = Entry.search params[:search]
     @entry = Entry.new(params[:entry])
 
-    sanitize_notes
-
     respond_to do |format|
       if @entry.save
         flash[:notice] = 'Entry was successfully created.'
