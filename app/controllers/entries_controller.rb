@@ -133,10 +133,6 @@ class EntriesController < ApplicationController
     render :layout => false
   end
 
-  def dhcpd_leases
-    send_file '/home/itgutil/dhcpd.leases', :type => 'text/plain', :disposition => 'inline'
-  end
-
   def free_ips
     headers["Content-Type"] = 'application/json; charset=utf-8'
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
