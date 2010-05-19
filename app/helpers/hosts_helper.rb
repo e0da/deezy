@@ -1,4 +1,4 @@
-module EntriesHelper
+module HostsHelper
 
   First206 = 6
   Last206 = 200
@@ -17,13 +17,13 @@ module EntriesHelper
     used[207] = []
     used[186] = []
 
-    Entry.find_all_by_scope('206').each { |e| used[206] << e.ip }
+    Host.find_all_by_scope('206').each { |e| used[206] << e.ip }
     used[206].uniq!
 
-    Entry.find_all_by_scope('207').each { |e| used[207] << e.ip }
+    Host.find_all_by_scope('207').each { |e| used[207] << e.ip }
     used[207].uniq!
 
-    Entry.find_all_by_scope('186').each { |e| used[186] << e.ip }
+    Host.find_all_by_scope('186').each { |e| used[186] << e.ip }
     used[186].uniq!
 
     # Calculate all possible IP addresses
@@ -68,7 +68,7 @@ module EntriesHelper
 
 
   def dhcpd_conf
-    timestamp = Time.gm(*Entry.find(:first, :order => 'updated_at DESC', :limit => 1).updated_at)
+    timestamp = Time.gm(*Host.find(:first, :order => 'updated_at DESC', :limit => 1).updated_at)
     
     out = "# Last updated #{timestamp}\n\n"
     out << "ddns-update-style none;\n"
@@ -88,8 +88,8 @@ module EntriesHelper
       last = scope[2]
       ranges[sub] = []
       used = []
-      entries = Entry.find_all_by_scope(sub)
-      entries.each { |entry| used << entry.ip unless entry.ip.blank? }
+      hosts = Host.find_all_by_scope(sub)
+      hosts.each { |host| used << host.ip unless host.ip.blank? }
       range_open = false
       range_valid = false 
       start = nil
@@ -148,9 +148,9 @@ module EntriesHelper
 
     out << "group {\n"
     out << "    filename \"wired\";\n"
-    Entry.find_all_by_enabled(true).each do |entry|
-      out << "        host  #{entry.hostname}  { hardware ethernet #{entry.mac}; "
-      out << "fixed-address #{entry.ip}; " unless entry.ip.blank? # Only print the fixed address if an IP is specified.
+    Host.find_all_by_enabled(true).each do |host|
+      out << "        host  #{host.hostname}  { hardware ethernet #{host.mac}; "
+      out << "fixed-address #{host.ip}; " unless host.ip.blank? # Only print the fixed address if an IP is specified.
       out << "}\n"
     end
     out << "}\n\n"

@@ -1,4 +1,4 @@
-class Entry < ActiveRecord::Base
+class Host < ActiveRecord::Base
   validates_uniqueness_of :hostname
   validates_format_of :mac, :with => /[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}/
   validates_format_of :ip, :with => /(128.111.(20[67]|186).\d{1,3}|)/

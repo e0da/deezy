@@ -1,4 +1,4 @@
-<table id=entries class=alt_rows cellspacing=0>
+<table id=hosts class=alt_rows cellspacing=0>
   <thead>
     <tr>
       <th><%= order @search, :by => :enabled, :as => 'On' %>
@@ -11,10 +11,10 @@
       <th id=notes_th><%= order @search, :by => :notes %>
       <th style=min-width:35px> &nbsp; 
   <tbody>
-    <% @entries.each do |entry| %>
+    <% @hosts.each do |host| %>
       <tr>
         <td>
-          <% if entry.enabled %>
+          <% if host.enabled %>
             <span class=invisible>on</span>
             <%= image_tag 'on.png' %>
           <% else %>
@@ -22,12 +22,12 @@
             <%= image_tag 'off.png' %>
           <% end %>
         
-        <td><%= entry.mac %>
-        <td><%= entry.ip %>
-        <td><%= entry.itgid %>
-        <td><%= entry.room %>
-        <td><%= entry.hostname %>
-        <td><%= entry.uid %>
+        <td><%= host.mac %>
+        <td><%= host.ip %>
+        <td><%= host.itgid %>
+        <td><%= host.room %>
+        <td><%= host.hostname %>
+        <td><%= host.uid %>
         <%#
         
           !!IMPORTANT!!
@@ -35,13 +35,13 @@
           The next line has to be on one line since the contents of notes_col are whitespace:pre-wrap.
 
         %> 
-        <td class=notes_col><%= entry.notes %><td class=show_edit>
-          <%= link_to image_tag('show.png', :style => 'margin-top:2px'), entry, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px'), edit_entry_path(entry), :title => 'Edit' %>
+        <td class=notes_col><%= host.notes %><td class=show_edit>
+          <%= link_to image_tag('show.png', :style => 'margin-top:2px'), host, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px'), edit_host_path(host), :title => 'Edit' %>
       
     <% end %>
 </table>
 
-<%= will_paginate @entries %>
+<%= will_paginate @hosts %>
 
 <%
   per_page_links = []

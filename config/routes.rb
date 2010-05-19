@@ -1,10 +1,10 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :entries
+  map.resources :hosts
 
-  map.root :controller => 'entries'
+  map.root :controller => 'hosts'
 
-  map.dhcpd_conf_url '/dhcpd.conf', :controller => 'entries', :action => 'dhcpd_conf', :method => :get
-  map.dhcpd_conf_url '/freeips.json', :controller => 'entries', :action => 'free_ips', :method => :get
+  map.dhcpd_conf_url '/dhcpd.conf', :controller => 'hosts', :action => 'dhcpd_conf', :method => :get
+  map.dhcpd_conf_url '/freeips.json', :controller => 'hosts', :action => 'free_ips', :method => :get
 
   # The priority is based upon order of creation: first created -> highest priority.
 

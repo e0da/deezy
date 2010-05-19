@@ -29,7 +29,7 @@ var deezy_form_layout = function() {
       picker = new Element('div',{ id:'ip_picker' });
       picker.setStyle({ height:form.getHeight()-10+'px' });
       picker.update(new Element('ul'));
-      Element.insert($$('.new_entry, .edit_entry')[0],{'top':picker});
+      Element.insert($$('.new_host, .edit_host')[0],{'top':picker});
       picker.hide();
       update_ip_picker(form,picker);
     }
@@ -193,19 +193,19 @@ var deezy_form_layout = function() {
   return {
     init:function() {
 
-      $$('form').each(function(f) { if (/(_entry|entry_)/.match(f.id)) { form = f; } });
+      $$('form').each(function(f) { if (/(_host|host_)/.match(f.id)) { form = f; } });
 
       if (!form) { return; }
 
-      scope    = $('entry_scope');
-      mac      = $('entry_mac');
-      ip       = $('entry_ip');
-      itgid    = $('entry_itgid');
-      room     = $('entry_room');
-      hostname = $('entry_hostname');
-      uid      = $('entry_uid');
-      notes    = $('entry_notes');
-      submit   = $('entry_submit');
+      scope    = $('host_scope');
+      mac      = $('host_mac');
+      ip       = $('host_ip');
+      itgid    = $('host_itgid');
+      room     = $('host_room');
+      hostname = $('host_hostname');
+      uid      = $('host_uid');
+      notes    = $('host_notes');
+      submit   = $('host_submit');
 
       // Set all the fields to valid by default
       [scope,mac,ip,itgid,room,hostname,uid,notes].each(function(field) {
@@ -333,8 +333,8 @@ var deezy_layout = function() {
     init:function() {
       deezy_layout.notes = $$('.notes_col');
 
-      // If there's an 'entries' table, set up expandable note previews
-      if ($('entries')) { set_up_note_previews(); }
+      // If there's an 'hosts' table, set up expandable note previews
+      if ($('hosts')) { set_up_note_previews(); }
 
       deezy_form_layout.init(); // Do the form layout
     }

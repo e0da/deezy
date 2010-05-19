@@ -1,10 +1,10 @@
 require 'test_helper'
 
-class EntriesControllerTest < ActionController::TestCase
+class HostsControllerTest < ActionController::TestCase
   test "should get index" do
     get :index
     assert_response :success
-    assert_not_nil assigns(:entries)
+    assert_not_nil assigns(:hosts)
   end
 
   test "should get new" do
@@ -12,34 +12,34 @@ class EntriesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create entry" do
-    assert_difference('Entry.count') do
-      post :create, :entry => { }
+  test "should create host" do
+    assert_difference('host.count') do
+      post :create, :host => { }
     end
 
-    assert_redirected_to entry_path(assigns(:entry))
+    assert_redirected_to host_path(assigns(:host))
   end
 
-  test "should show entry" do
-    get :show, :id => entries(:one).to_param
+  test "should show host" do
+    get :show, :id => hosts(:one).to_param
     assert_response :success
   end
 
   test "should get edit" do
-    get :edit, :id => entries(:one).to_param
+    get :edit, :id => hosts(:one).to_param
     assert_response :success
   end
 
-  test "should update entry" do
-    put :update, :id => entries(:one).to_param, :entry => { }
-    assert_redirected_to entry_path(assigns(:entry))
+  test "should update host" do
+    put :update, :id => hosts(:one).to_param, :host => { }
+    assert_redirected_to host_path(assigns(:host))
   end
 
-  test "should destroy entry" do
-    assert_difference('Entry.count', -1) do
-      delete :destroy, :id => entries(:one).to_param
+  test "should destroy host" do
+    assert_difference('host.count', -1) do
+      delete :destroy, :id => hosts(:one).to_param
     end
 
-    assert_redirected_to entries_path
+    assert_redirected_to hosts_path
   end
 end

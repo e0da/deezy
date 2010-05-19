@@ -106,7 +106,7 @@ h1 {
   font-size:18px;
 }
 
-#entries {
+#hosts {
   width:100%;
 }
 
@@ -182,12 +182,12 @@ small {
   font-size:85%;
 }
 
-.new_entry, .edit_entry {
+.new_host, .edit_host {
   margin:auto;
   width:460px;
 }
 
-.new_entry p, .edit_entry p {
+.new_host p, .edit_host p {
   margin-bottom: 10px;
 }
 
@@ -287,7 +287,7 @@ select {
   color:#505050;
 }
 
-.new_entry p, .edit_entry p {
+.new_host p, .edit_host p {
   font-size:14px;
   color: #505050;
   font-weight:bold;
@@ -311,7 +311,7 @@ input[type=radio] {
   margin:10px;
 }
 
-#entry_scope {
+#host_scope {
   vertical-align:middle;
 }
 
@@ -329,7 +329,7 @@ input[type=radio] {
   padding-top:2px;
 }
 
-#entries td {
+#hosts td {
   line-height:1em;
   vertical-align:middle;
 }

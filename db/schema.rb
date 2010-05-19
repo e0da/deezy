@@ -9,9 +9,9 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20100312233635) do
+ActiveRecord::Schema.define(:version => 20100519202433) do
 
-  create_table "entries", :force => true do |t|
+  create_table "hosts", :force => true do |t|
     t.string   "scope"
     t.string   "mac"
     t.string   "ip"

@@ -1,8 +1,8 @@
-<% form_for(entry) do |f| %>
+<% form_for(host) do |f| %>
   <%= f.error_messages %>
   <p><%= f.label :scope %><br><%= select_scope %>
   <p><%= f.label :mac, 'MAC address'%><br><%= f.text_field :mac %>
-  <p><%= f.label :ip, "IP address <small>(blank if <a href=# onclick='$(\"entry_ip\").value=\"\";return false'>dynamic</a>)</small>" %><br><%= f.text_field :ip %>
+  <p><%= f.label :ip, "IP address <small>(blank if <a href=# onclick='$(\"host_ip\").value=\"\";return false'>dynamic</a>)</small>" %><br><%= f.text_field :ip %>
   <p><%= f.label :itgid, 'ITG ID' %><br><%= f.text_field :itgid %>
   <p><%= f.label :room, 'Room' %><br><%= f.text_field :room %>
   <p><%= f.label :hostname, 'hostname' %><br><%= f.text_field :hostname %>
@@ -13,5 +13,5 @@
   <%= f.radio_button :enabled, 'false' %>
   <%= f.label 'enabled_false', 'Disabled' %> 
   <p><%= f.label :notes %><br><%= f.text_area :notes, :rows => 4 %>
-  <p><button type=submit class=save id=entry_submit><p><%= image_tag 'button_save.png' %>Save</button></p>
+  <p><button type=submit class=save id=host_submit><p><%= image_tag 'button_save.png' %>Save</button></p>
 <% end %>

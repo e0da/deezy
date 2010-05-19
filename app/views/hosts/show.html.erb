@@ -1,25 +1,25 @@
 <table class=alt_rows id=show>
-    <tr><th>Scope<td><%= @entry.scope %>
-    <tr><th>MAC<td><%= @entry.mac %>
-    <tr><th>IP<td><%= @entry.ip %>
-    <tr><th>ITG ID<td><%= @entry.itgid %>
-    <tr><th>Room<td><%= @entry.room %>
-    <tr><th>hostname<td><%= @entry.hostname %>
-    <tr><th>UID<td><%= @entry.uid %>
+    <tr><th>Scope<td><%= @host.scope %>
+    <tr><th>MAC<td><%= @host.mac %>
+    <tr><th>IP<td><%= @host.ip %>
+    <tr><th>ITG ID<td><%= @host.itgid %>
+    <tr><th>Room<td><%= @host.room %>
+    <tr><th>hostname<td><%= @host.hostname %>
+    <tr><th>UID<td><%= @host.uid %>
     <tr><th>enabled<td>
-        <% if @entry.enabled %>
+        <% if @host.enabled %>
           <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On
         <% else %>
           <%= image_tag 'off.png', :style => 'vertical-align:middle' %> Off
         <% end %>
-    <tr><th>Notes<td class=note_expanded><%= @entry.notes %>
-    <tr><th>Created<td><%= @entry.created_at %>
-    <tr><th>Updated<td><%= @entry.updated_at %>
+    <tr><th>Notes<td class=note_expanded><%= @host.notes %>
+    <tr><th>Created<td><%= @host.created_at %>
+    <tr><th>Updated<td><%= @host.updated_at %>
 </table>
 
-<% form_tag entry_path(@entry), :method => :delete do -%>    
+<% form_tag host_path(@host), :method => :delete do -%>    
   <div id=show_buttons>
-  <button onclick='location.href="<%= edit_entry_path(@entry) %>"; return false;' class=edit><p><%= image_tag 'button_edit.png' %> Edit</p></button>
+  <button onclick='location.href="<%= edit_host_path(@host) %>"; return false;' class=edit><p><%= image_tag 'button_edit.png' %> Edit</p></button>
   <button onclick='return confirm("Really delete? Be sure! This cannot be undone!")' type=submit class=delete><p><%= image_tag 'button_delete.png' %> Delete</p></button>
 </div>
 <% end -%>
