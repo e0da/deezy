@@ -6,6 +6,8 @@ module HostsHelper
   Last207 = 200
   First186 = 1
   Last186 = 100
+  FirstWifi = 91
+  LastWifi = 199
   
 
   # Return all free IP addresses as a JSON object
@@ -135,7 +137,7 @@ module HostsHelper
     out << "    }\n\n"
     out << "    pool {\n"
     out << "        allow members of \"wireless\";\n"
-    out << "        range 128.111.186.101 128.111.186.199;\n"
+    out << "        range 128.111.186.#{FirstWifi} 128.111.186.#{LastWifi};\n"
     out << "        default-lease-time 3600;\n"
     out << "        max-lease-time 3600;\n"
     out << "    }\n\n" 
