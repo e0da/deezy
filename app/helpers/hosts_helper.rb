@@ -5,7 +5,7 @@ module HostsHelper
   First207 = 9
   Last207 = 200
   First186 = 1
-  Last186 = 100
+  Last186 = 90
   FirstWifi = 91
   LastWifi = 199
   
