@@ -1,6 +1,6 @@
-^tmp/[^.].*
-^log/[^.].*
-^db/[^.].*.sqlite3
-^config/database.yml
-^public/javascripts/all_min.js
-^public/dhcpd.leases
+.bundle
+db/*.sqlite3
+log/*.log
+tmp/**/*
+public/javascripts/all_min.js
+public/dhcpd.leases
