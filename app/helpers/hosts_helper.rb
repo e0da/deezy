@@ -73,6 +73,14 @@ module HostsHelper
     timestamp = Time.gm(*Host.find(:first, :order => 'updated_at DESC', :limit => 1).updated_at)
     
     out = "# Last updated #{timestamp}\n\n"
+    out << "\n"
+
+    # Add some useful comments
+    out << "# 206 pool is 128.111.206.#{First206}-#{Last206}\n"
+    out << "# 207 pool is 128.111.207.#{First207}-#{Last207}\n"
+    out << "# 186 pool is 128.111.186.#{First186}-#{Last186}\n"
+    out << "# wifi pool is 128.111.186.#{FirstWifi}-#{LastWifi}\n"
+    out << "\n"
     out << "ddns-update-style none;\n"
     out << "default-lease-time 86400;\n"
     out << "max-lease-time 432000;\n"
