@@ -1,5 +1,1 @@
 Deny from all
-
-<Directory public>
-  Allow from all
-</Directory>
