@@ -8,6 +8,8 @@ module HostsHelper
   Last186 = 90
   FirstWifi = 91
   LastWifi = 199
+  FirstGuest = 96
+  LastGuest = 116
   
 
   # Return all free IP addresses as a JSON object
@@ -34,16 +36,21 @@ module HostsHelper
     possible[207] = []
     possible[186] = []
 
-    [*First206..Last206].each do |i|
+    (First206..Last206).each do |i|
       possible[206] << '128.111.206.'+i.to_s
     end
 
-    [*First207..Last207].each do |i|
+    (First207..Last207).each do |i|
       possible[207] << '128.111.207.'+i.to_s
     end
 
-    [*First186..Last186].each do |i|
+    (First186..Last186).each do |i|
       possible[186] << '128.111.186.'+i.to_s
+    end
+
+    # Remove IPs that are reserved for "GGSE Guest"
+    (FirstGuest..LastGuest).each do |i|
+      possible[207].delete '128.111.207.' + i.to_s
     end
 
     # Calculate available IP addresses for each scope
@@ -90,8 +97,21 @@ module HostsHelper
     out << "option domain-name-servers 128.111.207.95,128.111.1.1;\n\n"
 
     # Build the ranges for each scope
-    scopes = [[186,First186,Last186],[206,First206,Last206],[207,First207,Last207]]
+    scopes = [
+      [186, First186, Last186],
+      [206, First206, Last206],
+      [207, First207, Last207]
+    ]
     ranges = []
+
+    # 207 is a special case since there's a hole. 
+    guest207 = []
+    # Remove IPs that are reserved for "GGSE Guest"
+    (FirstGuest..LastGuest).each do |i|
+      guest207 << '128.111.207.' + i.to_s
+    end
+
+
     scopes.each do |scope|
       sub = scope[0]
       first = scope[1]
@@ -106,6 +126,10 @@ module HostsHelper
       stop = nil
       [*first..last].each do |i|
         ip = "128.111.#{sub}.#{i}"
+
+        # Don't consider this address if it's in the GGSE Guest range
+        next if guest207.include? ip
+
         last_ip = "128.111.#{sub}.#{last}"
         if !used.include?(ip) and !range_open
           start = ip 
