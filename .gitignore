@@ -12,4 +12,4 @@ public/dhcpd.leases
 .ssh
 .vim*
 *.swp
-
+.gitconfig
