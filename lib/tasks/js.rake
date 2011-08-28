@@ -2,13 +2,13 @@ namespace :js do
   desc "Minify javascript src for production environment"
   task :min => :environment do
     # list of files to minify
-    libs = ['public/javascripts/prototype.js', 
-            'public/javascripts/effects.js', 
-            'public/javascripts/application.js']
+    libs = ['public/deezy/javascripts/prototype.js', 
+            'public/deezy/javascripts/effects.js', 
+            'public/deezy/javascripts/application.js']
 
     # paths to jsmin script and final minified file
     jsmin = 'script/javascript/jsmin.rb'
-    final = 'public/javascripts/all_min.js'
+    final = 'public/deezy/javascripts/all_min.js'
 
     # create single tmp js file
     tmp = Tempfile.open('all')
