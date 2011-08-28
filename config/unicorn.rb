@@ -13,7 +13,7 @@
 
 worker_processes 2
 
-user "www-data", "nogroup"
+user "deezy", "nogroup"
 
 # Help ensure your application will always spawn in the symlinked
 # "current" directory that Capistrano sets up.
