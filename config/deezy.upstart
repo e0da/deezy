@@ -1,0 +1,12 @@
+#deezy
+# Copy to /etc/init/deezy.conf
+
+start on started networking
+stop on shutdown
+
+expect daemon
+respawn
+
+chdir /opt/deezy
+exec .rvm/bin/deezy_unicorn_rails -E production -D -c config/unicorn.rb
+

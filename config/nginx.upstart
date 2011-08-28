@@ -1,0 +1,11 @@
+#nginx
+# Copy to /etc/init/nginx.conf
+
+start on started deezy
+stop on shutdown
+
+expect fork
+respawn
+
+exec nginx
+
