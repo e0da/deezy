@@ -42,7 +42,7 @@ var deezy_form_layout = function() {
     var ul = $$('#ip_picker ul')[0];
     ul.update('Loading...'); //clear the current contents
     picker.show();
-    var req = new Ajax.Request('/freeips.json', {
+    var req = new Ajax.Request('/deezy/freeips.json', {
       method:'get',
       onSuccess:function(transport) {
         ul.update();
