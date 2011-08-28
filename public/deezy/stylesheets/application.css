@@ -49,7 +49,7 @@ table {
 body {
   font-family:Arial,Helvetica,sans-serif;
   font-size:12px;
-  background-image:url(/images/green-concrete.jpg);
+  background-image:url(../images/green-concrete.jpg);
   background-color:#89916c;
   color:#2b3146;
 }
@@ -120,7 +120,7 @@ header, #content, footer {
   -webkit-border-radius:6px;
   overflow:auto;
   background:transparent;
-  background-image:url(/images/white-paper.jpg);
+  background-image:url(../images/white-paper.jpg);
 }
 
 header {
@@ -170,7 +170,7 @@ tr {
 }
 
 .alt_rows tbody tr:nth-child(odd) {
-  background-image:url(/images/green-transparent.png);
+  background-image:url(../images/green-transparent.png);
 }
 
 #show th {
@@ -239,7 +239,7 @@ small {
 }
 
 button {
-  background:transparent url(/images/button.png);
+  background:transparent url(../images/button.png);
   border:1px solid;
   border-color:#ccc #777 #777 #ccc;
   color:#505050;
@@ -251,7 +251,7 @@ button {
 }
 
 button:active {
-  background:transparent url(/images/button-active.png);
+  background:transparent url(../images/button-active.png);
   border-color:#777 #ccc #ccc #777;
 }
 
@@ -261,7 +261,7 @@ button[disabled] p {
 }
 
 button[disabled]:active {
-  background:transparent url(/images/button.png);
+  background:transparent url(../images/button.png);
   border-style: outset;
 }
 
@@ -349,7 +349,7 @@ input[type=radio] {
 }
 
 #ip_picker {
-  background-image:url(/images/green-transparent.png);
+  background-image:url(../images/green-transparent.png);
   color:#0b4d82;
   border:1px solid #0b4d82;
   padding:5px;
@@ -375,7 +375,7 @@ input[type=radio] {
 }
 
 #search_mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains {
-  background:url(/images/blue-glass.png) transparent 0 -2px;
+  background:url(../images/blue-glass.png) transparent 0 -2px;
   float:right;
   font-weight:bold;
   padding:3px;

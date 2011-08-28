@@ -41,6 +41,7 @@ Rails::Initializer.run do |config|
 
   config.action_controller.relative_url_root = '/deezy'
 
-  config.gem 'will_paginate'
+  config.gem 'will_paginate', :version => '~> 2.3.16'
   config.gem 'searchlogic'
+  config.gem 'sqlite3'
 end
