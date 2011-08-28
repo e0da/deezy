@@ -16,7 +16,7 @@ class HostsController < ApplicationController
     if params[:per_page]
       p = params[:per_page]
       if p.downcase == 'all'
-        p = 9999999999
+        p = 999999999
       elsif p.to_i < 1
         p = ppdef
       end 
