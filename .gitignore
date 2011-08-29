@@ -13,3 +13,4 @@ public/deezy/dhcpd.leases
 .vim*
 *.swp
 .gitconfig
+.rvmrc
