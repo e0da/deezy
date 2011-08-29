@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def is_mundo_or_local?
-    request.remote_ip == '187.0.0.1' or request.remote_ip == '128.111.207.250'
+    request.remote_ip == '127.0.0.1' or request.remote_ip == '128.111.207.250'
   end
 
 end
