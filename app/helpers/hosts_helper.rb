@@ -89,8 +89,8 @@ module HostsHelper
     out << "# wifi pool is 128.111.186.#{FirstWifi}-#{LastWifi}\n"
     out << "\n"
     out << "ddns-update-style none;\n"
-    out << "default-lease-time 86400;\n"
-    out << "max-lease-time 432000;\n"
+    out << "default-lease-time 3600;\n"
+    out << "max-lease-time 3600;\n"
     out << "authoritative;\n\n"
 
     out << "option domain-name \"education.ucsb.edu\";\n"
