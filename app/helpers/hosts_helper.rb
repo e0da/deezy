@@ -170,8 +170,8 @@ module HostsHelper
     out << "    pool {\n"
     out << "        allow members of \"wireless\";\n"
     out << "        range 128.111.186.#{FirstWifi} 128.111.186.#{LastWifi};\n"
-    out << "        default-lease-time 3600;\n"
-    out << "        max-lease-time 3600;\n"
+    out << "        default-lease-time 900;\n"
+    out << "        max-lease-time 900;\n"
     out << "    }\n\n" 
     out << "    pool {\n"
     ranges[186].each { |range| out << "        range #{range[0]} #{range[1]};\n" }
