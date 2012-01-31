@@ -1,18 +1,16 @@
 module HostsHelper
 
-  First206 = 6
-  Last206 = 200
-  First207 = 5
-  Last207 = 200
-  First186 = 1
-  Last186 = 90
-  FirstWifi = 91
-  LastWifi = 199
-  FirstGuest = 96
-  LastGuest = 116
-
-  LEASE_LENGTH = 3 * 60 * 60 # 3 hours
-  
+  FIRST_206    =  6
+  LAST_206     =  200
+  FIRST_207    =  5
+  LAST_207     =  200
+  FIRST_186    =  1
+  LAST_186     =  90
+  FIRST_WIFI   =  91
+  LAST_WIFI    =  199
+  FIRST_GUEST  =  96
+  LAST_GUEST   =  116
+  LEASE_LENGTH = 3*60*60 # 3 hours
 
   # Return all free IP addresses as a JSON object
   def free_ips_json
@@ -38,20 +36,20 @@ module HostsHelper
     possible[207] = []
     possible[186] = []
 
-    (First206..Last206).each do |i|
+    (FIRST_206..LAST_206).each do |i|
       possible[206] << '128.111.206.'+i.to_s
     end
 
-    (First207..Last207).each do |i|
+    (FIRST_207..LAST_207).each do |i|
       possible[207] << '128.111.207.'+i.to_s
     end
 
-    (First186..Last186).each do |i|
+    (FIRST_186..LAST_186).each do |i|
       possible[186] << '128.111.186.'+i.to_s
     end
 
     # Remove IPs that are reserved for "GGSE Guest"
-    (FirstGuest..LastGuest).each do |i|
+    (FIRST_GUEST..LAST_GUEST).each do |i|
       possible[207].delete '128.111.207.' + i.to_s
     end
 
@@ -85,10 +83,10 @@ module HostsHelper
     out << "\n"
 
     # Add some useful comments
-    out << "# 206 pool is 128.111.206.#{First206}-#{Last206}\n"
-    out << "# 207 pool is 128.111.207.#{First207}-#{Last207}\n"
-    out << "# 186 pool is 128.111.186.#{First186}-#{Last186}\n"
-    out << "# wifi pool is 128.111.186.#{FirstWifi}-#{LastWifi}\n"
+    out << "# 206 pool is 128.111.206.#{FIRST_206}-#{LAST_206}\n"
+    out << "# 207 pool is 128.111.207.#{FIRST_207}-#{LAST_207}\n"
+    out << "# 186 pool is 128.111.186.#{FIRST_186}-#{LAST_186}\n"
+    out << "# wifi pool is 128.111.186.#{FIRST_WIFI}-#{LAST_WIFI}\n"
     out << "\n"
     out << "ddns-update-style none;\n"
     out << "default-lease-time #{LEASE_LENGTH};\n"
@@ -100,16 +98,16 @@ module HostsHelper
 
     # Build the ranges for each scope
     scopes = [
-      [186, First186, Last186],
-      [206, First206, Last206],
-      [207, First207, Last207]
+      [186, FIRST_186, LAST_186],
+      [206, FIRST_206, LAST_206],
+      [207, FIRST_207, LAST_207]
     ]
     ranges = []
 
     # 207 is a special case since there's a hole. 
     guest207 = []
     # Remove IPs that are reserved for "GGSE Guest"
-    (FirstGuest..LastGuest).each do |i|
+    (FIRST_GUEST..LAST_GUEST).each do |i|
       guest207 << '128.111.207.' + i.to_s
     end
 
@@ -171,7 +169,7 @@ module HostsHelper
     out << "    }\n\n"
     out << "    pool {\n"
     out << "        allow members of \"wireless\";\n"
-    out << "        range 128.111.186.#{FirstWifi} 128.111.186.#{LastWifi};\n"
+    out << "        range 128.111.186.#{FIRST_WIFI} 128.111.186.#{LAST_WIFI};\n"
     out << "        default-lease-time 900;\n"
     out << "        max-lease-time 900;\n"
     out << "    }\n\n" 
