@@ -10,6 +10,8 @@ module HostsHelper
   LastWifi = 199
   FirstGuest = 96
   LastGuest = 116
+
+  LEASE_LENGTH = 3 * 60 * 60 # 3 hours
   
 
   # Return all free IP addresses as a JSON object
@@ -89,8 +91,8 @@ module HostsHelper
     out << "# wifi pool is 128.111.186.#{FirstWifi}-#{LastWifi}\n"
     out << "\n"
     out << "ddns-update-style none;\n"
-    out << "default-lease-time 3600;\n"
-    out << "max-lease-time 3600;\n"
+    out << "default-lease-time #{LEASE_LENGTH};\n"
+    out << "max-lease-time #{LEASE_LENGTH};\n"
     out << "authoritative;\n\n"
 
     out << "option domain-name \"education.ucsb.edu\";\n"
