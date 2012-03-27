@@ -10,27 +10,30 @@ class ApplicationController < ActionController::Base
   protected
 
   def conf
-    YAML.load_file "#{Rails.root}/config/deezy_auth.yml"
+    @@conf = YAML.load_file "#{Rails.root}/config/deezy_auth.yml"
   end
 
   def authenticate
-    conf
     is_mundo_or_local? or can_bind_as_help?
   end
 
   def can_bind_as_help?
     authenticate_or_request_with_http_basic do |username, password|
       # only help can authenticate, and you still have to type it
-      if username == 'help'
+      if username == conf['ldap']['username']
         ldap = Net::LDAP.new
-        ldap.host = 'directory.education.ucsb.edu'
-        ldap.auth 'uid=help,ou=people,o=education.ucsb.edu', password
+        ldap.host = conf['ldap']['host']
+        ldap.port = conf['ldap']['port'] if conf['ldap']['port']
+        ldap.auth(
+          conf['ldap']['bind_dn'] % conf['ldap']['username'],
+          conf['ldap']['password']
+        )
         ldap.bind 
       end
     end
   end
 
   def is_mundo_or_local?
-    request.remote_ip == '127.0.0.1' or request.remote_ip == '128.111.207.250'
+    conf['auth_exempt_ips'].include? request.remote_ip 
   end
 end

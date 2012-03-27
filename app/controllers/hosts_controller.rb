@@ -129,11 +129,13 @@ class HostsController < ApplicationController
   end
 
   def dhcpd_conf
+    @conf = conf
     headers["Content-Type"] = 'text/plain; charset=utf-8'
     render :layout => false
   end
 
   def free_ips
+    @conf = conf
     headers["Content-Type"] = 'application/json; charset=utf-8'
     response.headers["Cache-Control"] = "no-cache, no-store, max-age=0, must-revalidate"
     response.headers["Pragma"] = "no-cache"

@@ -77,24 +77,39 @@ module HostsHelper
 
 
   def dhcpd_conf
+
+    require 'pp'
+    pp @conf
+
     timestamp = Time.gm(*Host.find(:first, :order => 'updated_at DESC', :limit => 1).updated_at)
     
-    out = "# Last updated #{timestamp}\n\n"
-    out << "\n"
+    out = []
+    out << "# Last updated #{timestamp}"
+    out << ''
 
-    # Add some useful comments
-    out << "# 206 pool is 128.111.206.#{FIRST_206}-#{LAST_206}\n"
-    out << "# 207 pool is 128.111.207.#{FIRST_207}-#{LAST_207}\n"
-    out << "# 186 pool is 128.111.186.#{FIRST_186}-#{LAST_186}\n"
-    out << "# wifi pool is 128.111.186.#{FIRST_WIFI}-#{LAST_WIFI}\n"
-    out << "\n"
-    out << "ddns-update-style none;\n"
-    out << "default-lease-time #{LEASE_LENGTH};\n"
-    out << "max-lease-time #{LEASE_LENGTH};\n"
-    out << "authoritative;\n\n"
 
-    out << "option domain-name \"education.ucsb.edu\";\n"
-    out << "option domain-name-servers 128.111.207.95,128.111.1.1;\n\n"
+    @conf['subnets'].each do |s|
+      out << "# #{s['subnet']}:"
+      out << "#   ranges:"
+      s['ranges'].each do |r|
+        out << "#     #{r['range']}#{' - wireless relay' if r['wireless_relay']}#{" - #{r['notes']}" if r['notes']}"
+      end
+      out << ''
+    end
+
+    out << ''
+
+    out << "ddns-update-style none;"
+    out << "default-lease-time #{@conf['lease_time']};"
+    out << "max-lease-time #{@conf['lease_time']};"
+    out << "authoritative;"
+
+    out << ''
+
+    out << %[option domain-name "#{@conf['domain_name']}";]
+    out << %[option domain-name-servers #{@conf['domain_name_servers'].join(',')};]
+
+    out << ''
 
     # Build the ranges for each scope
     scopes = [
@@ -146,51 +161,60 @@ module HostsHelper
       end
     end
 
-    out << "subnet 128.111.206.0 netmask 255.255.255.0 {\n"
-    out << "    option routers 128.111.206.254;\n"
-    out << "    pool {\n"
-    ranges[206].each { |range| out << "        range #{range[0]} #{range[1]};\n" }
-    out << "        deny unknown clients;\n"
-    out << "    }\n"
-    out << "}\n"
+    out << "subnet 128.111.206.0 netmask 255.255.255.0 {"
+    out << "    option routers 128.111.206.254;"
+    out << "    pool {"
 
-    out << "subnet 128.111.207.0 netmask 255.255.255.0 {\n"
-    out << "    option routers 128.111.207.254;\n"
-    out << "    pool {\n"
-    ranges[207].each { |range| out << "        range #{range[0]} #{range[1]};\n" }
-    out << "        deny unknown clients;\n"
-    out << "    }\n"
-    out << "}\n"
+    ranges[206].each { |range| out << "        range #{range[0]} #{range[1]};" }
 
-    out << "subnet 128.111.186.0 netmask 255.255.255.0 {\n"
-    out << "    option routers 128.111.186.254;\n\n"
-    out << "    class \"wireless\" {\n"
-    out << "        match if (binary-to-ascii(10,8, \".\", packet(24,4)) = \"128.111.186.252\");\n"
-    out << "    }\n\n"
-    out << "    pool {\n"
-    out << "        allow members of \"wireless\";\n"
-    out << "        range 128.111.186.#{FIRST_WIFI} 128.111.186.#{LAST_WIFI};\n"
-    out << "        default-lease-time 900;\n"
-    out << "        max-lease-time 900;\n"
-    out << "    }\n\n" 
-    out << "    pool {\n"
-    ranges[186].each { |range| out << "        range #{range[0]} #{range[1]};\n" }
-    out << "        deny unknown clients;\n"
-    out << "    }\n\n"
-    out << "}\n"
+    out << "        deny unknown clients;"
+    out << "    }"
+    out << "}"
+
+    out << "subnet 128.111.207.0 netmask 255.255.255.0 {"
+    out << "    option routers 128.111.207.254;"
+    out << "    pool {"
+
+    ranges[207].each { |range| out << "        range #{range[0]} #{range[1]};" }
+
+    out << "        deny unknown clients;"
+    out << "    }"
+    out << "}"
+
+    out << "subnet 128.111.186.0 netmask 255.255.255.0 {"
+    out << "    option routers 128.111.186.254;"
+    out << "    class \"wireless\" {"
+    out << "        match if (binary-to-ascii(10,8, \".\", packet(24,4)) = \"128.111.186.252\");"
+    out << "    }"
+    out << "    pool {"
+    out << "        allow members of \"wireless\";"
+    out << "        range 128.111.186.#{FIRST_WIFI} 128.111.186.#{LAST_WIFI};"
+    out << "        default-lease-time 900;"
+    out << "        max-lease-time 900;"
+    out << "    }" 
+    out << "    pool {"
+
+    ranges[186].each { |range| out << "        range #{range[0]} #{range[1]};" }
+
+    out << "        deny unknown clients;"
+    out << "    }"
+    out << "}"
 
 
-    out << "group {\n"
-    out << "    filename \"wired\";\n"
+    out << "group {"
+    out << "    filename \"wired\";"
+
     Host.find_all_by_enabled(true).each do |host|
       out << "        host  #{host.hostname}  { hardware ethernet #{host.mac}; "
       out << "fixed-address #{host.ip}; " unless host.ip.blank? # Only print the fixed address if an IP is specified.
-      out << "}\n"
+      out << "        }"
     end
-    out << "}\n\n"
+
+    out << "}"
 
 
     out << '# File generated successfully' # So we can tell the entire file is generated when we download it.
 
+    out.join "\n"
   end
 end
