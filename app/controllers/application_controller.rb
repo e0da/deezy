@@ -1,4 +1,5 @@
 require 'net/ldap'
+require 'yaml'
 
 class ApplicationController < ActionController::Base
   helper :all # include all helpers, all the time
@@ -8,7 +9,12 @@ class ApplicationController < ActionController::Base
 
   protected
 
+  def conf
+    YAML.load_file "#{Rails.root}/config/deezy_auth.yml"
+  end
+
   def authenticate
+    conf
     is_mundo_or_local? or can_bind_as_help?
   end
 
@@ -27,5 +33,4 @@ class ApplicationController < ActionController::Base
   def is_mundo_or_local?
     request.remote_ip == '127.0.0.1' or request.remote_ip == '128.111.207.250'
   end
-
 end

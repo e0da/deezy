@@ -1,0 +1,9 @@
+ldap:
+  host: localhost
+  username: admin
+  password: secret
+  bind_dn: uid=%s,ou=people,dc=localhost
+
+exempt_ips:
+  - 127.0.0.1
+  - 10.0.0.1
