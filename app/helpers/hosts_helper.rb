@@ -2,107 +2,35 @@ require 'ipaddr'
 
 module HostsHelper
 
+  FIRST_206    =  6
+  LAST_206     =  200
+  FIRST_207    =  5
+  LAST_207     =  200
+  FIRST_186    =  1
+  LAST_186     =  90
+  FIRST_WIFI   =  91
+  LAST_WIFI    =  199
+  FIRST_GUEST  =  96
+  LAST_GUEST   =  116
+  LEASE_LENGTH = 3*60*60 # 3 hours
+
+
   def dhcpd_conf
-
-    used_ips = []
-    Host.find_all_by_enabled(true).collect do |host|
-      used_ips << IPAddr.new(host.ip) unless host.ip.blank?
-    end
-
-    require 'pp'
-
-    pp @conf
-
-    timestamp = Time.gm(*Host.find(:first, :order => 'updated_at DESC', :limit => 1).updated_at)
-    
-    out = []
-
-    # XXX You cannot change this line. It must be the first line, and it must
-    # not be edited. This line is how the consuming DHCP server determines
-    # whether to HUP the daemon.
+    # XXX You cannot change the first and last lines. They're consumed by the
+    # receiving DHCP server and it expects a specific format. XXX
     #
-    out << "# Last updated #{timestamp}"
-
-    out << ''
-
-    # comments so we can glean some useful stuff about the configuration by
-    # glancing at the config file
-    #
-    @conf['dhcpd']['subnets'].each do |s|
-      out << '# %s/%s via %s' % [s['subnet'], s['netmask'], s['routers']]
-      s['pools'].each do |p|
-        out << [
-          "#   #{p['first']}-#{p['last']}",
-          "#{" (wireless relay)" if p['wireless_relay']}",
-          "#{" '#{p['notes']}'" if p['notes']}"
-        ].join
-      end
-      out << '#'
-    end
-
-    out << ''
-
-    @conf['dhcpd']['subnets'].each do |s|
-      out << "subnet #{s['subnet']} netmask #{s['netmask']} {"
-      out << "  option routers #{s['routers']};"
-
-      s['pools'].each do |p|
-        possible_ips = [*IPAddr.new(p['first'])..IPAddr.new(p['last'])].reject do |ip|
-          used_ips.include? ip
-        end
-        p['holes'].each do |h|
-          possible_ips = possible_ips.reject do |ip|
-            [*IPAddr.new(h['first'])..IPAddr.new(p['last'])].include? ip
-          end
-        end if p['holes']
-
-        out << "  pool {"
-        possible_ips.each do |ip|
-          out << "    range #{ip} #{ip};"
-        end
-        out << "  }"
-      end
-
-      out << '}'
-    end
-
-    out << "\n\n\n\n\n"
-
-
-    out << "group {"
-    out << '    filename "deezy";'
-
-    Host.find_all_by_enabled(true).each do |host|
-      out << [
-        "        host  #{host.hostname}  { hardware ethernet #{host.mac}; ",
-        "#{"fixed-address #{host.ip};"  unless host.ip.blank?}",
-        "}"
-      ].join
-    end
-
-    out << "}"
-
-
-    out << '# File generated successfully' # So we can tell the entire file is generated when we download it.
-
-    out.join "\n"
+    [
+      "# Last updated #{Host.last_updated}",
+      comments,
+      globals,
+      subnets,
+      hosts,
+      '# File generated successfully'
+    ].join "\n"
   end
 
   # Return all free IP addresses as a JSON object
   def free_ips_json
-
-    FIRST_206    =  6
-    LAST_206     =  200
-    FIRST_207    =  5
-    LAST_207     =  200
-    FIRST_186    =  1
-    LAST_186     =  90
-    FIRST_WIFI   =  91
-    LAST_WIFI    =  199
-    FIRST_GUEST  =  96
-    LAST_GUEST   =  116
-    LEASE_LENGTH = 3*60*60 # 3 hours
-
 
     # Gather all used IP address from database
     used = []
@@ -162,5 +90,151 @@ module HostsHelper
     end
     out.chop! # Removes extraneous comma 
     out << ' ] } }' 
+  end
+
+  private
+
+  #
+  # Return an array of IP address pairs which represent DHCPD ranges. The
+  # ranges are calculated by running through the list of ips and detecting
+  # non-contiguous addresses.
+  #
+  def ranges(ips)
+    ranges, start, prev = [], ips.first, ips.first
+    ips.each_with_index do |ip, i|
+      prev = ips[i-1] if i > 0
+      if ip == ips.last
+        ranges << [start, ip]
+      elsif ip.to_i - prev.to_i > 1
+        ranges << [start, prev]
+        start = ip
+      end
+    end
+    ranges
+  end
+
+  #
+  # Comments so we can glean some useful stuff about the configuration by
+  # glancing at the config file
+  #
+  def comments
+    out = []
+    out << '#'
+    @conf['dhcpd']['subnets'].each do |s|
+      out << '# %s/%s via %s' % [s['subnet'], s['netmask'], s['routers']]
+      s['pools'].each do |p|
+        exceptions = []
+        require 'pp'
+        puts '#'*80
+        pp p['exceptions']
+        pp @conf
+        p['exceptions'].each do |e|
+          exceptions << ", [except: %s-%s (%s)]" % [e['first'], e['last'], e['notes']]
+        end if p['exceptions']
+        out << [
+          "#   #{p['first']}-#{p['last']}",
+          "#{" (#{p['notes']})" if p['notes']}",
+            exceptions.join
+        ].join
+      end
+      out << '#'
+    end
+    out << ''
+  end
+
+
+  def globals
+    out = []
+    out << raw_options(@conf['dhcpd']['raw_options'])
+    out << dhcpd_options(@conf['dhcpd']['options'])
+    out << ''
+  end
+
+  def dhcpd_options(options, indent=0)
+    out = []
+    options.each do |key, value|
+      value = value.join(',') if value.class == Array
+      out << "#{' '*indent}option #{key} #{value.chomp};"
+    end if options
+    out << ''
+  end
+
+  def raw_options(options, indent=0)
+    out = []
+    options.each do |option|
+      out << "#{' '*indent}#{option};"
+    end if options
+    out << ''
+  end
+
+
+  def classes(subnet)
+    out = []
+    subnet['classes'].each do |clas|
+      out << %[  class "#{clas['class']}" {]
+      out << raw_options(clas['raw_options'], 4)
+      out << "  }"
+      out << ''
+    end if subnet['classes']
+    out << ''
+  end
+
+  def pools(subnet)
+    out = []
+    subnet['pools'].each do |pool|
+
+      pool_ips = [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
+      used_ips = Host.used_ips
+      possible_ips = pool_ips.reject do |ip|
+        used_ips.include? ip
+      end
+
+      pool['exceptions'].each do |h|
+        possible_ips.reject! do |ip|
+          [*IPAddr.new(h['first'])..IPAddr.new(pool['last'])].include? ip
+        end
+      end if pool['exceptions']
+
+      out << "  pool {"
+
+      out << raw_options(pool['raw_options'], 4)
+
+      ranges(possible_ips).each do |range|
+        out << "    range #{range.first} #{range.last};"
+      end
+      out << "  }"
+      out << ''
+    end
+    out << ''
+  end
+
+
+  def subnets
+    out = []
+    @conf['dhcpd']['subnets'].each do |subnet|
+      out << "subnet #{subnet['subnet']} netmask #{subnet['netmask']} {"
+      out << dhcpd_options(subnet['options'], 2)
+      out << raw_options(subnet['raw_options'], 2)
+      out << classes(subnet)
+      out << pools(subnet)
+      out << '}'
+      out << ''
+    end
+    out << ''
+  end
+
+  def hosts
+    out = []
+    out << "group {"
+    out << '  filename "deezy";'
+    Host.find_all_by_enabled(true).each do |host|
+      out << [
+        "  host  #{host.hostname}  { hardware ethernet #{host.mac}; ",
+        "#{"fixed-address #{host.ip};"  unless host.ip.blank?}",
+        "}"
+      ].join
+    end
+    out << "}"
+    out << ''
   end
 end

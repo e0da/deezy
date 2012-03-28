@@ -1,3 +1,5 @@
+require 'ipaddr'
+
 class Host < ActiveRecord::Base
   validates_uniqueness_of :hostname
   validates_format_of :mac, :with => /[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}/
@@ -13,15 +15,28 @@ class Host < ActiveRecord::Base
   # Accept an IP address as a dot notation string and return it as an integer
   #
   def self.ip_as_int(dec)
+    # FIXME can I get rid of this return nil?
     return nil if dec.blank?
-    dec.split('.').inject(0) {|total,value| (total << 8) + value.to_i}
+    IPAddr.new(dec).to_i
   end
 
   #
   # Accept an IP address as an integer and return it as a dot notation string
   # 
   def self.ip_as_dec(int)
-    [24,16,8,0].collect {|o| (int >> o) & 255}.join '.'
+    IPAddr.new(int, Socket::AF_INET).to_s
+  end
+
+  def self.used_ips
+    used_ips = []
+    Host.find_all_by_enabled(true).collect do |host|
+      used_ips << IPAddr.new(host.ip) unless host.ip.blank?
+    end
+    used_ips
+  end
+
+  def self.last_updated
+    Time.gm(*find(:first, :order => 'updated_at DESC', :limit => 1).updated_at)
   end
 
   #
@@ -34,5 +49,4 @@ class Host < ActiveRecord::Base
       e.gsub! />/, '&gt;'
     end
   end
-
 end
