@@ -124,10 +124,6 @@ module HostsHelper
       out << '# %s/%s via %s' % [s['subnet'], s['netmask'], s['routers']]
       s['pools'].each do |p|
         exceptions = []
-        require 'pp'
-        puts '#'*80
-        pp p['exceptions']
-        pp @conf
         p['exceptions'].each do |e|
           exceptions << ", [except: %s-%s (%s)]" % [e['first'], e['last'], e['notes']]
         end if p['exceptions']
