@@ -40,10 +40,4 @@ Rails::Initializer.run do |config|
   # config.i18n.default_locale = :de
 
   config.action_controller.relative_url_root = '/deezy'
-
-  config.gem 'will_paginate', :version => '~> 2.3.16'
-  config.gem 'searchlogic'
-  config.gem 'sqlite3'
-  config.gem 'net-ldap'
-  config.gem 'ip'
 end
