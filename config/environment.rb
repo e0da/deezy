@@ -45,4 +45,5 @@ Rails::Initializer.run do |config|
   config.gem 'searchlogic'
   config.gem 'sqlite3'
   config.gem 'net-ldap'
+  config.gem 'ip'
 end
