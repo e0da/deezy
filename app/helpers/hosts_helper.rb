@@ -3,6 +3,9 @@ require 'json'
 
 module HostsHelper
 
+  #
+  # Output the machine-consumable IS&C DHCPD dhcpd.conf
+  #
   def dhcpd_conf
     # XXX You cannot change the first and last lines. They're consumed by the
     # receiving DHCP server and it expects a specific format. XXX
@@ -19,6 +22,8 @@ module HostsHelper
 
   #
   # Return all free IP addresses as JSON
+  #
+  # Organized as a list of pools with their available IPs
   #
   def free_ips_json
     out = []
@@ -93,6 +98,9 @@ module HostsHelper
   end
 
 
+  #
+  # Write global options
+  #
   def globals
     out = []
     out << raw_options(@conf['dhcpd']['raw_options'])
@@ -100,6 +108,10 @@ module HostsHelper
     out << ''
   end
 
+  #
+  # Write options in the standard "option key value;" way for DHCPD.
+  # Optionally, supply an indentation level.
+  #
   def dhcpd_options(options, indent=0)
     out = []
     options.each do |key, value|
@@ -109,6 +121,9 @@ module HostsHelper
     out << ''
   end
 
+  #
+  # Write raw options at the specified indentation level
+  #
   def raw_options(options, indent=0)
     out = []
     options.each do |option|
@@ -118,6 +133,9 @@ module HostsHelper
   end
 
 
+  #
+  # Return the DHCPD classes for the specified subnet
+  #
   def classes(subnet)
     out = []
     subnet['classes'].each do |clas|
@@ -129,10 +147,19 @@ module HostsHelper
     out << ''
   end
 
+  #
+  # Wrap and cache Host.used_ips to get the list of IPs that are in use in
+  # Deezy
+  #
   def used_ips
     @used_ips ||= Host.used_ips
   end
 
+
+
+  #
+  # Return the IP address pools for the specified subnet
+  #
   def pools(subnet)
     out = []
     subnet['pools'].each do |pool|
@@ -162,6 +189,9 @@ module HostsHelper
   end
 
 
+  #
+  # Output all of the subnets
+  #
   def subnets
     out = []
     @conf['dhcpd']['subnets'].each do |subnet|
@@ -176,6 +206,9 @@ module HostsHelper
     out << ''
   end
 
+  #
+  # Output all of the hosts from the database
+  #
   def hosts
     out = []
     out << "group {"
