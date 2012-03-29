@@ -29,6 +29,9 @@ module HostsHelper
     out = []
     @conf['dhcpd']['subnets'].each do |subnet|
       subnet['pools'].each do |pool|
+
+        # TODO we calculate the pool twice. DRY this.
+        #
         unless pool['hide_from_freeips']
           ips = []
           ips << [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
