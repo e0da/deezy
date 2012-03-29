@@ -23,24 +23,25 @@ module HostsHelper
   def free_ips_json
     out = []
     @conf['dhcpd']['subnets'].each do |subnet|
-      net = IPAddr.new("#{subnet['pools'].first['first']}/#{subnet['netmask']}").to_s
-      ips = []
       subnet['pools'].each do |pool|
-        ips << [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
-        ips.flatten!
-        pool['exceptions'].each do |exception|
+        unless pool['hide_from_freeips']
+          ips = []
+          ips << [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
+          ips.flatten!
+          pool['exceptions'].each do |exception|
+            ips.reject! do |ip|
+              [*IPAddr.new(exception['first'])..IPAddr.new(exception['last'])].include? ip
+            end
+          end if pool['exceptions']
           ips.reject! do |ip|
-            [*IPAddr.new(exception['first'])..IPAddr.new(exception['last'])].include? ip
+            used_ips.include? ip
           end
-        end if pool['exceptions']
-        ips.reject! do |ip|
-          used_ips.include? ip
+          out << {
+            :pool => "#{pool['first']}-#{pool['last']}",
+            :ips => ips.map {|ip| ip.to_s}
+          }
         end
       end
-      out << {
-        :subnet => net,
-        :ips => ips.map {|ip| ip.to_s}
-      }
     end
     out.to_json
   end
