@@ -320,10 +320,6 @@ input[type=radio] {
   margin:10px;
 }
 
-#host_scope {
-  vertical-align:middle;
-}
-
 .show_edit {
   min-width:48px;
 }
