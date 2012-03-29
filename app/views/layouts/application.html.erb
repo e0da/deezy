@@ -19,7 +19,6 @@
         <li><%= link_to 'Show All', root_url %>
         <li><%= link_to 'New Host', new_host_path %>
         <li><%= link_to 'dhcpd.conf', "#{root_url}dhcpd.conf" %>
-        <li><%= link_to 'dhcpd.leases', "#{root_url}dhcpd.leases" %>
       </ul>
 
       <% form_for @search, :url => { :action => 'index' } do |f| %>
@@ -34,4 +33,3 @@
       <p>Copyright © <span id=copyrightyear>2012</span> by <a href=http://justinforce.com>Justin Force</a><br>
       <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
       <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
-

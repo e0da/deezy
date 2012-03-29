@@ -1,9 +1,7 @@
 .bundle
 db/*.sqlite3
-db/schema.rb
 log/*.log
 tmp/**/*
-public/deezy/javascripts/all_min.js
 public/deezy/dhcpd.leases
 .bash*
 .gem*

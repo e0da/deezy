@@ -1,4 +1,6 @@
-# enable Bundler
+#
+# Enable Bundler
+#
 begin
   require "rubygems"
   require "bundler"
