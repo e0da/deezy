@@ -3,19 +3,6 @@ require 'json'
 
 module HostsHelper
 
-  FIRST_206    =  6
-  LAST_206     =  200
-  FIRST_207    =  5
-  LAST_207     =  200
-  FIRST_186    =  1
-  LAST_186     =  90
-  FIRST_WIFI   =  91
-  LAST_WIFI    =  199
-  FIRST_GUEST  =  96
-  LAST_GUEST   =  116
-  LEASE_LENGTH = 3*60*60 # 3 hours
-
-
   def dhcpd_conf
     # XXX You cannot change the first and last lines. They're consumed by the
     # receiving DHCP server and it expects a specific format. XXX
@@ -34,17 +21,11 @@ module HostsHelper
   # Return all free IP addresses as JSON
   #
   def free_ips_json
-
     out = []
     @conf['dhcpd']['subnets'].each do |subnet|
       net = IPAddr.new("#{subnet['pools'].first['first']}/#{subnet['netmask']}").to_s
-
-
       ips = []
       subnet['pools'].each do |pool|
-        puts '#'*80
-        pp [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
-
         ips << [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
         ips.flatten!
         pool['exceptions'].each do |exception|
@@ -56,13 +37,11 @@ module HostsHelper
           used_ips.include? ip
         end
       end
-
       out << {
         :subnet => net,
         :ips => ips.map {|ip| ip.to_s}
       }
     end
-
     out.to_json
   end
 
