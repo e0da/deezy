@@ -45,7 +45,7 @@ module HostsHelper
             used_ips.include? ip
           end
           out << {
-            :pool => "#{pool['first']}-#{pool['last']}",
+            :pool => "#{pool['first']} — #{pool['last']}",
             :ips => ips.map {|ip| ip.to_s}
           }
         end

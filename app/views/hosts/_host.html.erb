@@ -1,16 +1,28 @@
 <% form_for(host) do |f| %>
   <%= f.error_messages %>
-  <p><%= f.label :mac, 'MAC address'%><br><%= f.text_field :mac %>
-  <p><%= f.label :ip, "IP address <small>(blank if <a href=# onclick='$(\"host_ip\").value=\"\";return false'>dynamic</a>)</small>" %><br><%= f.text_field :ip %>
-  <p><%= f.label :itgid, 'ITG ID' %><br><%= f.text_field :itgid %>
-  <p><%= f.label :room, 'Room' %><br><%= f.text_field :room %>
-  <p><%= f.label :hostname, 'hostname' %><br><%= f.text_field :hostname %>
-  <p><%= f.label :uid, 'UID' %><br><%= f.text_field :uid %>
-  <p>Enabled?<br>
+  <div id=ip_picker>
+    <div class=list></div>
+  </div>
+  <%= f.label :mac, 'MAC address'%>
+  <%= f.text_field :mac %>
+  <%= f.label :ip, "IP address <small>(blank if <a href=# onclick='$(\"#host_ip\").val(\"\");return false'>dynamic</a>)</small>" %>
+  <%= f.text_field :ip %>
+  <%= f.label :itgid, 'ITG ID' %>
+  <%= f.text_field :itgid %>
+  <%= f.label :room, 'Room' %>
+  <%= f.text_field :room %>
+  <%= f.label :hostname, 'hostname' %>
+  <%= f.text_field :hostname %>
+  <%= f.label :uid, 'UID' %>
+  <%= f.text_field :uid %>
+  <p class=mock_label>Enabled?</p>
   <%= f.radio_button :enabled, 'true', :checked => true %>
-  <%= f.label 'enabled_true', 'Enabled' %><br>
+  <%= f.label 'enabled_true', 'Enabled' %>
   <%= f.radio_button :enabled, 'false' %>
-  <%= f.label 'enabled_false', 'Disabled' %> 
-  <p><%= f.label :notes %><br><%= f.text_area :notes, :rows => 4 %>
-  <p><button type=submit class=save id=host_submit><p><%= image_tag 'button_save.png' %>Save</button></p>
+  <%= f.label 'enabled_false', 'Disabled' %>
+  <%= f.label :notes %>
+  <%= f.text_area :notes, :rows => 4 %>
+  <button type=submit class=save id=host_submit>
+    <%= image_tag 'button_save.png' %>Save
+  </button>
 <% end %>
