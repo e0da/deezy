@@ -1,4 +1,5 @@
 require 'ipaddr'
+require 'json'
 
 module HostsHelper
 
@@ -29,67 +30,40 @@ module HostsHelper
     ].join "\n"
   end
 
-  # Return all free IP addresses as a JSON object
+  #
+  # Return all free IP addresses as JSON
+  #
   def free_ips_json
 
-    # Gather all used IP address from database
-    used = []
-    used[206] = []
-    used[207] = []
-    used[186] = []
+    out = []
+    @conf['dhcpd']['subnets'].each do |subnet|
+      net = IPAddr.new("#{subnet['pools'].first['first']}/#{subnet['netmask']}").to_s
 
-    Host.find_all_by_scope('206').each { |e| used[206] << e.ip }
-    used[206].uniq!
 
-    Host.find_all_by_scope('207').each { |e| used[207] << e.ip }
-    used[207].uniq!
+      ips = []
+      subnet['pools'].each do |pool|
+        puts '#'*80
+        pp [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
 
-    Host.find_all_by_scope('186').each { |e| used[186] << e.ip }
-    used[186].uniq!
-
-    # Calculate all possible IP addresses
-    possible = []
-    possible[206] = []
-    possible[207] = []
-    possible[186] = []
-
-    (FIRST_206..LAST_206).each do |i|
-      possible[206] << '128.111.206.'+i.to_s
-    end
-
-    (FIRST_207..LAST_207).each do |i|
-      possible[207] << '128.111.207.'+i.to_s
-    end
-
-    (FIRST_186..LAST_186).each do |i|
-      possible[186] << '128.111.186.'+i.to_s
-    end
-
-    # Remove IPs that are reserved for "GGSE Guest"
-    (FIRST_GUEST..LAST_GUEST).each do |i|
-      possible[207].delete '128.111.207.' + i.to_s
-    end
-
-    # Calculate available IP addresses for each scope
-    scope = {}
-    scope['206'] = possible[206] - used[206]
-    scope['207'] = possible[207] - used[207]
-    scope['186'] = possible[186] - used[186]
-
-    # Construct JSON object
-    out = '{ "free_ips": { '
-    out << ' "scopes": [ '
-    scope.each_pair do |k,s|
-      out << ' { "id": "'+k+'", '
-      out << ' "ips": [ '
-      s.each do |ip|
-        out << '{ "ip": "'+ip+'" },'
+        ips << [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
+        ips.flatten!
+        pool['exceptions'].each do |exception|
+          ips.reject! do |ip|
+            [*IPAddr.new(exception['first'])..IPAddr.new(exception['last'])].include? ip
+          end
+        end if pool['exceptions']
+        ips.reject! do |ip|
+          used_ips.include? ip
+        end
       end
-      out.chop! # Removes extraneous comma
-      out << '] }, ' 
+
+      out << {
+        :subnet => net,
+        :ips => ips.map {|ip| ip.to_s}
+      }
     end
-    out.chop! # Removes extraneous comma 
-    out << ' ] } }' 
+
+    out.to_json
   end
 
   private
@@ -175,12 +149,15 @@ module HostsHelper
     out << ''
   end
 
+  def used_ips
+    @used_ips ||= Host.used_ips
+  end
+
   def pools(subnet)
     out = []
     subnet['pools'].each do |pool|
 
       pool_ips = [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
-      used_ips = Host.used_ips
       possible_ips = pool_ips.reject do |ip|
         used_ips.include? ip
       end

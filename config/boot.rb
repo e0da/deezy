@@ -38,7 +38,7 @@ module Rails
       load_initializer
 
       # enable Bundler
-      Rails::Initialize.class_eval do
+      Rails::Initializer.class_eval do
         def load_gems
           @bundler_loaded ||= Bundler.require :default, Rails.env
         end

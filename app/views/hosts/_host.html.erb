@@ -1,6 +1,5 @@
 <% form_for(host) do |f| %>
   <%= f.error_messages %>
-  <p><%= f.label :scope %><br><%= select_scope %>
   <p><%= f.label :mac, 'MAC address'%><br><%= f.text_field :mac %>
   <p><%= f.label :ip, "IP address <small>(blank if <a href=# onclick='$(\"host_ip\").value=\"\";return false'>dynamic</a>)</small>" %><br><%= f.text_field :ip %>
   <p><%= f.label :itgid, 'ITG ID' %><br><%= f.text_field :itgid %>

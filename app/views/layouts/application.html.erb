@@ -8,7 +8,7 @@
 <% if RAILS_ENV == 'production' %>
   <%= javascript_include_tag 'all_min' %>
 <% else %>
-  <%= javascript_include_tag 'prototype','effects','application' %>
+  <%= javascript_include_tag 'jquery.min.js','application' %>
 <% end %>
 <div id=faco>
   <div id=facr>

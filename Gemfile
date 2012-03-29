@@ -6,3 +6,9 @@ gem 'searchlogic'
 gem 'sqlite3'
 gem 'net-ldap'
 gem 'ip'
+gem 'json'
+
+# coffeescript
+gem 'coffee-script'
+gem 'guard'
+gem 'guard-rake'
