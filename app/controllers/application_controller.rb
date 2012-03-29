@@ -14,28 +14,36 @@ class ApplicationController < ActionController::Base
   end
 
   def authenticate
-    is_mundo_or_local? or can_bind_as_help?
+    is_exempt? or can_bind_as_help?
   end
 
   def can_bind_as_help?
-    authenticate_or_request_with_http_basic do |username, password|
 
-      # only help can authenticate, and you still have to type it
-      ldconf = conf['auth']['ldap']
-      if username == ldap['username']
-        ldap = Net::LDAP.new
-        ldap.host = ldconf['host']
-        ldap.port = ldconf['port'] if ldconf['port']
-        ldap.auth(
-          ldconf['bind_dn'] % ldconf['username'],
-          ldconf['password']
-        )
-        ldap.bind 
+    # use authentication if it's configured
+    if conf['auth']
+      authenticate_or_request_with_http_basic do |username, password|
+
+        # only help can authenticate, and you still have to type it
+        ldconf = conf['auth']['ldap']
+        if username == ldconf['username']
+          ldap = Net::LDAP.new
+          ldap.host = ldconf['host']
+          ldap.port = ldconf['port'] if ldconf['port']
+          ldap.auth(
+            ldconf['bind_dn'] % ldconf['username'],
+            ldconf['password']
+          )
+          ldap.bind 
+        end
       end
     end
   end
 
-  def is_mundo_or_local?
-    conf['auth']['exempt_ips'].include? request.remote_ip 
+  def is_exempt?
+    if conf['auth'] && conf['auth']['exempt_ips']
+      conf['auth']['exempt_ips'].include? request.remote_ip 
+    else
+      true
+    end
   end
 end
