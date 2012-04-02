@@ -4,16 +4,15 @@
 (function() {
 
   $(function() {
-    var pools;
     if ($('#ip_picker').length > 0) {
-      pools = [];
       return $.getJSON('/deezy/freeips.json', function(data) {
-        var ip, ip_picker, li, list, pool, _i, _j, _len, _len2, _ref;
+        var form, ip, ip_picker, li, list, pool, pools, select, _i, _j, _k, _len, _len2, _len3, _ref;
+        pools = [];
         ip_picker = $('#ip_picker');
         ip_picker.click(function(event) {
-          var el;
-          el = $(event.target);
-          if ($(el).is('li')) return $('#host_ip').val(el.text());
+          var clicked;
+          clicked = $(event.target);
+          if ($(clicked).is('li')) return $('#host_ip').val(clicked.text());
         });
         for (_i = 0, _len = data.length; _i < _len; _i++) {
           pool = data[_i];
@@ -28,21 +27,18 @@
             list.ips.append(li);
           }
         }
-        return $(function() {
-          var form, pool, select, _k, _len3;
-          form = $('form.edit_host, form.new_host');
-          select = $('<select>').change(function() {
-            var i;
-            i = $(this).find(':selected').index();
-            return ip_picker.find('.list').empty().append(pools[i].ips);
-          });
-          for (_k = 0, _len3 = pools.length; _k < _len3; _k++) {
-            pool = pools[_k];
-            select.append($("<option>" + pool.pool + "</option>"));
-          }
-          ip_picker.prepend(select);
-          return ip_picker.find('.list').append(pools[0].ips);
+        form = $('form.edit_host, form.new_host');
+        select = $('<select>').change(function() {
+          var i;
+          i = $(this).find(':selected').index();
+          return ip_picker.find('.list').empty().append(pools[i].ips);
         });
+        for (_k = 0, _len3 = pools.length; _k < _len3; _k++) {
+          pool = pools[_k];
+          select.append($("<option>" + pool.pool + "</option>"));
+        }
+        ip_picker.prepend(select);
+        return ip_picker.find('.list').append(pools[0].ips);
       });
     }
   });

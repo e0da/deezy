@@ -339,6 +339,11 @@ input[type=radio] {
   vertical-align:middle;
 }
 
+#hosts td.notes_col {
+  white-space: pre-wrap;
+  line-height: 1.2em;
+}
+
 #notes_th {
   max-width:100%;
 }
