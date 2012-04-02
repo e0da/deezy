@@ -11,7 +11,7 @@ $ ->
       ip_picker = $('#ip_picker')
       ip_picker.click (event) ->
         clicked = $(event.target)
-        $('#host_ip').val(clicked.text()) if $(clicked).is 'li'
+        $('#host_ip').hide().val(clicked.text()).fadeIn() if $(clicked).is 'li'
 
       for pool in data
         list = {}

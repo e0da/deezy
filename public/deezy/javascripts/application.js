@@ -12,7 +12,9 @@
         ip_picker.click(function(event) {
           var clicked;
           clicked = $(event.target);
-          if ($(clicked).is('li')) return $('#host_ip').val(clicked.text());
+          if ($(clicked).is('li')) {
+            return $('#host_ip').hide().val(clicked.text()).fadeIn();
+          }
         });
         for (_i = 0, _len = data.length; _i < _len; _i++) {
           pool = data[_i];
