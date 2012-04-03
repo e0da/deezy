@@ -5,7 +5,7 @@
   </div>
   <%= f.label :mac, 'MAC address'%>
   <%= f.text_field :mac %>
-  <%= f.label :ip, "IP address <small>(blank if <a href=# onclick='$(\"#host_ip\").val(\"\");return false'>dynamic</a>)</small>" %>
+  <%= f.label :ip, "IP address <small>(<a href=# onclick='$(\"#host_ip\").val(\"\");return false'>blank</a> if dynamic)</small>" %>
   <%= f.text_field :ip %>
   <%= f.label :itgid, 'ITG ID' %>
   <%= f.text_field :itgid %>
@@ -22,7 +22,5 @@
   <%= f.label 'enabled_false', 'Disabled' %>
   <%= f.label :notes %>
   <%= f.text_area :notes, :rows => 4 %>
-  <button type=submit class=save id=host_submit>
-    <%= image_tag 'button_save.png' %>Save
-  </button>
+  <%= f.submit 'Save' %>
 <% end %>

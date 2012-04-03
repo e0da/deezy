@@ -4,6 +4,11 @@ attach_validation = (validation) ->
   field.data 'valid', validation.valid
   field.data 'help', validation.help
 
+validate = (field) ->
+  trim(field)
+  sanitize(field)
+  warn(field) unless valid(field)
+
 trim = (field) ->
   field.val(field.val().trim())
 
@@ -25,18 +30,12 @@ warn = (field) ->
   field.css(border: '1px solid #c00')
   warning = $("<p id=#{field.attr 'id'}_warn class=field_warning>").text field.data 'help'
   field.after(warning) if field.data('help')
-  warning.css {
-    width: '200px'
-    padding: '1em'
-    background: '#fee'
-    marginLeft: '-230px'
-    marginTop: '-40px'
-    border: '1px solid #c00'
-    borderRadius: '5px'
-  }
-    
-  
-  console.error field.data('help') if field.data('help')
+  warning.hide().fadeIn('fast')
+  $(window).resize ->
+    warning.css
+      top: "#{field.offset().top - 10}px"
+      left: "#{field.offset().left - warning.width() - 25}px"
+  $(window).resize()
 
 $ ->
 
@@ -106,12 +105,14 @@ $ ->
       help: "Enter the user's UID."
     ,
       id: 'host_notes'
+      valid: /^.+$/
+      help: "The Notes field is required. Give a brief description of this host."
     ]
 
     for validation in validations
       field = attach_validation validation
-      field.change ->
-        field = $(this)
-        trim(field)
-        sanitize(field)
-        warn(field) unless valid(field)
+      field.change -> validate($(this))
+
+    $('.new_host, .edit_host').submit (e) ->
+      $(this).find('input, textarea').change()
+      e.preventDefault() if $('.field_warning').length > 0

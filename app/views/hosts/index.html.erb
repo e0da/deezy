@@ -30,14 +30,13 @@
         <td><%= host.uid %>
         <%#
         
-          !!IMPORTANT!!
+          XXX IMPORTANT XXX
           
           The next line has to be on one line since the contents of notes_col are whitespace:pre-wrap.
 
         %> 
-        <td class=notes_col><%= host.notes %><td class=show_edit>
-          <%= link_to image_tag('show.png', :style => 'margin-top:2px'), host, :title => 'Show' %><%= link_to image_tag('edit.png', :style => 'margin-top:2px'), edit_host_path(host), :title => 'Edit' %>
-      
+        <td class=notes_col><%= host.notes %></td>
+        <td class=show_edit><button onclick='location.href="<%= host_path(host) %>"; return false;' class=edit>Show</button><button onclick='location.href="<%= edit_host_path(host) %>"; return false;' class=edit>Edit</button></td>
     <% end %>
 </table>
 

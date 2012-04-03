@@ -1,25 +1,28 @@
 <table class=alt_rows id=show>
-    <tr><th>MAC<td><%= @host.mac %>
-    <tr><th>IP<td><%= @host.ip %>
-    <tr><th>ITG ID<td><%= @host.itgid %>
-    <tr><th>Room<td><%= @host.room %>
-    <tr><th>hostname<td><%= @host.hostname %>
-    <tr><th>UID<td><%= @host.uid %>
-    <tr><th>enabled<td>
-        <% if @host.enabled %>
-          <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On
-        <% else %>
-          <%= image_tag 'off.png', :style => 'vertical-align:middle' %> Off
-        <% end %>
-    <tr><th>Notes<td class=note_expanded><%= @host.notes %>
-    <tr><th>Created<td><%= @host.created_at %>
-    <tr><th>Updated<td><%= @host.updated_at %>
+  <tr><th>MAC<td><%= @host.mac %>
+  <tr><th>IP<td><%= @host.ip %>
+  <tr><th>ITG ID<td><%= @host.itgid %>
+  <tr><th>Room<td><%= @host.room %>
+  <tr><th>hostname<td><%= @host.hostname %>
+  <tr><th>UID<td><%= @host.uid %>
+  <tr><th>enabled<td>
+    <% if @host.enabled %>
+      <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On
+    <% else %>
+      <%= image_tag 'off.png', :style => 'vertical-align:middle' %> Off
+    <% end %>
+  <tr><th>Notes<td class=note_expanded><%= @host.notes %></td>
+  <tr><th>Created<td><%= @host.created_at %>
+  <tr><th>Updated<td><%= @host.updated_at %>
 </table>
 
 <% form_tag host_path(@host), :method => :delete do -%>    
   <div id=show_buttons>
-  <button onclick='location.href="<%= edit_host_path(@host) %>"; return false;' class=edit><p><%= image_tag 'button_edit.png' %> Edit</p></button>
-  <button onclick='return confirm("Really delete? Be sure! This cannot be undone!")' type=submit class=delete><p><%= image_tag 'button_delete.png' %> Delete</p></button>
-</div>
+    <button onclick='location.href="<%= edit_host_path(@host) %>"; return false;' class=edit>
+      Edit
+    </button>
+    <button onclick='return confirm("Really delete? Be sure! This cannot be undone!")' type=submit class=delete>
+      Delete
+    </button>
+  </div>
 <% end -%>
-

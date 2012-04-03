@@ -2,7 +2,7 @@
 
 // compiled ./app/assets/javascripts/application.js.coffee 
 (function() {
-  var attach_validation, clear_warning, sanitize, trim, valid, warn;
+  var attach_validation, clear_warning, sanitize, trim, valid, validate, warn;
 
   attach_validation = function(validation) {
     var field;
@@ -10,6 +10,12 @@
     field.data('sanitize', validation.sanitize);
     field.data('valid', validation.valid);
     return field.data('help', validation.help);
+  };
+
+  validate = function(field) {
+    trim(field);
+    sanitize(field);
+    if (!valid(field)) return warn(field);
   };
 
   trim = function(field) {
@@ -45,20 +51,18 @@
     });
     warning = $("<p id=" + (field.attr('id')) + "_warn class=field_warning>").text(field.data('help'));
     if (field.data('help')) field.after(warning);
-    warning.css({
-      width: '200px',
-      padding: '1em',
-      background: '#fee',
-      marginLeft: '-230px',
-      marginTop: '-40px',
-      border: '1px solid #c00',
-      borderRadius: '5px'
+    warning.hide().fadeIn('fast');
+    $(window).resize(function() {
+      return warning.css({
+        top: "" + (field.offset().top - 10) + "px",
+        left: "" + (field.offset().left - warning.width() - 25) + "px"
+      });
     });
-    if (field.data('help')) return console.error(field.data('help'));
+    return $(window).resize();
   };
 
   $(function() {
-    var field, validation, validations, _i, _len, _results;
+    var field, validation, validations, _i, _len;
     if ($('#ip_picker').length > 0) {
       $.getJSON('/deezy/freeips.json', function(data) {
         var form, ip, ip_picker, li, list, pool, pools, select, _i, _j, _k, _len, _len2, _len3, _ref;
@@ -135,21 +139,22 @@
           valid: /^.+$/,
           help: "Enter the user's UID."
         }, {
-          id: 'host_notes'
+          id: 'host_notes',
+          valid: /^.+$/,
+          help: "The Notes field is required. Give a brief description of this host."
         }
       ];
-      _results = [];
       for (_i = 0, _len = validations.length; _i < _len; _i++) {
         validation = validations[_i];
         field = attach_validation(validation);
-        _results.push(field.change(function() {
-          field = $(this);
-          trim(field);
-          sanitize(field);
-          if (!valid(field)) return warn(field);
-        }));
+        field.change(function() {
+          return validate($(this));
+        });
       }
-      return _results;
+      return $('.new_host, .edit_host').submit(function(e) {
+        $(this).find('input, textarea').change();
+        if ($('.field_warning').length > 0) return e.preventDefault();
+      });
     }
   });
 
