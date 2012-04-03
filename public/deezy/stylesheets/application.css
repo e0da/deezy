@@ -45,11 +45,9 @@ header, #content, footer {
   min-width: 640px;
   margin: 20px;
   padding: 10px;
-  background: #fff;
   border: 1px solid #0b4d82;
   -moz-border-radius: 5px;
   -webkit-border-radius: 6px;
-  background: white;
   overflow-y: auto;
   overflow-x: visible;
   background: #ffffff; /* Old browsers */
@@ -107,7 +105,8 @@ tr {
 }
 
 .alt_rows tbody tr:nth-child(odd) {
-  background: #CED3B8;
+  background: #89916c;
+  background: rgba(137, 145, 108, 0.4);
 }
 
 #show th {
@@ -217,12 +216,13 @@ input[type=radio] {
 }
 
 #ip_picker ul {
-  background: #CED3B8;
-  opacity: 0.9;
+  background: #89916c;
+  background: rgba(137, 145, 108, 0.4);
   color: #0b4d82;
   padding: 5px;
   overflow-y: scroll;
   height: 300px;
+  border: 1px solid #999;
 }
 
 #ip_picker ul { min-width: 95px; }
@@ -299,4 +299,8 @@ label { cursor: pointer; }
 
 .errorExplanation li {
   margin-left: 2em;
+}
+
+#host_notes {
+  margin-bottom: 1em;
 }

@@ -102,6 +102,7 @@ class HostsController < ApplicationController
     # Create integer copy of IP address
     params[:host][:ip_int] = Host.ip_as_int params[:host][:ip]
 
+    @search = Host.search params[:search]
     @host = Host.find(params[:id])
 
     respond_to do |format|
