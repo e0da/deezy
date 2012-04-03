@@ -10,5 +10,6 @@ gem 'json'
 
 # coffeescript
 gem 'coffee-script'
+gem 'therubyracer'
 gem 'guard'
 gem 'guard-rake'
