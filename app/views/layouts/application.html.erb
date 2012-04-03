@@ -25,10 +25,11 @@
       <%= yield %>
     </section>
     <footer>
-      <p>Copyright © <span id=copyrightyear>2012</span> by <a href=http://justinforce.com>Justin Force</a><br>
+      Copyright © <span id=copyrightyear>2012</span> by <a href=http://justinforce.com>Justin Force</a><br>
       <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
       <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
-      Deezy v<%= app_version %>
+      <div id=version>
+        <%= app_version %>
     </footer>
     <% if RAILS_ENV == 'production' %>
       <%= javascript_include_tag 'all_min' %>

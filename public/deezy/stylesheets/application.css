@@ -424,3 +424,8 @@ label {
   color: #c00;
   margin-bottom: 0;
 }
+
+#version {
+  float: right;
+  margin-top: -0.5em;
+}
