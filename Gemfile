@@ -7,9 +7,5 @@ gem 'sqlite3'
 gem 'net-ldap'
 gem 'ip'
 gem 'json'
-
-# coffeescript
 gem 'coffee-script'
 gem 'therubyracer'
-gem 'guard'
-gem 'guard-rake'
