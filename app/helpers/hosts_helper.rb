@@ -185,6 +185,7 @@ module HostsHelper
       ranges(possible_ips).each do |range|
         out << "    range #{range.first} #{range.last};"
       end
+      out << "    deny unknown clients;"
       out << "  }"
       out << ''
     end
@@ -215,7 +216,7 @@ module HostsHelper
   def hosts
     out = []
     out << "group {"
-    out << '  filename "deezy";'
+    out << '  filename "wired";'
     Host.find_all_by_enabled(true).each do |host|
       out << [
         "  host  #{host.hostname}  { hardware ethernet #{host.mac}; ",
