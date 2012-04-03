@@ -2,7 +2,7 @@
 
 // compiled ./app/assets/javascripts/application.js.coffee 
 (function() {
-  var attach_validation, clear_warning, sanitize, trim, valid, validate, warn;
+  var attach_validation, clear_warning, sanitize, trim, update_copyright_year, valid, validate, warn;
 
   attach_validation = function(validation) {
     var field;
@@ -61,8 +61,19 @@
     return $(window).resize();
   };
 
+  update_copyright_year = function() {
+    var listed_year, this_year;
+    this_year = (new Date()).getFullYear();
+    listed_year = $('#copyright_year').text().trim();
+    console.log(this_year, listed_year);
+    if (this_year > listed_year) {
+      return $('#copyright_year').html("" + listed_year + "—" + this_year);
+    }
+  };
+
   $(function() {
     var field, validation, validations, _i, _len;
+    update_copyright_year();
     if ($('#ip_picker').length > 0) {
       $.getJSON('/deezy/freeips.json', function(data) {
         var form, ip, ip_picker, li, list, pool, pools, select, _i, _j, _k, _len, _len2, _len3, _ref;

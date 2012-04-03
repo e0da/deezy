@@ -37,7 +37,19 @@ warn = (field) ->
       left: "#{field.offset().left - warning.width() - 25}px"
   $(window).resize()
 
+update_copyright_year = ->
+  this_year = (new Date()).getFullYear()
+  listed_year = $('#copyright_year').text().trim()
+  console.log this_year, listed_year
+  if this_year > listed_year
+    $('#copyright_year').html "#{listed_year}—#{this_year}"
+
+
 $ ->
+
+  # update copyright year
+  #
+  update_copyright_year()
 
   # form stuff
   #

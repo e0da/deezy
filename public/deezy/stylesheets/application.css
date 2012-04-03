@@ -18,6 +18,7 @@ body {
   background-attachment: fixed;
   background-repeat: no-repeat;
   color: #2b3146;
+  padding-bottom: 180px;
 }
 
 small { font-size: 85%; }
@@ -61,8 +62,6 @@ header, #content, footer {
 }
 
 header { padding-bottom: 5px; }
-
-footer { font-size: 10px; }
 
 header ul {
   float: left;
