@@ -58,23 +58,6 @@ header, footer, section {
   display:block;
 }
 
-#faco {
-  position:relative;
-  overflow:hidden;
-}
-
-#facr {
-  float:left;
-  position:relative;
-  left:50%;
-}
-
-#facc {
-  float:left;
-  position:relative;
-  left:-50%;
-}
-
 a {
   text-decoration:none;
   color:#0b4d82;
@@ -112,7 +95,7 @@ h1 {
 
 header, #content, footer {
   min-width:640px;
-  margin:10px;
+  margin:15px 50px;
   padding:10px;
   background: #fff;
   border:1px solid #0b4d82;

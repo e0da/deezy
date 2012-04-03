@@ -2,9 +2,9 @@
 
 // compiled ./app/assets/javascripts/application.js.coffee 
 (function() {
-  var package_for_validation, sanitize, trim, valid, warn;
+  var attach_validation, clear_warning, sanitize, trim, valid, warn;
 
-  package_for_validation = function(validation) {
+  attach_validation = function(validation) {
     var field;
     field = $("#" + validation.id);
     field.data('sanitize', validation.sanitize);
@@ -23,6 +23,7 @@
   };
 
   valid = function(field) {
+    clear_warning(field);
     if (field.data('valid')) {
       return field.val().match(field.data('valid'));
     } else {
@@ -30,7 +31,29 @@
     }
   };
 
+  clear_warning = function(field) {
+    field.css({
+      border: ''
+    });
+    return $("#" + (field.attr('id')) + "_warn").remove();
+  };
+
   warn = function(field) {
+    var warning;
+    field.css({
+      border: '1px solid #c00'
+    });
+    warning = $("<p id=" + (field.attr('id')) + "_warn class=field_warning>").text(field.data('help'));
+    if (field.data('help')) field.after(warning);
+    warning.css({
+      width: '200px',
+      padding: '1em',
+      background: '#fee',
+      marginLeft: '-230px',
+      marginTop: '-40px',
+      border: '1px solid #c00',
+      borderRadius: '5px'
+    });
     if (field.data('help')) return console.error(field.data('help'));
   };
 
@@ -45,7 +68,7 @@
           var clicked;
           clicked = $(event.target);
           if ($(clicked).is('li')) {
-            return $('#host_ip').hide().val(clicked.text()).fadeIn();
+            return $('#host_ip').hide().val(clicked.text()).change().fadeIn('fast');
           }
         });
         for (_i = 0, _len = data.length; _i < _len; _i++) {
@@ -84,7 +107,7 @@
           help: "A valid MAC address is 12 hexadecimal (0-9A-F) characters. Case and punctuation don't matter."
         }, {
           id: 'host_ip',
-          valid: /^(((\d{1,3}).){3}\d{1,3}|)$/,
+          valid: /^(((\d{1,3})\.){3}\d{1,3}|)$/,
           help: "You probably want to pick an IP address from the list on the right"
         }, {
           id: 'host_itgid',
@@ -118,7 +141,7 @@
       _results = [];
       for (_i = 0, _len = validations.length; _i < _len; _i++) {
         validation = validations[_i];
-        field = package_for_validation(validation);
+        field = attach_validation(validation);
         _results.push(field.change(function() {
           field = $(this);
           trim(field);

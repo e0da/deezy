@@ -1,19 +1,14 @@
 <!doctype html>
-<title>Deezy</title>
-<meta name=description content='DHCP configuration application for The Gevirtz School'>
-<meta name=author content='Justin Force <justin.force@gmail.com>'>
-<meta charset=utf-8>
-<link rel=icon type=image/png href=<%= image_path 'favicon.png' %>>
-<%= stylesheet_link_tag 'application' %>
-<% if RAILS_ENV == 'production' %>
-  <%= javascript_include_tag 'all_min' %>
-<% else %>
-  <%= javascript_include_tag 'jquery.min.js','application' %>
-<% end %>
-<div id=faco>
-  <div id=facr>
-    <div id=facc>
-      <header>
+<html>
+  <head>
+    <title>Deezy</title>
+    <meta name=description content='DHCP configuration application for The Gevirtz School'>
+    <meta name=author content='Justin Force <justin.force@gmail.com>'>
+    <meta charset=utf-8>
+    <link rel=icon type=image/png href=<%= image_path 'favicon.png' %>>
+    <%= stylesheet_link_tag 'application' %>
+  <body>
+    <header>
       <a rel=home title=Deezy href=<%= root_url %> id=deezy_logo><%= image_tag 'deezy.png' %></a>
       <ul>
         <li><%= link_to 'Show All', root_url %>
@@ -25,11 +20,18 @@
         <%= f.text_field :mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains %> 
       <% end %>
 
-      </header>
-      <section id=content>
+    </header>
+    <section id=content>
       <%= yield %>
-      </section>
-      <footer>
+    </section>
+    <footer>
       <p>Copyright © <span id=copyrightyear>2012</span> by <a href=http://justinforce.com>Justin Force</a><br>
       <a href=http://education.ucsb.edu>The Gevirtz Graduate School of Education</a>, 
       <a href=http://www.ucsb.edu>University of California, Santa Barbara</a>
+      Deezy v<%= app_version %>
+    </footer>
+    <% if RAILS_ENV == 'production' %>
+      <%= javascript_include_tag 'all_min' %>
+    <% else %>
+      <%= javascript_include_tag 'jquery.min.js','application' %>
+    <% end %>
