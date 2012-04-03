@@ -5,10 +5,18 @@
   line-height: 1.2em;
 }
 
+html, body {
+  height: 100%;
+}
+
 body {
   font-family: Arial,Helvetica,sans-serif;
-  background-image: url(../images/green-concrete.jpg);
-  background-color: #89916c;
+  background: #89916c;
+  background: -moz-linear-gradient(top, #89916c 0%, #686d52 100%); /* FF3.6+ */
+  background: -webkit-linear-gradient(top, #89916c 0%,#686d52 100%); /* Chrome10+,Safari5.1+ */
+  background: linear-gradient(top, #89916c 0%,#686d52 100%); /* W3C */
+  background-attachment: fixed;
+  background-repeat: no-repeat;
   color: #2b3146;
 }
 
@@ -41,10 +49,17 @@ header, #content, footer {
   border: 1px solid #0b4d82;
   -moz-border-radius: 5px;
   -webkit-border-radius: 6px;
-  background: transparent;
-  background-image: url(../images/white-paper.jpg);
+  background: white;
   overflow-y: auto;
   overflow-x: visible;
+  background: #ffffff; /* Old browsers */
+  background: -moz-linear-gradient(top, #ffffff 0%, #e5e5e5 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#ffffff), color-stop(100%,#e5e5e5)); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* IE10+ */
+  background: linear-gradient(top, #ffffff 0%,#e5e5e5 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#e5e5e5',GradientType=0 ); /* IE6-9 */
 }
 
 header { padding-bottom: 5px; }
@@ -92,7 +107,7 @@ tr {
 }
 
 .alt_rows tbody tr:nth-child(odd) {
-  background-image: url(../images/green-transparent.png);
+  background: #CED3B8;
 }
 
 #show th {
@@ -202,7 +217,8 @@ input[type=radio] {
 }
 
 #ip_picker ul {
-  background-image: url(../images/green-transparent.png);
+  background: #CED3B8;
+  opacity: 0.9;
   color: #0b4d82;
   padding: 5px;
   overflow-y: scroll;
@@ -224,7 +240,7 @@ input[type=radio] {
 }
 
 #search_mac_or_ip_or_itgid_or_room_or_hostname_or_uid_or_notes_contains {
-  background: url(../images/blue-glass.png) transparent 0 -2px;
+  background: url(../images/blue-glass.png) white 0 -2px;
   float: right;
   font-weight: bold;
   padding: 3px;
@@ -235,11 +251,12 @@ input[type=text], textarea {
   font-family: Arial,Helvetica,sans-serif;
   padding: 1px 2px;
   color: #0b4d82;
-  border: 1px solid #0b4d82;
-  background: transparent;
+  border: 1px solid #999;
+  box-shadow: inset 0 1px 5px rgba(0, 0, 0, 0.2);
 }
 
 input[type=text] { width: 150px; }
+input[type=radio] { margin-left: 2em; }
 
 textarea {
   width: 100%;
