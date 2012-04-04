@@ -69,6 +69,8 @@ module HostsHelper
   #
   def comments
     out = []
+    out << ''
+    out << "# Deezy version #{app_version}"
     out << '#'
     @conf['dhcpd']['subnets'].each do |s|
       out << '# %s/%s via %s' % [s['subnet'], s['netmask'], s['routers']]
