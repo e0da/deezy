@@ -40,7 +40,6 @@ warn = (field) ->
 update_copyright_year = ->
   this_year = (new Date()).getFullYear()
   listed_year = $('#copyright_year').text().trim()
-  console.log this_year, listed_year
   if this_year > listed_year
     $('#copyright_year').html "#{listed_year}—#{this_year}"
 
