@@ -7,8 +7,12 @@ module HostsHelper
   # Output the machine-consumable IS&C DHCPD dhcpd.conf
   #
   def dhcpd_conf
-    # XXX You cannot change the first and last lines. They're consumed by the
-    # receiving DHCP server and it expects a specific format. XXX
+
+    #
+    # XXX IMPORTANT XXX
+    #
+    # You cannot change the first and last lines. They're consumed by the
+    # receiving DHCP server and it expects a specific format.
     #
     [
       "# Last updated #{Host.last_updated}",
@@ -29,26 +33,10 @@ module HostsHelper
     out = []
     @conf['dhcpd']['subnets'].each do |subnet|
       subnet['pools'].each do |pool|
-
-        # TODO we calculate the pool twice. DRY this.
-        #
-        unless pool['hide_from_freeips']
-          ips = []
-          ips << [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
-          ips.flatten!
-          pool['exceptions'].each do |exception|
-            ips.reject! do |ip|
-              [*IPAddr.new(exception['first'])..IPAddr.new(exception['last'])].include? ip
-            end
-          end if pool['exceptions']
-          ips.reject! do |ip|
-            used_ips.include? ip
-          end
-          out << {
-            :pool => "#{pool['first']} — #{pool['last']}",
-            :ips => ips.map {|ip| ip.to_s}
-          }
-        end
+        out << {
+          :pool => "#{pool['first']} — #{pool['last']}",
+          :ips => possible_ips(pool).map {|ip| ip.to_s}
+        } unless pool['hide_from_freeips']
       end
     end
     out.to_json
@@ -167,30 +155,33 @@ module HostsHelper
     out = []
     subnet['pools'].each do |pool|
 
-      pool_ips = [*IPAddr.new(pool['first'])..IPAddr.new(pool['last'])]
-      possible_ips = pool_ips.reject do |ip|
-        used_ips.include? ip
-      end
-
-      pool['exceptions'].each do |h|
-        possible_ips.reject! do |ip|
-          [*IPAddr.new(h['first'])..IPAddr.new(pool['last'])].include? ip
-        end
-      end if pool['exceptions']
-
       out << "  pool {"
-
       out << raw_options(pool['raw_options'], 4)
 
-      ranges(possible_ips).each do |range|
-        out << "    range #{range.first} #{range.last};"
-      end
+      ranges(possible_ips(pool)).each { |r| out << "    range #{r.first} #{r.last};" }
+      
+      out << "    deny unknown clients;" unless pool['allow_unknown_clients']
       out << "  }"
       out << ''
     end
     out << ''
   end
 
+  def possible_ips(pool)
+
+    pool_ips = ip_range pool['first'], pool['last']
+    possible_ips = pool_ips.reject { |ip| used_ips.include? ip }
+
+    pool['exceptions'].each do |e|
+      possible_ips.reject! { |ip| ip_range(e['first'], e['last']).include? ip }
+    end if pool['exceptions']
+
+    possible_ips
+  end
+
+  def ip_range(first, last)
+    [*IPAddr.new(first)..IPAddr.new(last)]
+  end
 
   #
   # Output all of the subnets
