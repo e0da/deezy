@@ -10,7 +10,7 @@ class ApplicationController < ActionController::Base
   protected
 
   def conf
-    @@conf = YAML.load_file "#{Rails.root}/config/deezy.yml"
+    @@conf ||= YAML.load_file "#{Rails.root}/config/deezy.yml"
   end
 
   def authenticate
