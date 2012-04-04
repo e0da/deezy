@@ -118,7 +118,7 @@ module HostsHelper
   def dhcpd_options(options, indent=0)
     out = []
     options.each do |key, value|
-      value = value.join(',') if value.class == Array
+      value = value.join(', ') if value.class == Array
       out << "#{' '*indent}option #{key} #{value.chomp};"
     end if options
     out << ''
@@ -185,7 +185,6 @@ module HostsHelper
       ranges(possible_ips).each do |range|
         out << "    range #{range.first} #{range.last};"
       end
-      out << "    deny unknown clients;"
       out << "  }"
       out << ''
     end
@@ -216,7 +215,7 @@ module HostsHelper
   def hosts
     out = []
     out << "group {"
-    out << '  filename "wired";'
+    out << '  filename "deezy";'
     Host.find_all_by_enabled(true).each do |host|
       out << [
         "  host  #{host.hostname}  { hardware ethernet #{host.mac}; ",
