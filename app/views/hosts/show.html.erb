@@ -1,19 +1,14 @@
 <table class=alt_rows id=show>
-  <tr><th>MAC<td><%= @host.mac %>
-  <tr><th>IP<td><%= @host.ip %>
-  <tr><th>ITG ID<td><%= @host.itgid %>
-  <tr><th>Room<td><%= @host.room %>
-  <tr><th>hostname<td><%= @host.hostname %>
-  <tr><th>UID<td><%= @host.uid %>
-  <tr><th>enabled<td>
-    <% if @host.enabled %>
-      <%= image_tag 'on.png', :style => 'vertical-align:middle' %> On
-    <% else %>
-      <%= image_tag 'off.png', :style => 'vertical-align:middle' %> Off
-    <% end %>
+  <tr><th>MAC<td><%= @host.mac %></td>
+  <tr><th>IP<td><%= @host.ip %></td>
+  <tr><th>ITG ID<td><%= @host.itgid %></td>
+  <tr><th>Room<td><%= @host.room %></td>
+  <tr><th>hostname<td><%= @host.hostname %></td>
+  <tr><th>UID<td><%= @host.uid %></td>
+  <tr><th>enabled<td><%= enabled_image @host %> <%= @host.enabled? ? 'Yes' : 'No' %></td>
   <tr><th>Notes<td class=note_expanded><%= @host.notes %></td>
-  <tr><th>Created<td><%= @host.created_at %>
-  <tr><th>Updated<td><%= @host.updated_at %>
+  <tr><th>Created<td><%= @host.created_at %></td>
+  <tr><th>Updated<td><%= @host.updated_at %></td>
 </table>
 
 <% form_tag host_path(@host), :method => :delete do -%>    

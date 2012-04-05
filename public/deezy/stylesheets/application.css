@@ -85,6 +85,7 @@ table {
 th, td {
   padding: 1px 5px;
   line-height: 14px;
+  white-space: pre;
 }
 
 tbody {
@@ -173,12 +174,15 @@ input[type=radio] {
 
 #show_buttons button { margin: 10px; }
 
-.show_edit { white-space: pre;}
-.show_edit button {
+h1 .button-to, h1 .button-to div, .show_edit form, .show_edit form div {
+  display: inline;
+}
+
+h1 .button-to input, .show_edit .button-to input {
   display: inline;
   padding: 0 0.5em;
   margin: 0;
-  font-size: 0.8em;
+  font-size: 10px;
 }
 
 .pagination {

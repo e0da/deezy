@@ -13,44 +13,18 @@
   <tbody>
     <% @hosts.each do |host| %>
       <tr>
-        <td>
-          <% if host.enabled %>
-            <span class=invisible>on</span>
-            <%= image_tag 'on.png' %>
-          <% else %>
-            <span class=invisible>off</span>
-            <%= image_tag 'off.png' %>
-          <% end %>
-        
-        <td><%= host.mac %>
-        <td><%= host.ip %>
-        <td><%= host.itgid %>
-        <td><%= host.room %>
-        <td><%= host.hostname %>
-        <td><%= host.uid %>
-        <%#
-        
-          XXX IMPORTANT XXX
-          
-          The next line has to be on one line since the contents of notes_col are whitespace:pre-wrap.
-
-        %> 
+        <td class=enabled_col><%= enabled_image(host) %></td>
+        <td><%= host.mac %></td>
+        <td><%= host.ip %></td>
+        <td><%= host.itgid %></td>
+        <td><%= host.room %></td>
+        <td><%= host.hostname %></td>
+        <td><%= host.uid %></td>
         <td class=notes_col><%= host.notes %></td>
-        <td class=show_edit><button onclick='location.href="<%= host_path(host) %>"; return false;' class=edit>Show</button><button onclick='location.href="<%= edit_host_path(host) %>"; return false;' class=edit>Edit</button></td>
+        <td class=show_edit><%= button_to :Show, host, :method => :get %><%= button_to :Edit, edit_host_path(host), :method => :get %></td>
     <% end %>
 </table>
 
 <%= will_paginate @hosts %>
 
-<%
-  per_page_links = []
-  [15,25,50,100,200,'All'].each do |i|
-    uri = request.request_uri.gsub(/per_page=\d+/,'')
-    uri.chomp! '&'
-    uri += (uri.index '?') ? '&' : '?'
-    uri += "per_page=#{i}"
-    per_page_links << "<a href='#{uri}'>#{i}</a>"
-  end
-%>
-
-<p id="per_page"><%= per_page_links.join(' | ') %> per page</p>
+<p id="per_page"><%= per_page_links %> per page</p>

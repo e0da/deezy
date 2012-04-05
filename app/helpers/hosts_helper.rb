@@ -223,4 +223,20 @@ module HostsHelper
     out << "}"
     out << ''
   end
+
+  def enabled_image(host)
+    image_tag "#{host.enabled ? :on : :off}.png"
+  end
+
+  def per_page_links
+    per_page_links = []
+    [15,25,50,100,200,'All'].each do |i|
+      uri = request.request_uri.gsub(/per_page=\d+/,'')
+      uri.chomp! '&'
+      uri += (uri.index '?') ? '&' : '?'
+      uri += "per_page=#{i}"
+      per_page_links << "<a href='#{uri}'>#{i}</a>"
+    end
+    per_page_links.join(' | ')
+  end
 end
