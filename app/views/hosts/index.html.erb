@@ -1,15 +1,14 @@
-<table id=hosts class=alt_rows cellspacing=0>
+<table id=hosts class=index cellspacing=0>
   <thead>
     <tr>
-      <th><%= order @search, :by => :enabled, :as => 'On' %>
-      <th><%= order @search, :by => :mac, :as => 'MAC' %>
-      <th><%= order @search, :by => :ip_int, :as => 'IP' %>
-      <th><%= order @search, :by => :itgid, :as => 'ITG ID' %>
+      <th><%= order @search, :by => :enabled,  :as => 'On' %>
+      <th><%= order @search, :by => :mac,      :as => 'MAC' %>
+      <th><%= order @search, :by => :ip_int,   :as => 'IP' %>
+      <th><%= order @search, :by => :itgid,    :as => 'ITG ID' %>
       <th><%= order @search, :by => :room %>
       <th><%= order @search, :by => :hostname, :as => 'hostname' %>
       <th><%= order @search, :by => :uid, :as => 'UID' %>
-      <th id=notes_th><%= order @search, :by => :notes %>
-      <th style=min-width:35px> &nbsp; 
+      <th><%= order @search, :by => :notes %>
   <tbody>
     <% @hosts.each do |host| %>
       <tr>

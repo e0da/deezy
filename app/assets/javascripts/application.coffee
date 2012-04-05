@@ -31,10 +31,11 @@ warn = (field) ->
   warning = $("<p id=#{field.attr 'id'}_warn class=field_warning>").text field.data 'help'
   field.after(warning) if field.data('help')
   warning.hide().fadeIn('fast')
+
   $(window).resize ->
     warning.css
-      top: "#{field.offset().top - 10}px"
-      left: "#{field.offset().left - warning.width() - 25}px"
+      top: "#{field.offset().top - 8}px"
+      left: "#{field.offset().left + field.width() + 25}px"
   $(window).resize()
 
 update_copyright_year = ->
@@ -74,15 +75,17 @@ $ ->
           list.ips.append li
 
       form = $('form.edit_host, form.new_host')
+      container = $('<div>')
       select = $('<select>').change ->
         i = $(this).find(':selected').index()
-        ip_picker.find('.list').empty().append pools[i].ips
+        container.empty().append pools[i].ips
 
       for pool in pools
         select.append $("<option>#{pool.pool}</option>")
 
-      ip_picker.prepend select
-      ip_picker.find('.list').append pools[0].ips
+      ip_picker.append select
+      ip_picker.append container
+      container.append pools[0].ips
 
     # form validation
     #

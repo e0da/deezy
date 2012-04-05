@@ -82,7 +82,7 @@ table {
   border-collapse: collapse;
 }
 
-th, td {
+td {
   padding: 1px 5px;
   line-height: 14px;
   white-space: pre;
@@ -96,7 +96,11 @@ tr {
   border-bottom: 1px solid #999;
 }
 
-.alt_rows tbody tr:nth-child(odd) {
+thead {
+  line-height: 20px;
+}
+
+tbody tr:nth-child(odd) {
   background: #89916c;
   background: rgba(137, 145, 108, 0.4);
 }
@@ -107,12 +111,8 @@ tr {
 }
 
 .new_host, .edit_host {
-  margin: auto;
-  width: 460px;
-}
-
-.new_host p, .edit_host p {
-  margin-bottom: 10px;
+  float: left;
+  margin: 10px 40px 30px;
 }
 
 .invalid_field {
@@ -161,6 +161,10 @@ select {
   font-size: 1.2em;
 }
 
+#enabled_label {
+  padding-bottom: 5px;
+}
+
 input[type=radio] + label {
   display: inline;
 }
@@ -206,8 +210,10 @@ h1 .button-to input, .show_edit .button-to input {
 }
 
 #ip_picker {
-  float: right;
-  margin-left: 10px;
+  float: left;
+  margin: 3em;
+  margin-top: 0.5em;
+  margin-left: -240px;
 }
 
 #ip_picker ul {
@@ -224,7 +230,7 @@ h1 .button-to input, .show_edit .button-to input {
 
 #ip_picker li { cursor: pointer; }
 
-#ip_picker select { font-size: 0.9em; }
+#ip_picker select { font-size: 0.9em; width: 200px;}
 
 #deezy_logo {
   display: block;
@@ -262,11 +268,17 @@ input[type=text] { width: 150px; }
 input[type=radio] { margin-left: 2em; }
 
 textarea {
-  width: 100%;
+  display: block;
+  width: 440px;
   height: 86px;
 }
 
 label { cursor: pointer; }
+
+label[for=host_enabled_true], label[for=host_enabled_false] {
+  line-height: 2em;
+  font-size: 1em;
+}
 
 .fieldWithErrors label {
   font-weight: bold;
@@ -283,7 +295,7 @@ label { cursor: pointer; }
   font-size: 0.9em;
   color: #933;
   position: absolute;
-  width: 200px;
+  width: 240px;
   padding: 0.25em 0.5em;
   background: #fee;
   border: 1px solid #c00;

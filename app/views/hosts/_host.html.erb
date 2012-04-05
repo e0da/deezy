@@ -1,8 +1,5 @@
 <% form_for(host) do |f| %>
   <%= f.error_messages %>
-  <div id=ip_picker>
-    <div class=list></div>
-  </div>
   <%= f.label :mac, 'MAC address'%>
   <%= f.text_field :mac %>
   <%= f.label :ip, "IP address <small>(<a href=# onclick='$(\"#host_ip\").val(\"\");return false'>blank</a> if dynamic)</small>" %>
@@ -15,7 +12,7 @@
   <%= f.text_field :hostname %>
   <%= f.label :uid, 'UID' %>
   <%= f.text_field :uid %>
-  <p class=mock_label>Enabled?</p>
+  <p id=enabled_label class=mock_label>Enabled?</p>
   <%= f.radio_button :enabled, 'true', :checked => true %>
   <%= f.label 'enabled_true', 'Enabled' %>
   <%= f.radio_button :enabled, 'false' %>
@@ -24,3 +21,6 @@
   <%= f.text_area :notes, :rows => 4 %>
   <%= f.submit 'Save' %>
 <% end %>
+<div id=ip_picker>
+  <span class=mock_label>Pick a pool and IP address</span>
+</div>
