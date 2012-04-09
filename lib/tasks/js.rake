@@ -1,24 +1,26 @@
+require 'jsmin'
+
+desc 'Prepare JavaScript by compiling CoffeeScript then minimizing the output'
+task :js => [ :coffee, :'js:min' ]
+
 namespace :js do
-  desc "Minify javascript src for production environment"
-  task :min => :environment do
-    # list of files to minify
-    libs = [
+
+  desc 'Minify JavaScript'
+  task :min do
+
+    # list of files to minify IN ORDER
+    files = [
       'public/deezy/javascripts/jquery.min.js', 
       'public/deezy/javascripts/application.js'
     ]
 
-    # paths to jsmin script and final minified file
-    jsmin = 'script/javascript/jsmin.rb'
-    final = 'public/deezy/javascripts/all_min.js'
+    # paths to minified file
+    min = 'public/deezy/javascripts/all_min.js'
 
-    # create single tmp js file
-    tmp = Tempfile.open('all')
-    libs.each {|lib| open(lib) {|f| tmp.write(f.read) } }
-    tmp.rewind
-
-    # minify file
-    %x[ruby #{jsmin} < #{tmp.path} > #{final}]
-    puts "\n#{final}"
+    # read all of the JavaScript into a string then minify it
+    js = files.inject('') do |str, src|
+      open(src) { |sf| str << sf.read }
+    end
+    open(min, 'w') { |f| f.write JSMin.minify(js) }
   end
 end
-

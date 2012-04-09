@@ -1,3 +1,4 @@
+alert 'ronk'
 attach_validation = (validation) ->
   field = $("##{validation.id}")
   field.data 'sanitize', validation.sanitize
