@@ -14,7 +14,7 @@ build = (watch=false) ->
   coffee.stdout.on 'data', (data) ->
     print data.toString()
 
-task 'build', 'build all CoffeeScript in src to JavaScript in lib', ->
+task 'build', "build all CoffeeScript in #{SRC} to JavaScript in #{LIB}", ->
   build()
-task 'watch', 'watch for changes to CoffeeScript in src and build to JavaScript in lib', ->
+task 'watch', "watch for changes to CoffeeScript in #{SRC} and build to JavaScript in #{LIB}", ->
   build true
