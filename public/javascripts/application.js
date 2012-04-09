@@ -1,6 +1,5 @@
 (function() {
   var attach_validation, clear_warning, sanitize, trim, update_copyright_year, valid, validate, warn;
-  alert('ronk');
   attach_validation = function(validation) {
     var field;
     field = $("#" + validation.id);

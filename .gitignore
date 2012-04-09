@@ -2,9 +2,8 @@
 db/*.sqlite3
 log/*.log
 tmp/**/*
-public/deezy/dhcpd.leases
-public/deezy/javascripts/application.js
-public/deezy/javascripts/all_min.js
+public/javascripts/application.js
+public/javascripts/all_min.js
 .bash*
 .gem*
 .lesshst
