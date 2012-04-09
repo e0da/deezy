@@ -119,7 +119,7 @@ $ ->
       help: "Enter the user's UID."
     ,
       id: 'host_notes'
-      valid: /^.+$/
+      valid: /[^]/
       help: "The Notes field is required. Give a brief description of this host."
     ]
 
