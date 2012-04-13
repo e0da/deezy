@@ -1,9 +1,97 @@
-ldap:
-  host: localhost
-  username: admin
-  password: secret
-  bind_dn: uid=%s,ou=people,dc=localhost
+---
 
-exempt_ips:
+#
+# You can control access to Deezy by requiring authentication against an LDAP
+# directory.
+#
+auth:
+  ldap:
+    host: example.org
+    username: deezy
+    password: secret
+    bind_dn: uid=%s,ou=people,dc=example,dc=org
+
+  # These IPs are exempt from authentication (whitelisted). This is useful for
+  # allowing your DHCP server access to the generated dhcpd.conf file.
+  exempt_ips:
   - 127.0.0.1
-  - 10.0.0.1
+  - 192.168.0.1
+
+#
+# These options are used to generate your dhcpd.conf file
+#
+dhcpd:
+
+  # global options
+  options:
+
+    # this is rednered as domain-name "example.org";
+    domain-name: |
+      "example.org"
+
+    # this is rendered as domain-name-servers 192.168.0.1, 192.168.0.2;
+    domain-name-servers:
+    - 192.168.0.1
+    - 192.168.0.2
+
+  # these options are printed as they are with a semicolon such as...
+  raw_options:
+  - ddns-update-style none        # ddns-update-style none;
+  - default-lease-time 10800      # default-lease-time 10800;
+  - max-lease-time 10800
+  - authoritative
+
+  # define your subnets
+  subnets:
+  - subnet: 192.168.1.0
+    netmask: 255.255.255.0
+
+    # these options are interpreted like the global ones
+    options:
+      routers: 192.168.1.1    # routers 192.168.1.1;
+
+    # define your pools of IP addresses for each subnet. You can have multiple pools
+    pools:
+    - first: 192.168.1.100
+      last: 192.168.1.200
+    - first: 192.168.1.230
+      last: 192.168.1.240
+  
+  - subnet: 192.168.2.0
+    netmask: 255.255.255.0
+    options:
+      routers: 192.168.2.1
+    pools:
+    - first: 192.168.2.100
+      last: 192.168.2.200
+
+      # you can also provide exceptions. These addresses are excluded from the
+      # pool. This lets you carve holes out of your pools if some addresses
+      # must be used for other purposes.
+      exceptions:
+      - notes: Guest Wi-Fi     # you can supply notes which will be rendered in comments in the config
+        first: 192.168.2.120
+        last: 192.168.2.130
+
+  - subnet: 192.168.3.0
+    netmask: 255.255.255.0
+    options:
+      routers: 192.168.3.1
+
+    # you can define classes to match clients. Here, we look for requests relayed from 192.168.3.250.
+    # https://lists.isc.org/pipermail/dhcp-users/2008-April/006236.html
+    classes:
+    - class: wireless
+      raw_options:
+      - match if (binary-to-ascii(10,8, ".", packet(24,4)) = "192.168.3.250")
+
+    pools:
+    - first: 192.168.3.100
+      last: 192.168.3.200
+      notes: Relayed Wi-Fi
+      hide_from_freeips: true        # you can choose not to show these in the free IPs list
+      allow_unknown_clients: true    # You can choose to allow unknown clients (the default is to deny)
+      raw_options:
+      - allow members of "wireless"  # this includes those matched relay clients from above
+      - default-lease-time 900
+      - max-lease-time 900
