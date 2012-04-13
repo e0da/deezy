@@ -8,11 +8,11 @@ things right, you should be using [RVM](http://rvm.io/).
 
 ### Recommended ###
 
-   git clone https://github.com/justinforce/deezy
-   cd deezy
-   rvm --install --create --rvmrc ree@deezy
-   cd .
-   bundle
+    git clone https://github.com/justinforce/deezy
+    cd deezy
+    rvm --install --create --rvmrc ree@deezy
+    cd .
+    bundle
 
 ### Without RVM ###
 
