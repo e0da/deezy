@@ -8,3 +8,40 @@ require 'rake/testtask'
 require 'rake/rdoctask'
 
 require 'tasks/rails'
+
+def start(env='development')
+  `passenger start --daemon --environment #{env}`
+end
+
+def stop
+  `passenger stop`
+end
+
+desc 'Start server in development mode'
+task :start do
+  start
+end
+
+desc 'Stop server'
+task :stop do
+  stop
+end
+
+desc 'Restart server in development mode'
+task :restart => [:stop, :start]
+
+namespace :production do
+
+  desc 'Start server in production mode'
+  task :start do
+    start 'production'
+  end
+
+  desc 'Stop server'
+  task :stop do
+    stop
+  end
+
+  desc 'Restart server in production mode'
+  task :restart => [:stop, :start]
+end
