@@ -30,8 +30,8 @@ class ApplicationController < ActionController::Base
           ldap.host = ldconf['host']
           ldap.port = ldconf['port'] if ldconf['port']
           ldap.auth(
-            ldconf['bind_dn'] % ldconf['username'],
-            ldconf['password']
+            ldconf['bind_dn'] % username,
+            password
           )
           ldap.bind 
         end

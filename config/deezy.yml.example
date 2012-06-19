@@ -2,13 +2,12 @@
 
 #
 # You can control access to Deezy by requiring authentication against an LDAP
-# directory.
+# directory. (password is passed in by simple http auth)
 #
 auth:
   ldap:
     host: example.org
     username: deezy
-    password: secret
     bind_dn: uid=%s,ou=people,dc=example,dc=org
 
   # These IPs are exempt from authentication (whitelisted). This is useful for
