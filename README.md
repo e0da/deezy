@@ -24,7 +24,7 @@ things right, you should be using [RVM](http://rvm.io/).
 
 Configure your database in the usual Rails way, then
 
-    rake js
+    rake js # This will fail if you don't have coffeescript installed from the repos
     rake db:setup
     rake db:migrate
 
