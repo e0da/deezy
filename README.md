@@ -4,6 +4,10 @@ You must use Ruby 1.8.7. [Ruby Enterprise
 Edition](http://www.rubyenterpriseedition.com/) is recommended. To really do
 things right, you should be using [RVM](http://rvm.io/).
 
+Before you begin, run `sudo apt-get install coffeescript`
+
+You'll also need to downgrade to RubyGems 1.8 for this to work: http://stackoverflow.com/questions/15349869/undefined-method-source-index-for-gemmodule-nomethoderror
+
 ## Installing ##
 
 ### Recommended ###
@@ -11,6 +15,7 @@ things right, you should be using [RVM](http://rvm.io/).
     git clone https://github.com/justinforce/deezy
     cd deezy
     rvm --install --create --rvmrc ree@deezy
+    rvm rubygems latest-1.8
     cd .
     bundle
 
