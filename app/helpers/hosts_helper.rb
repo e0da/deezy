@@ -167,6 +167,7 @@ module HostsHelper
       ranges(possible_ips(pool)).each { |r| out << "    range #{r.first} #{r.last};" }
       
       out << "    deny unknown clients;" unless pool['allow_unknown_clients']
+      out << "    deny known clients;" if pool['deny_known_clients']
       out << "  }"
       out << ''
     end
